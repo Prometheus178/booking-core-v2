@@ -1,18 +1,42 @@
 plugins {
     id 'java'
-    id 'application'
+    id 'java-library'
+
 }
 
-group 'org.booking.core'
-version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
+
+allprojects {
+    group 'org.booking.core'
+    version '1.0-SNAPSHOT'
+
+    def junitVersion = '5.9.1'
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    dependencies {
+        compileOnly group: 'javax', name: 'javaee-api', version: '8.0'
+        implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+        implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '3.0.11'
+
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    }
+
+    repositories {
+        mavenLocal() // .m2/repository
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
-ext {
-    junitVersion = '5.9.1'
-}
+
+
+
 
 sourceCompatibility = '17'
 targetCompatibility = '17'
@@ -21,18 +45,8 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-application {
-    mainModule = 'org.booking.core'
-    mainClass = 'org.booking.core'
-}
 
 
-dependencies {
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-}
 
-test {
-    useJUnitPlatform()
-}
+

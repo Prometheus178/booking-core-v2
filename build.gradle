@@ -1,52 +1,48 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE"
+    }
+}
+
 plugins {
     id 'java'
-    id 'java-library'
     id 'war'
+    id 'org.springframework.boot' version '3.1.5'
+    id 'io.spring.dependency-management' version '1.1.3'
 }
 
 
-
-allprojects {
-    group 'org.booking.core'
-    version '1.0-SNAPSHOT'
-
-    def junitVersion = '5.9.1'
-
-    apply plugin: 'java'
-    apply plugin: 'java-library'
-    dependencies {
-        compileOnly group: 'javax', name: 'javaee-api', version: '8.0'
-        implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
-        implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '3.0.11'
-
-
-        testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-    }
-
-    repositories {
-        mavenLocal() // .m2/repository
-        mavenCentral()
-    }
-
-    test {
-        useJUnitPlatform()
-    }
-}
-
-
-
-
-
+group = 'org.booking.core'
+version = '1.0-SNAPSHOT'
 sourceCompatibility = '17'
-targetCompatibility = '17'
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jersey'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 
-
-
-
-
+tasks.named('test') {
+    useJUnitPlatform()
+}

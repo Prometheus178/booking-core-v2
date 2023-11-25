@@ -1,0 +1,28 @@
+ version:   '3.9'
+
+ services:
+    booking-core_app:
+      container_name: 'booking-core_app'
+      image: 'booking-core'
+      build: .
+      ports:
+        - 8080:8080
+      environment:
+        - DATABASE_URL=jdbc:postgresql://booking-core_db:5432/postgres
+        - DATABASE_USERNAME=postgres
+        - DATABASE_PASSWORD=postgres
+      depends_on:
+        - booking-core_db
+    booking-core_db:
+      container_name: 'booking-core_db'
+      image: 'postgres:12'
+      ports:
+       - 5432:5432
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
+      volumes:
+        - /Users/sergey/host_mnt/Volumes/pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}

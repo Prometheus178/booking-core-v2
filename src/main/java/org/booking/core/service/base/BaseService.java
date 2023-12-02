@@ -2,15 +2,15 @@ package org.booking.core.service.base;
 
 import java.util.List;
 
-public interface BaseService<T, ID> {
+public interface BaseService<T, I> {
 
     T create(T obj);
 
-    T update(ID id, T obj);
+    T update(I i, T obj);
 
-    boolean delete(ID id);
+    boolean delete(I i);
 
-    T getUserById(ID id);
+    T getById(I i);
 
     List<T> getAllUsers();
 

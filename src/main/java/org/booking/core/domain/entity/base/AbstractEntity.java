@@ -1,7 +1,9 @@
 package org.booking.core.domain.entity.base;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -9,8 +11,10 @@ import java.util.Date;
  * Author: Sergey.
  */
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

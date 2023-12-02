@@ -1,14 +1,16 @@
 package org.booking.core.domain.entity.base;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-@MappedSuperclass
-public abstract class User extends BaseEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class User extends AbstractEntity {
 
     @Column(name = "name")
     private String name;

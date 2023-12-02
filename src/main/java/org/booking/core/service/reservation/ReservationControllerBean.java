@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ReservationServiceBean implements ReservationService {
-
+public class ReservationControllerBean implements ReservationController {
 
     private ReservationRepository reservationRepository;
 
-    public ReservationServiceBean(ReservationRepository reservationRepository) {
+    public ReservationControllerBean(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
     }
 

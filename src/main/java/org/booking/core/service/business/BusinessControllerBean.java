@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BusinessServiceBean implements BusinessService {
+public class BusinessControllerBean implements BusinessController {
 
 
     private BusinessRepository businessRepository;
 
-    public BusinessServiceBean(BusinessRepository businessRepository) {
+    public BusinessControllerBean(BusinessRepository businessRepository) {
         this.businessRepository = businessRepository;
     }
 

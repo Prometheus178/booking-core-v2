@@ -8,14 +8,14 @@ import org.booking.core.domain.entity.base.AbstractEntity;
 
 import java.math.BigDecimal;
 
-@Entity(name = Service.ENTITY_NAME)
-@Table(name = Service.TABLE_NAME)
+@Entity(name = BusinessService.ENTITY_NAME)
+@Table(name = BusinessService.TABLE_NAME)
 @Getter
 @Setter
-public class Service extends AbstractEntity {
+public class BusinessService extends AbstractEntity {
 
-    public static final String TABLE_NAME = "services";
-    public static final String ENTITY_NAME = "SERVICE";
+    public static final String TABLE_NAME = "business_services";
+    public static final String ENTITY_NAME = "BUSINESS_SERVICE";
 
     private String name;
     private String description;

@@ -3,7 +3,7 @@ package org.booking.core.api;
 
 import jakarta.ws.rs.PathParam;
 import org.booking.core.domain.entity.business.Business;
-import org.booking.core.service.business.BusinessService;
+import org.booking.core.service.business.BusinessController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class BusinessApiController implements ApiController<Business> {
 
 
-    private BusinessService businessService;
+    private BusinessController businessService;
 
-    public BusinessApiController(BusinessService businessService) {
+    public BusinessApiController(BusinessController businessService) {
         this.businessService = businessService;
     }
 

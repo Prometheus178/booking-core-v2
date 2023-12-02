@@ -2,7 +2,7 @@ package org.booking.core.service.base;
 
 import java.util.List;
 
-public interface BaseService<T, I> {
+public interface BaseController<T, I> {
 
     T create(T obj);
 

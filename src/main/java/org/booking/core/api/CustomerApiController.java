@@ -3,7 +3,7 @@ package org.booking.core.api;
 
 import jakarta.ws.rs.PathParam;
 import org.booking.core.domain.entity.customer.Customer;
-import org.booking.core.service.customer.CustomerService;
+import org.booking.core.service.customer.CustomerController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
         MediaType.APPLICATION_JSON_VALUE)
 public class CustomerApiController implements ApiController<Customer> {
 
-    private CustomerService customerService;
+    private CustomerController customerService;
 
-    public CustomerApiController(CustomerService customerService) {
+    public CustomerApiController(CustomerController customerService) {
         this.customerService = customerService;
     }
 

@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomerServiceBean implements CustomerService {
+public class CustomerControllerBean implements CustomerController {
 
 
     private CustomerRepository customerRepository;
 
-    public CustomerServiceBean(CustomerRepository customerRepository) {
+    public CustomerControllerBean(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 

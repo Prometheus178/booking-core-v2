@@ -3,7 +3,7 @@ package org.booking.core.api;
 
 import jakarta.ws.rs.PathParam;
 import org.booking.core.domain.entity.employee.Employee;
-import org.booking.core.service.employee.EmployeeService;
+import org.booking.core.service.employee.EmployeeController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeApiController implements ApiController<Employee> {
 
 
-    private EmployeeService employeeService;
+    private EmployeeController employeeService;
 
-    public EmployeeApiController(EmployeeService employeeService) {
+    public EmployeeApiController(EmployeeController employeeService) {
         this.employeeService = employeeService;
     }
 

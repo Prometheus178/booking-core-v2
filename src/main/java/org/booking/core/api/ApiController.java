@@ -1,6 +1,6 @@
 package org.booking.core.api;
 
-import jakarta.ws.rs.core.Response;
+import org.springframework.http.ResponseEntity;
 
-public interface ApiController<T> extends BaseApiController<T, Response, Long> {
+public interface ApiController<T> extends BaseApiController<T, ResponseEntity<String>, Long> {
 }

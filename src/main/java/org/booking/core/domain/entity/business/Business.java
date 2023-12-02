@@ -5,10 +5,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity(name = Business.ENTITY_NAME)
 @Table(name = Business.TABLE_NAME)
@@ -19,5 +15,5 @@ public class Business extends AbstractEntity {
     public static final String ENTITY_NAME = "BUSINESS";
     private Type type;
     private String address;
-    private Map<String, Service> services = new HashMap<>();
+
 }

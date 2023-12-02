@@ -4,13 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = Employee.ENTITY_NAME)
 @Table(name = Employee.TABLE_NAME)

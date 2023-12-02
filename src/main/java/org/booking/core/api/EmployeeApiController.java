@@ -2,10 +2,10 @@ package org.booking.core.api;
 
 
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.core.Response;
 import org.booking.core.domain.entity.employee.Employee;
 import org.booking.core.service.employee.EmployeeService;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,31 +21,31 @@ public class EmployeeApiController implements ApiController<Employee> {
 
     @PostMapping("/")
     @Override
-    public Response create(Employee obj) {
-        return Response.ok().entity(employeeService.create(obj)).build();
+    public ResponseEntity create(Employee obj) {
+        return ResponseEntity.ok().body(employeeService.create(obj));
     }
 
     @PutMapping("/{id}")
     @Override
-    public Response update(@PathParam("{id}") Long aLong, Employee obj) {
-        return Response.ok().entity(employeeService.update(aLong, obj)).build();
+    public ResponseEntity update(@PathParam("{id}") Long aLong, Employee obj) {
+        return ResponseEntity.ok().body(employeeService.update(aLong, obj));
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public Response delete(@PathParam("{id}") Long aLong) {
-        return Response.ok().entity(employeeService.delete(aLong)).build();
+    public ResponseEntity delete(@PathParam("{id}") Long aLong) {
+        return ResponseEntity.ok().body(employeeService.delete(aLong));
     }
 
     @GetMapping("/{id}")
     @Override
-    public Response getById(@PathParam("{id}") Long aLong) {
-        return Response.ok().entity(employeeService.getById(aLong)).build();
+    public ResponseEntity getById(@PathParam("{id}") Long aLong) {
+        return ResponseEntity.ok().body(employeeService.getById(aLong));
     }
 
     @GetMapping("/")
     @Override
-    public Response getAllUsers() {
-        return Response.ok().entity(employeeService.getAllUsers()).build();
+    public ResponseEntity getAllUsers() {
+        return ResponseEntity.ok().body(employeeService.getAllUsers());
     }
 }

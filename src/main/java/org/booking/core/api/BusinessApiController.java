@@ -2,11 +2,10 @@ package org.booking.core.api;
 
 
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.core.Response;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.service.business.BusinessService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,31 +22,31 @@ public class BusinessApiController implements ApiController<Business> {
 
     @PostMapping("/")
     @Override
-    public Response create(Business obj) {
-        return Response.ok().entity(businessService.create(obj)).build();
+    public ResponseEntity create(Business obj) {
+        return ResponseEntity.ok().body(businessService.create(obj));
     }
 
     @PutMapping("/{id}")
     @Override
-    public Response update(@PathParam("{id}") Long aLong, Business obj) {
-        return Response.ok().entity(businessService.update(aLong, obj)).build();
+    public ResponseEntity update(@PathParam("{id}") Long aLong, Business obj) {
+        return ResponseEntity.ok().body(businessService.update(aLong, obj));
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public Response delete(@PathParam("{id}") Long aLong) {
-        return Response.ok().entity(businessService.delete(aLong)).build();
+    public ResponseEntity delete(@PathParam("{id}") Long aLong) {
+        return ResponseEntity.ok().body(businessService.delete(aLong));
     }
 
     @GetMapping("/{id}")
     @Override
-    public Response getById(@PathParam("{id}") Long aLong) {
-        return Response.ok().entity(businessService.getById(aLong)).build();
+    public ResponseEntity getById(@PathParam("{id}") Long aLong) {
+        return ResponseEntity.ok().body(businessService.getById(aLong));
     }
 
     @GetMapping("/")
     @Override
-    public Response getAllUsers() {
-        return Response.ok().entity(businessService.getAllUsers()).build();
+    public ResponseEntity getAllUsers() {
+        return ResponseEntity.ok().body(businessService.getAllUsers());
     }
 }

@@ -19,15 +19,16 @@ plugins {
 
 }
 
+group = 'org.booking.core'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '11'
 
 def databaseProps = new Properties()
 file("gradle.properties")
         .withInputStream { databaseProps.load(it) }
-def changeLog = "$projectDir/src/main/resources/db/changelog/v1.0/changelog.yaml"
 
-group = 'org.booking.core'
-version = '1.0-SNAPSHOT'
-sourceCompatibility = '17'
+File newChangeLogFile =  new File("/Users/sergey/Documents/projects/booking-core/src/main/resources/db/changelog/" +
+        new Date().format ("yyyyMMddHHmmss") + "_changelog.yml")
 
 
 configurations {
@@ -68,7 +69,6 @@ dependencies {
 
     //Lombok
     compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
 
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -78,15 +78,15 @@ dependencies {
 liquibase {
     activities {
         main {
-            changeLogFile changeLog
             url databaseProps.getProperty("url")
             username databaseProps.getProperty("username")
             password databaseProps.getProperty("password")
+            changeLogFile newChangeLogFile
             referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
-            logLevel 'debug'
+            logLevel "info"
         }
-        runList = "main"
     }
+    runList = "main"
 }
 sourceSets.main.java.srcDir "$buildDir/booking-core/src/main/java"
 sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"

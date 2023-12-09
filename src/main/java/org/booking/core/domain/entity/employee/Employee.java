@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @Entity(name = Employee.ENTITY_NAME)
 @Table(name = Employee.TABLE_NAME)

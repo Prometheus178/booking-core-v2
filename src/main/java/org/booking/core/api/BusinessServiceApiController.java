@@ -1,7 +1,7 @@
 package org.booking.core.api;
 
 
-import jakarta.ws.rs.PathParam;
+import javax.ws.rs.PathParam;
 import org.booking.core.domain.entity.business.BusinessService;
 import org.booking.core.service.business.service.BusinessServiceController;
 import org.springframework.http.MediaType;

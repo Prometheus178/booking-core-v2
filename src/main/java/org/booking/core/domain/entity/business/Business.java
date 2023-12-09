@@ -1,12 +1,15 @@
 package org.booking.core.domain.entity.business;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
+import org.hibernate.proxy.HibernateProxy;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity(name = Business.ENTITY_NAME)
 @Table(name = Business.TABLE_NAME)
@@ -18,12 +21,40 @@ public class Business extends AbstractEntity {
     private Type type;
     private String name;
     private String address;
-
     private String description;
 
-    @ElementCollection
-    @CollectionTable(name = "business_services_map", joinColumns = @JoinColumn(name = "business_id"))
-    @MapKeyJoinColumn(name = "business_service_map_id")
-    @Column(name = "service_name")
-    private Map<String, BusinessService> businessServiceMap = new HashMap<>();
+//    @Basic(fetch = FetchType.LAZY)
+//    @ElementCollection
+//    @CollectionTable(name = "business_services_map", joinColumns = @JoinColumn(name = "business_id"))
+//    @MapKeyJoinColumn(name = "business_service_map_id")
+//    @Column(name = "business_service_map_id")
+//    private Map<String, BusinessService> businessServiceMap;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Business business = (Business) o;
+        return getId() != null && Objects.equals(getId(), business.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + getId() + ", " +
+                "createdAt = " + getCreatedAt() + ", " +
+                "modifiedAt = " + getModifiedAt() + ", " +
+                "type = " + getType() + ", " +
+                "name = " + getName() + ", " +
+                "address = " + getAddress() + ", " +
+                "description = " + getDescription() + ")";
+    }
 }

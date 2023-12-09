@@ -7,15 +7,23 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE"
     }
+
 }
 
 plugins {
     id 'java'
     id 'war'
-    id 'org.springframework.boot' version '3.1.5'
-    id 'io.spring.dependency-management' version '1.1.3'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.liquibase.gradle' version '2.0.4'
+
 }
 
+
+def databaseProps = new Properties()
+file("gradle.properties")
+        .withInputStream { databaseProps.load(it) }
+def changeLog = "$projectDir/src/main/resources/db/changelog/v1.0/changelog.yaml"
 
 group = 'org.booking.core'
 version = '1.0-SNAPSHOT'
@@ -33,24 +41,57 @@ repositories {
 }
 
 dependencies {
+    //spring
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'org.springframework.boot:spring-boot-starter-jersey'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:2.2.5.RELEASE"
+    //Swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
 
-    //implementation 'org.liquibase:liquibase-core'
-    runtimeOnly 'org.postgresql:postgresql'
+    //Database
+    runtimeOnly "org.postgresql:postgresql"
 
+    //liquibase
+    implementation "org.liquibase:liquibase-core:3.8.9"
+
+    liquibaseRuntime 'org.liquibase:liquibase-core:3.8.9'
+
+    liquibaseRuntime 'org.postgresql:postgresql'
+    liquibaseRuntime("ch.qos.logback:logback-core:1.2.3")
+    liquibaseRuntime("ch.qos.logback:logback-classic:1.2.3")
+    liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:3.6'
+    liquibaseRuntime 'org.springframework.data:spring-data-jpa'
+    liquibaseRuntime 'org.springframework.boot:spring-boot'
+    liquibaseRuntime 'org.yaml:snakeyaml:1.26'
+    liquibaseRuntime sourceSets.main.output
+
+    //Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
 }
 
+liquibase {
+    activities {
+        main {
+            changeLogFile changeLog
+            url databaseProps.getProperty("url")
+            username databaseProps.getProperty("username")
+            password databaseProps.getProperty("password")
+            referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
+            logLevel 'debug'
+        }
+        runList = "main"
+    }
+}
+sourceSets.main.java.srcDir "$buildDir/booking-core/src/main/java"
+sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+

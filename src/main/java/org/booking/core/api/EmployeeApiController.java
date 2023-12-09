@@ -1,15 +1,17 @@
 package org.booking.core.api;
 
 
-import jakarta.ws.rs.PathParam;
 import org.booking.core.domain.entity.employee.Employee;
 import org.booking.core.service.employee.EmployeeController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
+
 @RestController
-@RequestMapping(path = "/api/employees", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/employees", produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeApiController implements ApiController<Employee> {
 
 

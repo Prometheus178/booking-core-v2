@@ -1,3 +1,0 @@
-CREATE USER core_user;
-CREATE DATABASE core_db;
-GRANT ALL PRIVILEGES ON DATABASE core_db TO core_user;

@@ -8,9 +8,13 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
+
+    #Embbeded tomcat server settings
+#    url: jdbc:postgresql://0.0.0.0:5432/core_db
+#    username: core_user
+#    password: core
   jpa:
-    database: postgres
-    database-platform: POSTGRES
+    database: POSTGRESQL
     hibernate:
       ddl-auto: validate
       naming:
@@ -21,8 +25,8 @@ spring:
           format_sql: true
           dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
-    enabled=true:
+    enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yml
-    url: ${DATABASE_URL}
-    user: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://0.0.0.0:5432/core_db
+    user: core_user
+    password: core

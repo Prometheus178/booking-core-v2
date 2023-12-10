@@ -28,5 +28,7 @@ public class Reservation extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @Enumerated
     private State state;
 }

@@ -78,10 +78,10 @@ dependencies {
 liquibase {
     activities {
         main {
+            changeLogFile "build/resources/main/db/changelog/db.changelog-master.yml"
             url databaseProps.getProperty("url")
             username databaseProps.getProperty("username")
             password databaseProps.getProperty("password")
-            changeLogFile newChangeLogFile
             referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
             logLevel "info"
         }
@@ -95,3 +95,4 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+build.dependsOn update

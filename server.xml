@@ -145,7 +145,7 @@
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log" suffix=".txt"
                pattern="%h %l %u %t &quot;%r&quot; %s %b" />
-        <Context path="/" docBase="booking-core-1.0-SNAPSHOT"/>
+        <Context path="" docBase="booking-core-1.1-SNAPSHOT"/>
       </Host>
     </Engine>
   </Service>

@@ -22,6 +22,7 @@ group = 'org.booking.core'
 version = '1.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+
 def databaseProps = new Properties()
 file("gradle.properties")
         .withInputStream { databaseProps.load(it) }
@@ -44,7 +45,8 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'org.springframework.boot:spring-boot-starter-jersey'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
     //Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 
@@ -73,6 +75,9 @@ dependencies {
 
 }
 
+if (!project.hasProperty("runList")) {
+    project.ext.runList = "main"
+}
 liquibase {
     activities {
         main {
@@ -83,8 +88,16 @@ liquibase {
             referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
             logLevel "info"
         }
+        diffChangeLog {
+            changeLogFile newChangeLogFile
+            url databaseProps.getProperty("url")
+            username databaseProps.getProperty("username")
+            password databaseProps.getProperty("password")
+            referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
+            logLevel "info"
+        }
     }
-    runList = "main"
+    runList = project.ext.runList
 }
 sourceSets.main.java.srcDir "$buildDir/booking-core/src/main/java"
 sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"

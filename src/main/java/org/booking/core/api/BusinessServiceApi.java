@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/businesses-service", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
         MediaType.APPLICATION_JSON_VALUE)
-public class BusinessServiceApiController implements ApiController<BusinessService> {
+public class BusinessServiceApi implements Api<BusinessService> {
 
 
     private BusinessServiceController businessServiceController;
 
-    public BusinessServiceApiController(BusinessServiceController businessServiceController) {
+    public BusinessServiceApi(BusinessServiceController businessServiceController) {
         this.businessServiceController = businessServiceController;
     }
 
@@ -28,20 +28,20 @@ public class BusinessServiceApiController implements ApiController<BusinessServi
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathParam("{id}") Long aLong, BusinessService obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong, BusinessService obj) {
         return ResponseEntity.ok().body(businessServiceController.update(aLong, obj));
     }
 
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity delete(@PathParam("{id}") Long aLong) {
+    public ResponseEntity delete(@PathVariable("id") Long aLong) {
         return ResponseEntity.ok().body(businessServiceController.delete(aLong));
     }
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity getById(@PathParam("{id}") Long aLong) {
+    public ResponseEntity getById(@PathVariable("id") Long aLong) {
         return ResponseEntity.ok().body(businessServiceController.getById(aLong));
     }
 

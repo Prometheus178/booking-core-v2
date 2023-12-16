@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/customers", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
         MediaType.APPLICATION_JSON_VALUE)
-public class CustomerApiController implements ApiController<Customer> {
+public class CustomerApi implements Api<Customer> {
 
     private CustomerController customerService;
 
-    public CustomerApiController(CustomerController customerService) {
+    public CustomerApi(CustomerController customerService) {
         this.customerService = customerService;
     }
 
@@ -27,19 +27,19 @@ public class CustomerApiController implements ApiController<Customer> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathParam("{id}") Long aLong, Customer obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong, Customer obj) {
         return ResponseEntity.ok().body(customerService.update(aLong, obj));
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity delete(@PathParam("{id}") Long aLong) {
+    public ResponseEntity delete(@PathVariable("id") Long aLong) {
         return ResponseEntity.ok().body(customerService.delete(aLong));
     }
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity getById(@PathParam("{id}") Long aLong) {
+    public ResponseEntity getById(@PathVariable("id") Long aLong) {
         return ResponseEntity.ok().body(customerService.getById(aLong));
     }
 

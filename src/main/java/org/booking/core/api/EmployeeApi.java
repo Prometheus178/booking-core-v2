@@ -12,12 +12,12 @@ import javax.ws.rs.PathParam;
 @RestController
 @RequestMapping(path = "/api/employees", produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE)
-public class EmployeeApiController implements ApiController<Employee> {
+public class EmployeeApi implements Api<Employee> {
 
 
     private EmployeeController employeeService;
 
-    public EmployeeApiController(EmployeeController employeeService) {
+    public EmployeeApi(EmployeeController employeeService) {
         this.employeeService = employeeService;
     }
 
@@ -29,19 +29,19 @@ public class EmployeeApiController implements ApiController<Employee> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathParam("{id}") Long aLong, Employee obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong, Employee obj) {
         return ResponseEntity.ok().body(employeeService.update(aLong, obj));
     }
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity delete(@PathParam("{id}") Long aLong) {
+    public ResponseEntity delete(@PathVariable("id") Long aLong) {
         return ResponseEntity.ok().body(employeeService.delete(aLong));
     }
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity getById(@PathParam("{id}") Long aLong) {
+    public ResponseEntity getById(@PathVariable("id") Long aLong) {
         return ResponseEntity.ok().body(employeeService.getById(aLong));
     }
 

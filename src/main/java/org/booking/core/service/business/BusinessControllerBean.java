@@ -5,12 +5,13 @@ import org.booking.core.repository.BusinessRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BusinessControllerBean implements BusinessController {
 
 
-    private BusinessRepository businessRepository;
+    private final BusinessRepository businessRepository;
 
     public BusinessControllerBean(BusinessRepository businessRepository) {
         this.businessRepository = businessRepository;
@@ -22,28 +23,35 @@ public class BusinessControllerBean implements BusinessController {
     }
 
     @Override
-    public Business update(Long userId, Business business) {
-        Business existingUser = businessRepository.findById(userId).get();
-// TODO: 02.12.2023 update
-        return businessRepository.save(existingUser);
+    public Business update(Long aLong, Business business) {
+        Optional<Business> optionalBusiness = businessRepository.findById(aLong);
+        if (optionalBusiness.isPresent()) {
+            Business existed = optionalBusiness.get();
+            existed.setType(business.getType());
+            existed.setDescription(business.getDescription());
+            existed.setName(business.getName());
+            existed.setAddress(business.getAddress());
+            return businessRepository.save(existed);
+        } else {
+            return null;
+        }
     }
 
 
     @Override
     public boolean delete(Long userId) {
         try {
-            businessRepository.findById(userId).get();
             businessRepository.deleteById(userId);
             return true;
         } catch (Exception e) {
             return false;
         }
-
     }
 
     @Override
-    public Business getById(Long userId) {
-        return businessRepository.findById(userId).get();
+    public Business getById(Long aLong) {
+        Optional<Business> optionalBusiness = businessRepository.findById(aLong);
+        return optionalBusiness.orElse(null);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class BusinessServiceControllerBean implements BusinessServiceController 
     @Override
     public BusinessService update(Long id, BusinessService reservation) {
         BusinessService existingUser = businessServiceRepository.findById(id).get();
-// TODO: 02.12.2023 update 
+    // TODO: 02.12.2023 update
         return businessServiceRepository.save(existingUser);
     }
 

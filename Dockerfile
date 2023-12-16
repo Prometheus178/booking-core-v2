@@ -1,11 +1,10 @@
-FROM tomcat:jdk11
+FROM openjdk:11-jre-slim
 
-EXPOSE 8080
+WORKDIR /opt/app
 
-ADD server.xml /usr/local/tomcat/conf/
-ADD tomcat-users.xml /usr/local/tomcat/conf/
+ARG JAR_FILE=booking-core-1.1-SNAPSHOT.jar
+ARG JAR_FILE_SOURCE=build/libs/${JAR_FILE}
 
-ADD build/libs/booking-core-1.1-SNAPSHOT.war /usr/local/tomcat/webapps
+COPY ${JAR_FILE_SOURCE}  ${JAR_FILE}
 
-
-CMD ["bin/catalina.sh", "run"]
+ENTRYPOINT ["java","-jar","booking-core-1.1-SNAPSHOT.jar"]

@@ -5,7 +5,8 @@ spring:
     lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DATABASE_URL}
+    url: jdbc:postgresql://booking-core_db:5432/core_db
+    #    url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 

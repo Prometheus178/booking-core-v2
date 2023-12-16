@@ -46,7 +46,7 @@ public class ReservationControllerBean implements ReservationController {
     }
 
     @Override
-    public List<Reservation> getAllUsers() {
+    public List<Reservation> getAll() {
         return reservationRepository.findAll();
     }
 }

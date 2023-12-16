@@ -18,13 +18,13 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    protected Date createdAt;
 
     @Column(name = "modified_at")
-    private Date modifiedAt;
+    protected Date modifiedAt;
 
     @PrePersist
     protected void onCreate() {

@@ -48,7 +48,7 @@ public class BusinessServiceControllerBean implements BusinessServiceController 
     }
 
     @Override
-    public List<BusinessService> getAllUsers() {
+    public List<BusinessService> getAll() {
         return businessServiceRepository.findAll();
     }
 }

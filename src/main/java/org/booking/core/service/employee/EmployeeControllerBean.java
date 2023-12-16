@@ -47,7 +47,7 @@ public class EmployeeControllerBean implements EmployeeController {
     }
 
     @Override
-    public List<Employee> getAllUsers() {
+    public List<Employee> getAll() {
         return employeeRepository.findAll();
     }
 }

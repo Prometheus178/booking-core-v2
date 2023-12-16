@@ -12,6 +12,6 @@ public interface BaseController<T, I> {
 
     T getById(I i);
 
-    List<T> getAllUsers();
+    List<T> getAll();
 
 }

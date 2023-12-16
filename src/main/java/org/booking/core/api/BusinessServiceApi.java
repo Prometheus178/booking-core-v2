@@ -1,7 +1,6 @@
 package org.booking.core.api;
 
 
-import javax.ws.rs.PathParam;
 import org.booking.core.domain.entity.business.BusinessService;
 import org.booking.core.service.business.service.BusinessServiceController;
 import org.springframework.http.MediaType;
@@ -48,6 +47,6 @@ public class BusinessServiceApi implements Api<BusinessService> {
     @GetMapping("/")
     @Override
     public ResponseEntity getAllUsers() {
-        return ResponseEntity.ok().body(businessServiceController.getAllUsers());
+        return ResponseEntity.ok().body(businessServiceController.getAll());
     }
 }

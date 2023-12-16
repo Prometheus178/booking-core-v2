@@ -7,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.PathParam;
-
 @RestController
 @RequestMapping(path = "/api/employees", produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +46,6 @@ public class EmployeeApi implements Api<Employee> {
     @GetMapping("/")
     @Override
     public ResponseEntity getAllUsers() {
-        return ResponseEntity.ok().body(employeeService.getAllUsers());
+        return ResponseEntity.ok().body(employeeService.getAll());
     }
 }

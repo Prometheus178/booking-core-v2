@@ -42,6 +42,7 @@ class BusinessApiRestAssureTest {
 
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
+        System.out.println(response.prettyPrint());
         createdId = response.jsonPath().getLong("id");
         assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
         assertThat(response.jsonPath().getString("address")).isEqualTo(business.getAddress());

@@ -48,7 +48,7 @@ public class CustomerControllerBean implements CustomerController {
     }
 
     @Override
-    public List<Customer> getAllUsers() {
+    public List<Customer> getAll() {
         return customerRepository.findAll();
     }
 }

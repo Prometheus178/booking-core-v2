@@ -1,53 +1,79 @@
 package org.booking.core.service.business;
 
+import org.booking.core.domain.dto.BusinessDto;
 import org.booking.core.domain.entity.business.Business;
+import org.booking.core.mapper.BusinessMapper;
 import org.booking.core.repository.BusinessRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BusinessControllerBean implements BusinessController {
 
+    private final BusinessRepository businessRepository;
+    private final BusinessMapper businessMapper;
 
-    private BusinessRepository businessRepository;
-
-    public BusinessControllerBean(BusinessRepository businessRepository) {
+    public BusinessControllerBean(BusinessRepository businessRepository, BusinessMapper businessMapper) {
         this.businessRepository = businessRepository;
+        this.businessMapper = businessMapper;
     }
 
     @Override
-    public Business create(Business business) {
-        return businessRepository.save(business);
+    public BusinessDto create(BusinessDto obj) {
+        Business business = businessMapper.dtoTo(obj);
+        Business saved = businessRepository.save(business);
+        return businessMapper.toDto(saved);
     }
 
     @Override
-    public Business update(Long userId, Business business) {
-        Business existingUser = businessRepository.findById(userId).get();
-// TODO: 02.12.2023 update
-        return businessRepository.save(existingUser);
+    public BusinessDto update(Long aLong, BusinessDto obj) {
+        Optional<Business> optionalBusiness = businessRepository.findById(aLong);
+        if (optionalBusiness.isPresent()) {
+            Business existed = optionalBusiness.get();
+            Business business = businessMapper.dtoTo(obj);
+            existed.setType(business.getType());
+            existed.setDescription(business.getDescription());
+            existed.setName(business.getName());
+            existed.setAddress(business.getAddress());
+            Business saved = businessRepository.save(existed);
+            return businessMapper.toDto(saved);
+        } else {
+            return null;
+        }
     }
-
 
     @Override
     public boolean delete(Long userId) {
         try {
-            businessRepository.findById(userId).get();
             businessRepository.deleteById(userId);
             return true;
         } catch (Exception e) {
             return false;
         }
-
     }
 
     @Override
-    public Business getById(Long userId) {
-        return businessRepository.findById(userId).get();
+    public BusinessDto getById(Long aLong) {
+        Optional<Business> optionalBusiness = businessRepository.findById(aLong);
+        if (optionalBusiness.isPresent()) {
+            return businessMapper.toDto(optionalBusiness.get());
+        }
+        return null;
     }
 
     @Override
-    public List<Business> getAllUsers() {
-        return businessRepository.findAll();
+    public List<BusinessDto> getAll() {
+        List<Business> all = businessRepository.findAll();
+        if (!all.isEmpty()) {
+            List<BusinessDto> allUsers = new ArrayList<>();
+            all.forEach(business -> {
+                allUsers.add(businessMapper.toDto(business));
+            });
+            return allUsers;
+        }
+        return null;
     }
 }

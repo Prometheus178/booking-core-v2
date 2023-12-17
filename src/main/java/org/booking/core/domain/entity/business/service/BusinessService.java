@@ -1,4 +1,4 @@
-package org.booking.core.domain.entity.business;
+package org.booking.core.domain.entity.business.service;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,32 +7,23 @@ import org.booking.core.domain.entity.base.AbstractEntity;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @ToString
-@Entity(name = Business.ENTITY_NAME)
-@Table(name = Business.TABLE_NAME)
+@Entity(name = BusinessService.ENTITY_NAME)
+@Table(name = BusinessService.TABLE_NAME)
 @Getter
 @Setter
-public class Business extends AbstractEntity {
-    public static final String TABLE_NAME = "business";
-    public static final String ENTITY_NAME = "BUSINESS";
+public class BusinessService extends AbstractEntity {
 
-    @Enumerated
-    private Type type;
+    public static final String TABLE_NAME = "business_services";
+    public static final String ENTITY_NAME = "BUSINESS_SERVICE";
+
     private String name;
-    private String address;
     private String description;
-
-//    @Basic(fetch = FetchType.LAZY)
-//    @ElementCollection
-//    @CollectionTable(name = "business_services_map", joinColumns = @JoinColumn(name = "business_id"))
-//    @MapKeyJoinColumn(name = "business_service_map_id")
-//    @Column(name = "business_service_map_id")
-//    private Map<String, BusinessService> businessServiceMap;
-
+    private BigDecimal price;
 
     @Override
     public final boolean equals(Object o) {
@@ -41,8 +32,8 @@ public class Business extends AbstractEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Business business = (Business) o;
-        return getId() != null && Objects.equals(getId(), business.getId());
+        BusinessService that = (BusinessService) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.booking.core.api;
 
 
-public interface BaseApiController<T, R, I> {
+public interface BaseApi<T, R, I> {
 
     R create(T obj);
 

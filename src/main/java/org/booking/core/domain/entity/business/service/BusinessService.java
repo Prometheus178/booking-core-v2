@@ -1,4 +1,4 @@
-package org.booking.core.domain.entity.business;
+package org.booking.core.domain.entity.business.service;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,7 @@
 package org.booking.core.api;
 
 
+import org.booking.core.domain.dto.CustomerDto;
 import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.service.customer.CustomerController;
 import org.springframework.http.MediaType;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/customers", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
         MediaType.APPLICATION_JSON_VALUE)
-public class CustomerApi implements Api<Customer> {
+public class CustomerApi implements Api<CustomerDto> {
 
-    private CustomerController customerService;
+    private final CustomerController customerService;
 
     public CustomerApi(CustomerController customerService) {
         this.customerService = customerService;
@@ -20,13 +21,13 @@ public class CustomerApi implements Api<Customer> {
 
     @PostMapping("/")
     @Override
-    public ResponseEntity create(Customer obj) {
+    public ResponseEntity create(@RequestBody CustomerDto obj) {
         return ResponseEntity.ok().body(customerService.create(obj));
     }
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathVariable("id") Long aLong, Customer obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong,@RequestBody CustomerDto obj) {
         return ResponseEntity.ok().body(customerService.update(aLong, obj));
     }
 

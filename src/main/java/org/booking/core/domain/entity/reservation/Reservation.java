@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
-import org.booking.core.domain.entity.business.BusinessService;
+import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.customer.Customer;
 import org.hibernate.proxy.HibernateProxy;
 

@@ -1,19 +1,20 @@
 package org.booking.core.api;
 
 
-import org.booking.core.domain.entity.business.BusinessService;
+import org.booking.core.domain.dto.BusinessServiceDto;
+import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.service.business.service.BusinessServiceController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/businesses-service", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
+@RequestMapping(path = "/api/business-services", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
         MediaType.APPLICATION_JSON_VALUE)
-public class BusinessServiceApi implements Api<BusinessService> {
+public class BusinessServiceApi implements Api<BusinessServiceDto> {
 
 
-    private BusinessServiceController businessServiceController;
+    private final BusinessServiceController businessServiceController;
 
     public BusinessServiceApi(BusinessServiceController businessServiceController) {
         this.businessServiceController = businessServiceController;
@@ -21,13 +22,13 @@ public class BusinessServiceApi implements Api<BusinessService> {
 
     @PostMapping("/")
     @Override
-    public ResponseEntity create(BusinessService obj) {
+    public ResponseEntity create(@RequestBody BusinessServiceDto obj) {
         return ResponseEntity.ok().body(businessServiceController.create(obj));
     }
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathVariable("id") Long aLong, BusinessService obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong,@RequestBody BusinessServiceDto obj) {
         return ResponseEntity.ok().body(businessServiceController.update(aLong, obj));
     }
 

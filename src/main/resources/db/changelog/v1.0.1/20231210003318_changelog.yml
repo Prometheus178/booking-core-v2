@@ -1,197 +1,197 @@
 databaseChangeLog:
-- changeSet:
-    id: 1702143203587-1
-    author: sergey (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: businessPK
-            name: id
-            type: BIGINT
-        - column:
-            name: created_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: modified_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: address
-            type: VARCHAR(255)
-        - column:
-            name: description
-            type: VARCHAR(255)
-        - column:
-            name: name
-            type: VARCHAR(255)
-        - column:
-            name: type
-            type: INTEGER
-        tableName: business
-- changeSet:
-    id: 1702143203587-2
-    author: sergey (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: business_servicesPK
-            name: id
-            type: BIGINT
-        - column:
-            name: created_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: modified_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: description
-            type: VARCHAR(255)
-        - column:
-            name: name
-            type: VARCHAR(255)
-        - column:
-            name: price
-            type: numeric(19, 2)
-        tableName: business_services
-- changeSet:
-    id: 1702143203587-3
-    author: sergey (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: customersPK
-            name: id
-            type: BIGINT
-        - column:
-            name: created_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: modified_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: email
-            type: VARCHAR(255)
-        - column:
-            name: name
-            type: VARCHAR(255)
-        tableName: customers
-- changeSet:
-    id: 1702143203587-4
-    author: sergey (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: employeesPK
-            name: id
-            type: BIGINT
-        - column:
-            name: created_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: modified_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: email
-            type: VARCHAR(255)
-        - column:
-            name: name
-            type: VARCHAR(255)
-        tableName: employees
-- changeSet:
-    id: 1702143203587-5
-    author: sergey (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: reservationsPK
-            name: id
-            type: BIGINT
-        - column:
-            name: created_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: modified_at
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: end_time
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: start_time
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: state
-            type: INTEGER
-        - column:
-            name: business_id
-            type: BIGINT
-        - column:
-            name: customer_id
-            type: BIGINT
-        - column:
-            name: business_service_id
-            type: BIGINT
-        tableName: reservations
-- changeSet:
-    id: 1702143203587-6
-    author: sergey (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: business_service_id
-        baseTableName: reservations
-        constraintName: FK1ibrnwv6cw8yy69mtul9y202k
-        deferrable: false
-        initiallyDeferred: false
-        referencedColumnNames: id
-        referencedTableName: business_services
-        validate: true
-- changeSet:
-    id: 1702143203587-7
-    author: sergey (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: customer_id
-        baseTableName: reservations
-        constraintName: FK8eccffekcj27jkdiyw2e9r8ks
-        deferrable: false
-        initiallyDeferred: false
-        referencedColumnNames: id
-        referencedTableName: customers
-        validate: true
-- changeSet:
-    id: 1702143203587-8
-    author: sergey (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: business_id
-        baseTableName: reservations
-        constraintName: FKlx38fea5irrw9cnjwkq8b281q
-        deferrable: false
-        initiallyDeferred: false
-        referencedColumnNames: id
-        referencedTableName: business
-        validate: true
+  - changeSet:
+      id: 1702143203587-1
+      author: sergey (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: businessPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: address
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: type
+                  type: INTEGER
+            tableName: business
+  - changeSet:
+      id: 1702143203587-2
+      author: sergey (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: business_servicesPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: price
+                  type: numeric(19, 2)
+            tableName: business_services
+  - changeSet:
+      id: 1702143203587-3
+      author: sergey (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: customersPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: customers
+  - changeSet:
+      id: 1702143203587-4
+      author: sergey (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: employeesPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: employees
+  - changeSet:
+      id: 1702143203587-5
+      author: sergey (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: reservationsPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: end_time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: start_time
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: state
+                  type: INTEGER
+              - column:
+                  name: business_id
+                  type: BIGINT
+              - column:
+                  name: customer_id
+                  type: BIGINT
+              - column:
+                  name: business_service_id
+                  type: BIGINT
+            tableName: reservations
+  - changeSet:
+      id: 1702143203587-6
+      author: sergey (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: business_service_id
+            baseTableName: reservations
+            constraintName: FK1ibrnwv6cw8yy69mtul9y202k
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: business_services
+            validate: true
+  - changeSet:
+      id: 1702143203587-7
+      author: sergey (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: customer_id
+            baseTableName: reservations
+            constraintName: FK8eccffekcj27jkdiyw2e9r8ks
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: customers
+            validate: true
+  - changeSet:
+      id: 1702143203587-8
+      author: sergey (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: business_id
+            baseTableName: reservations
+            constraintName: FKlx38fea5irrw9cnjwkq8b281q
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: business
+            validate: true
 

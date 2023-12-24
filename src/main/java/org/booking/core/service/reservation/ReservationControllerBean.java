@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class ReservationControllerBean implements ReservationController {
 
-    private ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
 
     public ReservationControllerBean(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;

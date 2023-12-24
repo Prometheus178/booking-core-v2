@@ -13,9 +13,8 @@ import java.util.Optional;
 @Service
 public class EmployeeControllerBean implements EmployeeController {
 
-
     private final EmployeeRepository employeeRepository;
-    
+
     private final EmployeeMapper employeeMapper;
 
     public EmployeeControllerBean(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {

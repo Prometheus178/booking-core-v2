@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity(name = Customer.ENTITY_NAME)
 @Table(name = Customer.TABLE_NAME)
-public class Customer extends User {
+public class Customer extends User{
 
     public static final String TABLE_NAME = "customers";
     public static final String ENTITY_NAME = "CUSTOMER";

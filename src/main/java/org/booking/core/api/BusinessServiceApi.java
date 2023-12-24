@@ -2,6 +2,7 @@ package org.booking.core.api;
 
 
 import org.booking.core.domain.dto.BusinessServiceDto;
+import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.service.business.service.BusinessServiceController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class BusinessServiceApi implements Api<BusinessServiceDto> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathVariable("id") Long aLong, @RequestBody BusinessServiceDto obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong,@RequestBody BusinessServiceDto obj) {
         return ResponseEntity.ok().body(businessServiceController.update(aLong, obj));
     }
 

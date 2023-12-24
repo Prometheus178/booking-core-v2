@@ -29,7 +29,7 @@ public class BusinessApi implements Api<BusinessDto> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<BusinessDto> update(@PathVariable("id") Long aLong, @RequestBody BusinessDto obj) {
+    public ResponseEntity<BusinessDto> update(@PathVariable("id") Long aLong,@RequestBody BusinessDto obj) {
         return ResponseEntity.ok().body(businessService.update(aLong, obj));
     }
 

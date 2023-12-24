@@ -1,6 +1,8 @@
 package org.booking.core.mapper;
 
+import org.booking.core.domain.dto.BusinessServiceDto;
 import org.booking.core.domain.dto.CustomerDto;
+import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.customer.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -11,7 +13,6 @@ public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
     CustomerDto toDto(Customer obj);
-
     Customer dtoTo(CustomerDto businessDto);
 
 }

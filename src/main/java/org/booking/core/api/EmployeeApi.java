@@ -2,6 +2,7 @@ package org.booking.core.api;
 
 
 import org.booking.core.domain.dto.EmployeeDto;
+import org.booking.core.domain.entity.employee.Employee;
 import org.booking.core.service.employee.EmployeeController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class EmployeeApi implements Api<EmployeeDto> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathVariable("id") Long aLong, @RequestBody EmployeeDto obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong,@RequestBody EmployeeDto obj) {
         return ResponseEntity.ok().body(employeeService.update(aLong, obj));
     }
 

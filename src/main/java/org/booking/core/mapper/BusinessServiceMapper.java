@@ -11,7 +11,6 @@ public interface BusinessServiceMapper {
     BusinessServiceMapper INSTANCE = Mappers.getMapper(BusinessServiceMapper.class);
 
     BusinessServiceDto toDto(BusinessService obj);
-
     BusinessService dtoTo(BusinessServiceDto dto);
 
 }

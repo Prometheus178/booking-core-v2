@@ -10,6 +10,7 @@ import org.booking.core.domain.entity.customer.Customer;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @ToString
@@ -21,20 +22,16 @@ public class Reservation extends AbstractEntity {
     public static final String TABLE_NAME = "reservations";
     public static final String ENTITY_NAME = "RESERVATIONS";
 
-    @Embedded
-    Duration duration;
-    @ManyToOne
-    @JoinColumn(name = "business_id")
-    private Business business;
-
-    @ManyToOne
-    @JoinColumn(name = "business_service_id")
-    private BusinessService service;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_service_id")
+    private BusinessService service;
 
-    @Enumerated
+    private LocalDateTime bookingTime;
+
+    @Enumerated(value = EnumType.STRING)
     private State state;
 
     @Override

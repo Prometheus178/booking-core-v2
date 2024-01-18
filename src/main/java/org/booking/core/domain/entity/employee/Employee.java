@@ -18,6 +18,8 @@ public class Employee extends User {
     public static final String TABLE_NAME = "employees";
     public static final String ENTITY_NAME = "EMPLOYEE";
 
+
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

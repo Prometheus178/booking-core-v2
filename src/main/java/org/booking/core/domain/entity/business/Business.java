@@ -6,9 +6,7 @@ import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @ToString
@@ -25,6 +23,10 @@ public class Business extends AbstractEntity {
     private String name;
     private String address;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "business_hours_id")
+    private BusinessHours businessHours;
 
 //    @Basic(fetch = FetchType.LAZY)
 //    @ElementCollection

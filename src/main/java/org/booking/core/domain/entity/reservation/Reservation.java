@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
-import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.customer.Customer;
+import org.booking.core.domain.entity.employee.Employee;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
@@ -28,6 +28,10 @@ public class Reservation extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_service_id")
     private BusinessService service;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     private LocalDateTime bookingTime;
 

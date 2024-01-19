@@ -28,13 +28,6 @@ public class Business extends AbstractEntity {
     @JoinColumn(name = "business_hours_id")
     private BusinessHours businessHours;
 
-//    @Basic(fetch = FetchType.LAZY)
-//    @ElementCollection
-//    @CollectionTable(name = "business_services_map", joinColumns = @JoinColumn(name = "business_id"))
-//    @MapKeyJoinColumn(name = "business_service_map_id")
-//    @Column(name = "business_service_map_id")
-//    private Map<String, BusinessService> businessServiceMap;
-
 
     @Override
     public final boolean equals(Object o) {

@@ -24,7 +24,7 @@ public class BusinessService extends AbstractEntity {
     private String name;
     private String description;
     private BigDecimal price;
-    private int durationTime;
+    private int duration;
 
     @Override
     public final boolean equals(Object o) {

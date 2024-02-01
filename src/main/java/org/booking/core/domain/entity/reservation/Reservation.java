@@ -2,7 +2,6 @@ package org.booking.core.domain.entity.reservation;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.customer.Customer;
@@ -13,27 +12,31 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@ToString
 @Entity(name = Reservation.ENTITY_NAME)
 @Table(name = Reservation.TABLE_NAME)
 @Getter
 @Setter
 public class Reservation extends AbstractEntity {
+
     public static final String TABLE_NAME = "reservations";
     public static final String ENTITY_NAME = "RESERVATIONS";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_service_id")
     private BusinessService service;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
     private LocalDateTime bookingTime;
+
+    @Embedded
+    private Duration duration;
 
     @Enumerated(value = EnumType.STRING)
     private State state;

@@ -1,24 +1,28 @@
 package org.booking.core.domain.entity.employee;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.booking.core.domain.entity.base.User;
+import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @ToString
 @AllArgsConstructor
 @Entity(name = Employee.ENTITY_NAME)
 @Table(name = Employee.TABLE_NAME)
+@NoArgsConstructor
 public class Employee extends User {
 
     public static final String TABLE_NAME = "employees";
     public static final String ENTITY_NAME = "EMPLOYEE";
 
-
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_history_id")
+    private EmployeeReservationHistory reservationHistory;
 
     @Override
     public final boolean equals(Object o) {

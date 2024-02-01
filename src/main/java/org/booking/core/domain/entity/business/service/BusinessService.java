@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
+import org.booking.core.domain.entity.business.Business;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -25,6 +25,10 @@ public class BusinessService extends AbstractEntity {
     private String description;
     private BigDecimal price;
     private int duration;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_id", referencedColumnName = "id")
+    private Business business;
 
     @Override
     public final boolean equals(Object o) {

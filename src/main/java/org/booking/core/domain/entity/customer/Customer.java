@@ -2,13 +2,11 @@ package org.booking.core.domain.entity.customer;
 
 import lombok.*;
 import org.booking.core.domain.entity.base.User;
+import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -22,10 +20,9 @@ public class Customer extends User {
     public static final String TABLE_NAME = "customers";
     public static final String ENTITY_NAME = "CUSTOMER";
 
-    @ElementCollection(targetClass = CustomerBookingHistory.class, fetch = FetchType.LAZY)
-    @CollectionTable(name = "customer_booking_history", joinColumns = @JoinColumn(name = "customer_id"))
-    @Column(name = "customer_booking_history_id", nullable = false)
-    private Set<CustomerBookingHistory> customerBookingHistory = new HashSet<>();
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_history_id")
+    private CustomerReservationHistory reservationHistory;
 
     @Override
     public final boolean equals(Object o) {

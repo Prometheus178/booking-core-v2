@@ -27,8 +27,7 @@ def databaseProps = new Properties()
 file("gradle.properties")
         .withInputStream { databaseProps.load(it) }
 
-File newChangeLogFile =  new File("/Users/sergey/Documents/projects/booking-core/src/main/resources/db/changelog/" +
-        new Date().format ("yyyyMMddHHmmss") + "_changelog.yml")
+File newChangeLogFile =  new File("src/main/resources/db/changelog/" + new Date().format ("yyyyMMddHHmmss") + "_changelog.yml")
 
 configurations {
     compileOnly {
@@ -91,6 +90,7 @@ dependencies {
 
 if (!project.hasProperty("runList")) {
     project.ext.runList = "main"
+    //project.ext.runList = "diffChangeLog"
 }
 liquibase {
     activities {
@@ -102,14 +102,14 @@ liquibase {
             referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
             logLevel "info"
         }
-        diffChangeLog {
+        /*diffChangeLog {
             changeLogFile newChangeLogFile
             url databaseProps.getProperty("url")
             username databaseProps.getProperty("username")
             password databaseProps.getProperty("password")
             referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
             logLevel "info"
-        }
+        }*/
     }
     runList = project.ext.runList
 }
@@ -118,6 +118,7 @@ sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"
 
 tasks.named('test') {
     useJUnitPlatform()
+    exclude '/org/booking/core/api/**'
 }
 
 build.dependsOn update

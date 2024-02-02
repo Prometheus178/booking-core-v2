@@ -29,7 +29,7 @@ public class Business extends AbstractEntity {
     private String description;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @MapsId
+    @JoinColumn(name="business_hours_id")
     private BusinessHours businessHours;
 
     @OneToMany(mappedBy = "business", fetch = FetchType.LAZY)

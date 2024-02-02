@@ -1,0 +1,280 @@
+databaseChangeLog:
+- changeSet:
+    id: 1706841219117-1
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: business_hoursPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: modified_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: close_time
+            type: time WITHOUT TIME ZONE
+        - column:
+            name: open_time
+            type: time WITHOUT TIME ZONE
+        tableName: business_hours
+- changeSet:
+    id: 1706841219117-2
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: customer_reservation_historyPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: modified_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: details
+            type: VARCHAR(255)
+        - column:
+            name: event_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: event_type
+            type: VARCHAR(255)
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1706841219117-3
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: employee_reservation_historyPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: modified_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: details
+            type: VARCHAR(255)
+        - column:
+            name: event_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: event_type
+            type: VARCHAR(255)
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1706841219117-4
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: booking_time
+            type: timestamp
+        tableName: reservations
+- changeSet:
+    id: 1706841219117-5
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: business_hours_id
+            type: int8
+        tableName: business
+- changeSet:
+    id: 1706841219117-6
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: business_id
+            type: int8
+        tableName: business_services
+- changeSet:
+    id: 1706841219117-7
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: true
+            name: duration
+            type: int4
+        tableName: business_services
+- changeSet:
+    id: 1706841219117-8
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: employee_id
+            type: int8
+        tableName: reservations
+- changeSet:
+    id: 1706841219117-9
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: reservation_history_id
+            type: int8
+        tableName: customers
+- changeSet:
+    id: 1706841219117-10
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: reservation_history_id
+            type: int8
+        tableName: employees
+- changeSet:
+    id: 1706841219117-11
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: reservation_id
+            type: int8
+        tableName: reservations
+- changeSet:
+    id: 1706841219117-12
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: reservations
+        constraintName: FK26cya250clfqgfl59s9vi9e8x
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employees
+        validate: true
+- changeSet:
+    id: 1706841219117-13
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_history_id
+        baseTableName: customers
+        constraintName: FK5i7isgr3ve7y6020buom6wqre
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: customer_reservation_history
+        validate: true
+- changeSet:
+    id: 1706841219117-14
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: business_id
+        baseTableName: business_services
+        constraintName: FK6qmqtfphs14hgnu9fyhb7f72w
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: business
+        validate: true
+- changeSet:
+    id: 1706841219117-15
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: business_hours_id
+        baseTableName: business
+        constraintName: FKcrnthdkdviexixdcuppru81vm
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: business_hours
+        validate: true
+- changeSet:
+    id: 1706841219117-16
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_history_id
+        baseTableName: employees
+        constraintName: FKf2ixia1ytyolbj77rord07fs0
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employee_reservation_history
+        validate: true
+- changeSet:
+    id: 1706841219117-17
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_id
+        baseTableName: reservations
+        constraintName: FKg6fsilthl358o4up5myifbsl0
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employee_reservation_history
+        validate: true
+- changeSet:
+    id: 1706841219117-18
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: reservations
+        constraintName: FKlx38fea5irrw9cnjwkq8b281q
+- changeSet:
+    id: 1706841219117-19
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: business_id
+        tableName: reservations
+-  changeSet:
+       id:  modifyDataType-type
+       author:  sergey (manually)
+       changes:
+           -  modifyDataType:
+                  columnName:  type
+                  newDataType:  VARCHAR(255)
+                  schemaName:  public
+                  tableName:  business
+-  changeSet:
+       id:  modifyDataType-state
+       author:  sergey (manually)
+       changes:
+           -  modifyDataType:
+                  columnName:  state
+                  newDataType:  VARCHAR(255)
+                  schemaName:  public
+                  tableName:  reservations

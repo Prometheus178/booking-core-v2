@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
+
 @Setter
 @Getter
 public class TimeSlot implements Serializable {

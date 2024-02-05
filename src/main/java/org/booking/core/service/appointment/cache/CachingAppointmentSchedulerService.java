@@ -1,6 +1,6 @@
 package org.booking.core.service.appointment.cache;
 
-import org.booking.core.service.appointment.TimeSlot;
+import org.booking.core.domain.entity.reservation.TimeSlot;
 
 import java.util.List;
 

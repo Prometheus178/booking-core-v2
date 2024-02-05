@@ -4,7 +4,7 @@ package org.booking.core.api;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.request.AppointmentRequest;
 import org.booking.core.service.appointment.AppointmentSchedulerService;
-import org.booking.core.service.appointment.TimeSlot;
+import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

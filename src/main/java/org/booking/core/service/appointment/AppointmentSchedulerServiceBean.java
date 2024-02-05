@@ -46,6 +46,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
     @Override
     public List<TimeSlot> findAvailableSlots(Long businessId, Long businessServiceId, LocalDate date) {
+        //todo it doesn't work with cache
         ReservationSchedule reservationSchedule = reservationScheduleRepository.findByBusinessId(businessId);
         Set<Reservation> reservations = reservationSchedule.getReservationsByDate(date);
         Optional<BusinessService> businessService = businessServiceRepository.findById(businessServiceId);
@@ -95,15 +96,15 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                                         Duration existReservationDuration,
                                         Duration newReservationDuration,
                                         LocalDate date) {
-        TimeSlot existTimeSlot = calculateTimeSlot(existReservationDuration);
-        TimeSlot newTimeSlot = calculateTimeSlot(newReservationDuration);
+        TimeSlot existTimeSlot = computeTimeSlot(existReservationDuration);
+        TimeSlot newTimeSlot = computeTimeSlot(newReservationDuration);
         cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(date,
                 businessServiceId), existTimeSlot);
         cachingAppointmentSchedulerService.addTimeSlotByKey(KeyUtil.generateKey(date,
                 businessServiceId), newTimeSlot);
     }
 
-    private  TimeSlot calculateTimeSlot(Duration duration) {
+    private  TimeSlot computeTimeSlot(Duration duration) {
         LocalDateTime startTime = duration.getStartTime();
         LocalDateTime endTime = duration.getEndTime();
         return new TimeSlot(startTime.toLocalTime(), endTime.toLocalTime());
@@ -125,12 +126,12 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                                                 Set<Reservation> reservations) {
         int duration = businessService.getDuration();
         List<TimeSlot> reservedTimeSlots = findReservedTimeSlots(reservations, duration);
-        List<TimeSlot> availableTimeSlots = calculateTimeSlots(businessService, duration);
+        List<TimeSlot> availableTimeSlots = computeTimeSlots(businessService, duration);
         availableTimeSlots.removeAll(reservedTimeSlots);
         return availableTimeSlots;
     }
 
-    private List<TimeSlot> calculateTimeSlots(BusinessService businessService, int duration) {
+    private List<TimeSlot> computeTimeSlots(BusinessService businessService, int duration) {
         Business business = businessService.getBusiness();
         BusinessHours businessHours = business.getBusinessHours();
         List<TimeSlot> availableTimeSlots = new ArrayList<>();

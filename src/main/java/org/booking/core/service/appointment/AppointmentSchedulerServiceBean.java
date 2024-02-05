@@ -51,11 +51,11 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         Optional<BusinessService> businessService = businessServiceRepository.findById(businessServiceId);
         if (businessService.isPresent()){
             List<TimeSlot> availableTimeSlotsByDay =
-                    cachingAppointmentSchedulerService.findAvailableTimeSlotsByDay(KeyUtil.generateKey(date,
+                    cachingAppointmentSchedulerService.findAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                             businessServiceId));
             if (availableTimeSlotsByDay == null){
                 List<TimeSlot> availableTimeSlots = getAvailableTimeSlots(businessService.get(), reservations);
-                cachingAppointmentSchedulerService.saveAvailableTimeSlotsByDay(KeyUtil.generateKey(date,
+                cachingAppointmentSchedulerService.saveAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                         businessServiceId), availableTimeSlots);
             }
             return availableTimeSlotsByDay;
@@ -97,9 +97,9 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                                         LocalDate date) {
         TimeSlot existTimeSlot = calculateTimeSlot(existReservationDuration);
         TimeSlot newTimeSlot = calculateTimeSlot(newReservationDuration);
-        cachingAppointmentSchedulerService.removeTimeSlotByDay(KeyUtil.generateKey(date,
+        cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(date,
                 businessServiceId), existTimeSlot);
-        cachingAppointmentSchedulerService.addTimeSlotByDay(KeyUtil.generateKey(date,
+        cachingAppointmentSchedulerService.addTimeSlotByKey(KeyUtil.generateKey(date,
                 businessServiceId), newTimeSlot);
     }
 

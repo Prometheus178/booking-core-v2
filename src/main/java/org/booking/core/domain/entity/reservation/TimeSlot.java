@@ -1,4 +1,4 @@
-package org.booking.core.service.appointment;
+package org.booking.core.domain.entity.reservation;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,8 @@ import java.util.Objects;
 @Setter
 @Getter
 public class TimeSlot implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final LocalTime startTime;
     private final LocalTime endTime;

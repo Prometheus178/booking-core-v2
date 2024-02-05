@@ -1,6 +1,7 @@
 package org.booking.core.service.appointment;
 
 import org.booking.core.domain.dto.ReservationDto;
+import org.booking.core.domain.entity.reservation.TimeSlot;
 
 import java.time.LocalDate;
 import java.util.List;

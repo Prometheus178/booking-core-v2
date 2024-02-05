@@ -7,6 +7,7 @@ import org.booking.core.domain.entity.business.ReservationSchedule;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
+import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.mapper.ReservationMapper;
 import org.booking.core.repository.BusinessServiceRepository;
 import org.booking.core.repository.ReservationRepository;

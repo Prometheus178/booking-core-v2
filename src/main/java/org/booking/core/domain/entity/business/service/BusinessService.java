@@ -2,7 +2,6 @@ package org.booking.core.domain.entity.business.service;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
 import org.hibernate.proxy.HibernateProxy;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@ToString
 @Entity(name = BusinessService.ENTITY_NAME)
 @Table(name = BusinessService.TABLE_NAME)
 @Getter

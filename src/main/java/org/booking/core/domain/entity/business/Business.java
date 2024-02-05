@@ -35,6 +35,14 @@ public class Business extends AbstractEntity {
     @OneToMany(mappedBy = "business", fetch = FetchType.LAZY)
     private Set<BusinessService> businessServices = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "business_reservation_schedule",
+            joinColumns = @JoinColumn(name = "business_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservation_schedule_id")
+    )
+    private ReservationSchedule reservationSchedule;
+
     public void addBusinessService(BusinessService businessService) {
         businessServices.add(businessService);
     }

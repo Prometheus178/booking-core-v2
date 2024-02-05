@@ -1,8 +1,15 @@
 package org.booking.core.service.appointment;
 
-import java.time.LocalTime;
+import lombok.Getter;
+import lombok.Setter;
 
-public class TimeSlot {
+import java.io.Serializable;
+import java.time.LocalTime;
+import java.util.Objects;
+
+@Setter
+@Getter
+public class TimeSlot implements Serializable {
 
     private final LocalTime startTime;
     private final LocalTime endTime;
@@ -12,16 +19,21 @@ public class TimeSlot {
         this.endTime = endTime;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
     @Override
     public String toString() {
         return startTime + " - " + endTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimeSlot timeSlot = (TimeSlot) o;
+        return Objects.equals(startTime, timeSlot.startTime) && Objects.equals(endTime, timeSlot.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startTime, endTime);
     }
 }

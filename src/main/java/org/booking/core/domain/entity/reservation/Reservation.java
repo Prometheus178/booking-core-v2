@@ -41,6 +41,8 @@ public class Reservation extends AbstractEntity {
     @Enumerated(value = EnumType.STRING)
     private State state;
 
+    private boolean canceled = false;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

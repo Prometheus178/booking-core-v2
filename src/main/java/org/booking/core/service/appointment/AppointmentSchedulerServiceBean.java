@@ -1,5 +1,6 @@
 package org.booking.core.service.appointment;
 
+import org.booking.core.BusinessEntityNotFoundException;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
@@ -62,7 +63,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             }
             return availableTimeSlotsByDay;
         } else {
-            throw new RuntimeException("not found business service ");
+            throw new BusinessEntityNotFoundException(BusinessService.ENTITY_NAME, businessServiceId);
         }
     }
 
@@ -89,7 +90,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             Reservation saved = reservationRepository.save(existReservation);
             return reservationMapper.toDto(saved);
         } else {
-            throw new RuntimeException("not found reservation");
+            throw new BusinessEntityNotFoundException(Reservation.ENTITY_NAME, reservationId);
         }
     }
 

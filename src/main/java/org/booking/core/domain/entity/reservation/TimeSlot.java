@@ -2,11 +2,11 @@ package org.booking.core.domain.entity.reservation;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
-
 
 @Setter
 @Getter

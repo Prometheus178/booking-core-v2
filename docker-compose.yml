@@ -25,5 +25,10 @@ services:
       DATABASE_PASSWORD: core
     depends_on:
       - booking-core_db
+  redis:
+    container_name: 'booking-core_redis'
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
 volumes:
   postgres-data:

@@ -3,7 +3,6 @@ package org.booking.core.api;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.domain.entity.employee.Employee;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +20,7 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
 
     @BeforeAll
     public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.baseURI = BASE_URI;
     }
 
     @Order(1)
@@ -96,7 +95,6 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-//        List<Long> idList = response.jsonPath().getList("id");
     }
 
     @Order(5)

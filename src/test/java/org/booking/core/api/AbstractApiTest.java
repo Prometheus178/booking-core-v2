@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class AbstractApiTest<T> {
+    public static final String BASE_URI = "http://localhost:8080";
 
     abstract void post();
 

@@ -278,3 +278,13 @@ databaseChangeLog:
                   newDataType:  VARCHAR(255)
                   schemaName:  public
                   tableName:  reservations
+- changeSet:
+      id: 1707363059722-1
+      author: sergey (generated)
+      changes:
+          - addNotNullConstraint:
+                columnDataType: int
+                columnName: duration
+                tableName: business_services
+                validate: true
+

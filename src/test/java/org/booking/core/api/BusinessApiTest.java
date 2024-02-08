@@ -20,7 +20,7 @@ class BusinessApiTest extends AbstractApiTest <Business>{
 
     @BeforeAll
     public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.baseURI = BASE_URI;
     }
 
     @Order(1)

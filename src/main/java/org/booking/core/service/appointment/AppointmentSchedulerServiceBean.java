@@ -4,7 +4,6 @@ import org.booking.core.BusinessEntityNotFoundException;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
-import org.booking.core.domain.entity.business.ReservationSchedule;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
@@ -23,12 +22,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class AppointmentSchedulerServiceBean implements AppointmentSchedulerService{
 
-    private final ReservationScheduleRepository reservationScheduleRepository;
     private final ReservationRepository reservationRepository;
     private final BusinessServiceRepository businessServiceRepository;
     private final CachingAppointmentSchedulerService cachingAppointmentSchedulerService;
@@ -38,7 +35,6 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                                            ReservationRepository reservationRepository, BusinessServiceRepository businessServiceRepository,
                                            CachingAppointmentSchedulerService cachingAppointmentSchedulerService,
                                            ReservationMapper reservationMapper) {
-        this.reservationScheduleRepository = reservationScheduleRepository;
         this.reservationRepository = reservationRepository;
         this.businessServiceRepository = businessServiceRepository;
         this.cachingAppointmentSchedulerService = cachingAppointmentSchedulerService;
@@ -47,17 +43,14 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
 
     @Override
-    public List<TimeSlot> findAvailableSlots(Long businessId, Long businessServiceId, LocalDate date) {
-        //todo it doesn't work with cache
-        ReservationSchedule reservationSchedule = reservationScheduleRepository.findByBusinessId(businessId);
-        Set<Reservation> reservations = reservationSchedule.getReservationsByDate(date);
-        Optional<BusinessService> businessService = businessServiceRepository.findById(businessServiceId);
+    public List<TimeSlot> findAvailableSlots( Long businessServiceId, LocalDate date) {
+       Optional<BusinessService> businessService = businessServiceRepository.findById(businessServiceId);
         if (businessService.isPresent()){
             List<TimeSlot> availableTimeSlotsByDay =
                     cachingAppointmentSchedulerService.findAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                             businessServiceId));
             if (availableTimeSlotsByDay == null){
-                List<TimeSlot> availableTimeSlots = getAvailableTimeSlots(businessService.get(), reservations);
+                List<TimeSlot> availableTimeSlots = computeTimeSlots(businessService.get());
                 cachingAppointmentSchedulerService.saveAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                         businessServiceId), availableTimeSlots);
             }
@@ -124,16 +117,8 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         }
     }
 
-    public List<TimeSlot> getAvailableTimeSlots(BusinessService businessService,
-                                                Set<Reservation> reservations) {
+    private List<TimeSlot> computeTimeSlots(BusinessService businessService) {
         int duration = businessService.getDuration();
-        List<TimeSlot> reservedTimeSlots = findReservedTimeSlots(reservations, duration);
-        List<TimeSlot> availableTimeSlots = computeTimeSlots(businessService, duration);
-        availableTimeSlots.removeAll(reservedTimeSlots);
-        return availableTimeSlots;
-    }
-
-    private List<TimeSlot> computeTimeSlots(BusinessService businessService, int duration) {
         Business business = businessService.getBusiness();
         BusinessHours businessHours = business.getBusinessHours();
         List<TimeSlot> availableTimeSlots = new ArrayList<>();
@@ -152,18 +137,6 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             openTime = slotEnd;
         }
         return availableTimeSlots;
-    }
-
-    private List<TimeSlot> findReservedTimeSlots(Set<Reservation> reservations, int duration) {
-        List<TimeSlot> reservedTimeSlots = new ArrayList<>();
-        reservations.forEach(reservation -> {
-            LocalDateTime bookingTime = reservation.getBookingTime();
-            LocalTime slotStart = bookingTime.toLocalTime();
-            LocalTime slotEnd = slotStart.plusMinutes(duration);
-            TimeSlot timeSlot = new TimeSlot(slotStart, slotEnd);
-            reservedTimeSlots.add(timeSlot);
-        });
-        return reservedTimeSlots;
     }
 
 }

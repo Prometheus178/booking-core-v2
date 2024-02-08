@@ -22,11 +22,9 @@ public class AppointmentApi {
     }
 
     @GetMapping("/find/available-time-slots")
-    public ResponseEntity<List<TimeSlot>> findAvailableTimeSlots(@RequestParam("businessId") Long businessId,
-                                                                 @RequestParam("businessServiceId") Long businessServiceId,
+    public ResponseEntity<List<TimeSlot>> findAvailableTimeSlots(@RequestParam("businessServiceId") Long businessServiceId,
                                                                  @RequestParam("day") Long day) {
-        List<TimeSlot> availableSlots = appointmentSchedulerService.findAvailableSlots(businessId,
-                businessServiceId,
+        List<TimeSlot> availableSlots = appointmentSchedulerService.findAvailableSlots(businessServiceId,
                 LocalDate.ofEpochDay(day));
         return ResponseEntity.ok().body(availableSlots);
     }

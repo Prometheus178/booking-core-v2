@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AppointmentSchedulerService {
 
-    List<TimeSlot> findAvailableSlots(Long businessId, Long businessServiceId, LocalDate day);
+    List<TimeSlot> findAvailableSlots(Long businessServiceId, LocalDate day);
 
     ReservationDto reserve(ReservationDto reservationDto);
 

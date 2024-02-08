@@ -12,6 +12,6 @@ public interface CustomerMapper {
 
     CustomerDto toDto(Customer obj);
 
-    Customer dtoTo(CustomerDto businessDto);
+    Customer dtoTo(CustomerDto dto);
 
 }

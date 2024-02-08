@@ -3,6 +3,7 @@ package org.booking.core.mapper;
 import org.booking.core.domain.dto.EmployeeDto;
 import org.booking.core.domain.entity.employee.Employee;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")

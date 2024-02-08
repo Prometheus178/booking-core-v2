@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class EmployeeDto {
-    private int id;
+    private Long id;
     private String email;
     private String name;
+    private EmployeeReservationHistoryDto reservationHistory;
 }

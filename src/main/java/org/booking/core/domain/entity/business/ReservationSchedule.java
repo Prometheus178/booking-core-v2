@@ -26,7 +26,7 @@ public class ReservationSchedule extends AbstractEntity {
     )
     private Business business;
 
-   /* @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "reservation_schedule_reservations_mapping",
             joinColumns = {@JoinColumn(name = "reservation_schedule_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "reservation_id", referencedColumnName = "id")})
@@ -36,5 +36,5 @@ public class ReservationSchedule extends AbstractEntity {
     public Set<Reservation> getReservationsByDate(LocalDate date){
         return reservations.get(date);
     }
-*/
+
 }

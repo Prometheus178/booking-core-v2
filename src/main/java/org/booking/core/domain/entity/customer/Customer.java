@@ -10,7 +10,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @Entity(name = Customer.ENTITY_NAME)
 @Table(name = Customer.TABLE_NAME)
@@ -25,18 +24,15 @@ public class Customer extends User {
     private CustomerReservationHistory reservationHistory;
 
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Customer customer = (Customer) o;
-        return getId() != null && Objects.equals(getId(), customer.getId());
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Customer customer = (Customer) object;
+        return Objects.equals(reservationHistory, customer.reservationHistory);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(reservationHistory);
     }
 }

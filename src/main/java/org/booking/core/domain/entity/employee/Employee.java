@@ -1,19 +1,20 @@
 package org.booking.core.domain.entity.employee;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
-import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@ToString
 @AllArgsConstructor
 @Entity(name = Employee.ENTITY_NAME)
 @Table(name = Employee.TABLE_NAME)
+@Getter
+@Setter
 @NoArgsConstructor
 public class Employee extends User {
 
@@ -25,18 +26,15 @@ public class Employee extends User {
     private EmployeeReservationHistory reservationHistory;
 
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Employee employee = (Employee) o;
-        return getId() != null && Objects.equals(getId(), employee.getId());
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Employee employee = (Employee) object;
+        return Objects.equals(reservationHistory, employee.reservationHistory);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(reservationHistory);
     }
 }

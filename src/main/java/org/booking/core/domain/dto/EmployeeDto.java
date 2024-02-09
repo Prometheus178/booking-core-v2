@@ -7,5 +7,5 @@ public class EmployeeDto {
     private Long id;
     private String email;
     private String name;
-    private EmployeeReservationHistoryDto reservationHistory;
+    private EmployeeReservationHistoryDto reservationHistoryDto;
 }

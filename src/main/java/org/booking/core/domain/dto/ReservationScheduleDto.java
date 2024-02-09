@@ -12,6 +12,6 @@ public class ReservationScheduleDto {
 
     private Long id;
     private BusinessDto business;
-    //private Map<LocalDate, Set<ReservationDto>> reservations;
+    private Map<LocalDate, Set<ReservationDto>> reservations;
 
 }

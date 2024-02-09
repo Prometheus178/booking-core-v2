@@ -1,7 +1,6 @@
 package org.booking.core.domain.dto;
 
 import lombok.Data;
-import org.booking.core.domain.entity.business.Business;
 
 @Data
 public class BusinessServiceDto {

@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BusinessMapperTest extends AbstractMapperTest<Business> {
 
     @Test
-    void testBusiness() {
+    void test() {
         Business business = createObject(Business.class);
         BusinessDto businessDto = BusinessMapper.INSTANCE.toDto(business);
 

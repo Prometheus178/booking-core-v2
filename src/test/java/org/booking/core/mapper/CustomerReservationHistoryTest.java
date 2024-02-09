@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CustomerReservationHistoryTest extends AbstractMapperTest<CustomerReservationHistory> {
 
     @Test
-    void testBusiness() {
+    void test() {
         CustomerReservationHistory customerReservationHistory = createObject(CustomerReservationHistory.class);
         CustomerReservationHistoryDto customerReservationHistoryDto = CustomerReservationHistoryMapper.INSTANCE.toDto(customerReservationHistory);
 

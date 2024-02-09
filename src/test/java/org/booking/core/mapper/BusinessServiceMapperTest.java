@@ -1,6 +1,5 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.dto.BusinessDto;
 import org.booking.core.domain.dto.BusinessServiceDto;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessService;
@@ -13,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BusinessServiceMapperTest extends AbstractMapperTest<BusinessService> {
 
     @Test
-    void testBusiness() {
+    void test() {
         BusinessService businessService = createObject(BusinessService.class);
         BusinessServiceDto businessServiceDto = BusinessServiceMapper.INSTANCE.toDto(businessService);
 

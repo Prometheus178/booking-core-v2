@@ -98,7 +98,6 @@ class BusinessApiTest extends AbstractApiTest <Business>{
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-//        List<Long> idList = response.jsonPath().getList("id");
     }
 
     @Order(5)

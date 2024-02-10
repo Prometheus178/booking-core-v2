@@ -34,6 +34,7 @@ public class AppointmentApiTest extends AbstractApiTest<Reservation> {
                 .then()
                 .extract()
                 .response();
+
         assertThat(businessServiceResponse.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
         businessServiceResponse.body();

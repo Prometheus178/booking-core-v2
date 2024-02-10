@@ -4,17 +4,22 @@ package org.booking.core.api;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.booking.core.domain.dto.BusinessServiceDto;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.*;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.withPrecision;
+import static org.booking.core.api.BusinessApiTest.API_BUSINESSES;
 import static org.instancio.Select.field;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BusinessServiceApiTest extends AbstractApiTest<BusinessService>{
+class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
 
     public static final String API_BUSINESSES_SERVICES = "/api/business-services/";
     public static Long createdId;
@@ -27,8 +32,10 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessService>{
     @Order(1)
     @Test
     void post() {
-        BusinessService business = generatedObject();
-        String requestBody = getRequestBody(business);
+        Long anyBusinessId = getAnyBusinessId();
+        BusinessServiceDto businessServiceDto = generatedObject();
+        businessServiceDto.setBusinessId(anyBusinessId);
+        String requestBody = getRequestBody(businessServiceDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
@@ -42,9 +49,9 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessService>{
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
         createdId = response.jsonPath().getLong("id");
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getDouble("price")).isEqualTo(business.getPrice().doubleValue());
-        assertThat(response.jsonPath().getString("description")).isEqualTo(business.getDescription());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(businessServiceDto.getName());
+        assertThat(response.jsonPath().getDouble("price")).isEqualTo(businessServiceDto.getPrice(), withPrecision(2d));
+        assertThat(response.jsonPath().getString("description")).isEqualTo(businessServiceDto.getDescription());
     }
 
     @Order(2)
@@ -126,11 +133,24 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessService>{
     }
 
     @Override
-    protected BusinessService generatedObject() {
-        return Instancio.of(BusinessService.class)
-                .ignore(field(BusinessService::getId))
-                .ignore(field(BusinessService::getCreatedAt))
-                .ignore(field(BusinessService::getModifiedAt))
+    protected BusinessServiceDto generatedObject() {
+        return Instancio.of(BusinessServiceDto.class)
+                .ignore(field(BusinessServiceDto::getId))
                 .create();
     }
+
+    private Long getAnyBusinessId() {
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(API_BUSINESSES)
+                .then()
+                .extract()
+                .response();
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        List<Integer> idList = response.jsonPath().getList("id");
+        return idList.get(0).longValue();
+    }
+
 }

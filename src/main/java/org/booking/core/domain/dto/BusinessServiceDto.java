@@ -10,6 +10,6 @@ public class BusinessServiceDto {
     private String description;
     private double price;
     private int duration;
-    private BusinessDto business;
+    private Long businessId;
 
 }

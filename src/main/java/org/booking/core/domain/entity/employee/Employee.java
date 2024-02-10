@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @AllArgsConstructor

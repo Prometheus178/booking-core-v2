@@ -1,12 +1,12 @@
 package org.booking.core.domain.entity.business.service;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 

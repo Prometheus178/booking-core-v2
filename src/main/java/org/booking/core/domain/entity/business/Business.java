@@ -7,7 +7,7 @@ import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

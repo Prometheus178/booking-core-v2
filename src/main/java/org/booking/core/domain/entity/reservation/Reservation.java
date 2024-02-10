@@ -8,7 +8,7 @@ import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.domain.entity.employee.Employee;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

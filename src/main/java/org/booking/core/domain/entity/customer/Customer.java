@@ -5,7 +5,7 @@ import org.booking.core.domain.entity.base.User;
 import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Getter

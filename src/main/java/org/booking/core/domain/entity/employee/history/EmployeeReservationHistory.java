@@ -7,7 +7,7 @@ import org.booking.core.domain.entity.customer.EventType;
 import org.booking.core.domain.entity.employee.Employee;
 import org.booking.core.domain.entity.reservation.Reservation;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;

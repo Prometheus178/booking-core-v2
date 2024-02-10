@@ -19,6 +19,7 @@ services:
     build: .
     ports:
       - 8080:8080
+      - 8787:8787
     environment:
       DATABASE_URL: postgresql://booking-core_db:5432/core_db
       DATABASE_USERNAME: core_user

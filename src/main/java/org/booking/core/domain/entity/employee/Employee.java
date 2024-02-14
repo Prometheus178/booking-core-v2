@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -19,7 +19,7 @@ import java.util.Objects;
 public class Employee extends User {
 
     public static final String TABLE_NAME = "employees";
-    public static final String ENTITY_NAME = "EMPLOYEE";
+    public static final String ENTITY_NAME = "Employee";
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_history_id")

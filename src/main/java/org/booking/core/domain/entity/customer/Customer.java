@@ -1,11 +1,13 @@
 package org.booking.core.domain.entity.customer;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
-import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -17,7 +19,7 @@ import java.util.Objects;
 public class Customer extends User {
 
     public static final String TABLE_NAME = "customers";
-    public static final String ENTITY_NAME = "CUSTOMER";
+    public static final String ENTITY_NAME = "Customer";
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_history_id")

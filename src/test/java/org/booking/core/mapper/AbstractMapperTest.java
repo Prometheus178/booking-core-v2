@@ -1,6 +1,5 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.entity.business.Business;
 import org.instancio.Instancio;
 
 public abstract class AbstractMapperTest<R>{

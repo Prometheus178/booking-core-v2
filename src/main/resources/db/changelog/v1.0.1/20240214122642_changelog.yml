@@ -1,0 +1,116 @@
+databaseChangeLog:
+- changeSet:
+    id: 1707884804272-1
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: reservation_schedulePK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: modified_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: date
+            type: date
+        tableName: reservation_schedule
+- changeSet:
+    id: 1707884804272-2
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: reservation_schedule_reservationsPK
+            name: reservation_schedule_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: reservation_schedule_reservationsPK
+            name: reservations_id
+            type: BIGINT
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1707884804272-3
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: canceled
+            type: boolean
+        tableName: reservations
+- changeSet:
+    id: 1707884804272-4
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: reservation_schedule_id
+            type: int8
+        tableName: business
+- changeSet:
+    id: 1707884804272-5
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: reservations_id
+        constraintName: UK_ikxlr8ygci5mmbjqgh6mjas5v
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1707884804272-6
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_schedule_id
+        baseTableName: business
+        constraintName: FK3svgwunmh0pvbfejyxrrmcqrf
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservation_schedule
+        validate: true
+- changeSet:
+    id: 1707884804272-7
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_schedule_id
+        baseTableName: reservation_schedule_reservations
+        constraintName: FK92n1u1d15kubl2ljsd8ibspjd
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservation_schedule
+        validate: true
+- changeSet:
+    id: 1707884804272-8
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservations_id
+        baseTableName: reservation_schedule_reservations
+        constraintName: FKc32c37436l3fttq8u84cqefvf
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservations
+        validate: true
+

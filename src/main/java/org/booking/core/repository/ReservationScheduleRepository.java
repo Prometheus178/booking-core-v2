@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReservationScheduleRepository extends JpaRepository<ReservationSchedule, Long> {
-
-    ReservationSchedule findByBusinessId(Long businessId);
 }

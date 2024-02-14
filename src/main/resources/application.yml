@@ -6,14 +6,13 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://booking-core_db:5432/core_db
-    #    url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
-    #Embbeded tomcat server settings
-  #    url: jdbc:postgresql://0.0.0.0:5432/core_db
-  #    username: core_user
-  #    password: core
+#    Embbeded tomcat server settings
+#    url: jdbc:postgresql://0.0.0.0:5432/core_db
+#    username: core_user
+#    password: core
   jpa:
     database: POSTGRESQL
     hibernate:
@@ -28,11 +27,11 @@ spring:
   liquibase:
     enabled: false
     change-log: classpath:/db/changelog/db.changelog-master.yml
-    url: jdbc:postgresql://0.0.0.0:5432/core_db
+    url: jdbc:postgresql://booking-core_db:5432/core_db
     user: core_user
     password: core
-  cache:
-    type: redis
-    redis:
-      host: localhost
-      port: 6379
+#  cache:
+#    type: redis
+#    redis:
+#      host: localhost
+#      port: 6379

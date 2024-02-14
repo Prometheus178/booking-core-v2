@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalTime;
 
 @Getter

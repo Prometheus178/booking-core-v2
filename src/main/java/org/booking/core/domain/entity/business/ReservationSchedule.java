@@ -5,10 +5,12 @@ import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.reservation.Reservation;
 
-import jakarta.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = ReservationSchedule.ENTITY_NAME)
@@ -18,23 +20,14 @@ import java.util.Set;
 public class ReservationSchedule extends AbstractEntity {
 
     public static final String TABLE_NAME = "reservation_schedule";
-    public static final String ENTITY_NAME = "BUSINESS_SERVICE";
+    public static final String ENTITY_NAME = "ReservationSchedule";
 
-    @ManyToMany(
-            mappedBy = "reservationSchedule",
-            fetch = FetchType.LAZY
-    )
+    @OneToOne(mappedBy = "reservationSchedule")
     private Business business;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "reservation_schedule_reservations_mapping",
-            joinColumns = {@JoinColumn(name = "reservation_schedule_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "reservation_id", referencedColumnName = "id")})
-    @MapKey(name = "date")
-    private Map<LocalDate, Set<Reservation>> reservations = new HashMap<>();
+    private LocalDate date;
 
-    public Set<Reservation> getReservationsByDate(LocalDate date){
-        return reservations.get(date);
-    }
+    @ElementCollection
+    private Set<Reservation> reservations = new HashSet<>();
 
 }

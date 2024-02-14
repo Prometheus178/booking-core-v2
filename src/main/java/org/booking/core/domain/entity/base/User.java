@@ -1,9 +1,10 @@
 package org.booking.core.domain.entity.base;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 
 @NoArgsConstructor

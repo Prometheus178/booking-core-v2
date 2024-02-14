@@ -1,12 +1,12 @@
 package org.booking.core.domain.entity.business.service;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
 import org.hibernate.proxy.HibernateProxy;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ import java.util.Objects;
 public class BusinessService extends AbstractEntity {
 
     public static final String TABLE_NAME = "business_services";
-    public static final String ENTITY_NAME = "BUSINESS_SERVICE";
+    public static final String ENTITY_NAME = "BusinessService";
 
     private String name;
     private String description;

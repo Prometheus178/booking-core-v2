@@ -7,7 +7,7 @@ import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.domain.entity.customer.EventType;
 import org.booking.core.domain.entity.reservation.Reservation;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity(name = CustomerReservationHistory.ENTITY_NAME)
 @Table(name = CustomerReservationHistory.TABLE_NAME)
 public class CustomerReservationHistory extends AbstractEntity {
-    public static final String ENTITY_NAME = "CustomerBookingHistory";
+    public static final String ENTITY_NAME = "CustomerReservationHistory";
     public static final String TABLE_NAME = "customer_reservation_history";
 
     @OneToMany(fetch = FetchType.LAZY)

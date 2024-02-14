@@ -8,7 +8,7 @@ import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.domain.entity.employee.Employee;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ import java.util.Objects;
 public class Reservation extends AbstractEntity {
 
     public static final String TABLE_NAME = "reservations";
-    public static final String ENTITY_NAME = "RESERVATIONS";
+    public static final String ENTITY_NAME = "Reservation";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

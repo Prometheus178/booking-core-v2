@@ -3,7 +3,7 @@ package org.booking.core.domain.entity.reservation;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.Embeddable;
+import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
 
 @Getter

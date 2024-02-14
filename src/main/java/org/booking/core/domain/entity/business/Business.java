@@ -7,7 +7,7 @@ import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 public class Business extends AbstractEntity {
     public static final String TABLE_NAME = "business";
-    public static final String ENTITY_NAME = "BUSINESS";
+    public static final String ENTITY_NAME = "Business";
 
 
     @Enumerated(EnumType.STRING)
@@ -35,12 +35,8 @@ public class Business extends AbstractEntity {
     @OneToMany(mappedBy = "business", fetch = FetchType.LAZY)
     private Set<BusinessService> businessServices = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "business_reservation_schedule",
-            joinColumns = @JoinColumn(name = "business_id"),
-            inverseJoinColumns = @JoinColumn(name = "reservation_schedule_id")
-    )
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_schedule_id")
     private ReservationSchedule reservationSchedule;
 
     public void addBusinessService(BusinessService businessService) {

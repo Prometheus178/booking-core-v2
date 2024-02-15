@@ -3,7 +3,7 @@ package org.booking.core.api;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.entity.employee.Employee;
+import org.booking.core.domain.dto.CustomerDto;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
@@ -12,10 +12,9 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.instancio.Select.field;
 
-class EmployeeApiTest extends AbstractApiTest<Employee> {
-    public static final String API_EMPLOYEES = "/api/employees/";
+class CustomerApiTestAssured extends AbstractApiTestAssured<CustomerDto> {
+    public static final String API_CUSTOMERS = "/api/customers/";
     public static Long createdId;
 
     @BeforeAll
@@ -25,15 +24,15 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
 
     @Order(1)
     @Test
-    void post() {
-        Employee business = generatedObject();
-        String requestBody = getRequestBody(business);
+    public void post() {
+        CustomerDto customerDto = generatedObject();
+        String requestBody = getRequestBody(customerDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .post(API_EMPLOYEES)
+                .post(API_CUSTOMERS)
                 .then()
                 .extract()
                 .response();
@@ -41,17 +40,17 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
         createdId = response.jsonPath().getLong("id");
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(customerDto.getName());
+        assertThat(response.jsonPath().getString("email")).isEqualTo(customerDto.getEmail());
     }
 
     @Order(2)
     @Test
-    void get() {
+    public void get() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_EMPLOYEES + createdId)
+                .get(API_CUSTOMERS + createdId)
                 .then()
                 .extract()
                 .response();
@@ -64,15 +63,15 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
 
     @Order(3)
     @Test
-    void update() {
-        Employee business = generatedObject();
+    public void update() {
+        CustomerDto business = generatedObject();
         String requestBody = getRequestBody(business);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .put(API_EMPLOYEES + createdId)
+                .put(API_CUSTOMERS + createdId)
                 .then()
                 .extract()
                 .response();
@@ -85,26 +84,27 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
 
     @Order(4)
     @Test
-    void getAll() {
+    public void getAll() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_EMPLOYEES)
+                .get(API_CUSTOMERS)
                 .then()
                 .extract()
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
+//        List<Long> idList = response.jsonPath().getList("id");
     }
 
     @Order(5)
     @Test
-    void delete() {
+    public void delete() {
         assertThat(createdId).isNotNull();
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete(API_EMPLOYEES + createdId)
+                .delete(API_CUSTOMERS + createdId)
                 .then()
                 .extract()
                 .response();
@@ -114,11 +114,8 @@ class EmployeeApiTest extends AbstractApiTest<Employee> {
     }
 
     @Override
-    protected Employee generatedObject() {
-        return Instancio.of(Employee.class)
-                .ignore(field(Employee::getId))
-                .ignore(field(Employee::getCreatedAt))
-                .ignore(field(Employee::getModifiedAt))
+    public CustomerDto generatedObject() {
+        return Instancio.of(CustomerDto.class)
                 .create();
     }
 

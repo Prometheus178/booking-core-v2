@@ -5,20 +5,20 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public abstract class AbstractApiTest<T> {
+public abstract class AbstractApiTestAssured<T> {
     public static final String BASE_URI = "http://localhost:8080";
 
-    abstract void post();
+    public abstract void post();
 
-    abstract void get();
+    public abstract void get();
 
-    abstract void update();
+    public abstract void update();
 
-    abstract void delete();
+    public abstract void delete();
 
-    abstract void getAll();
+    public abstract void getAll();
 
-    protected abstract T generatedObject();
+    public abstract T generatedObject();
 
 
     protected String getRequestBody(Object o) {

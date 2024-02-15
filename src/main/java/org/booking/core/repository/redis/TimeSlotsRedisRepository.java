@@ -3,11 +3,16 @@ package org.booking.core.repository.redis;
 import lombok.extern.java.Log;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
 @Log
+@Repository
 public class TimeSlotsRedisRepository {
 
     private HashOperations hashOperations;

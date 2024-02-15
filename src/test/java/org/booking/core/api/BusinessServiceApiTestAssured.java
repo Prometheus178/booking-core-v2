@@ -15,11 +15,11 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
-import static org.booking.core.api.BusinessApiTest.API_BUSINESSES;
+import static org.booking.core.api.BusinessApiTestAssured.API_BUSINESSES;
 import static org.instancio.Select.field;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
+public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<BusinessServiceDto> {
 
     public static final String API_BUSINESSES_SERVICES = "/api/business-services/";
     public static Long createdId;
@@ -31,7 +31,7 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
 
     @Order(1)
     @Test
-    void post() {
+    public void post() {
         Long anyBusinessId = getAnyBusinessId();
         BusinessServiceDto businessServiceDto = generatedObject();
         businessServiceDto.setBusinessId(anyBusinessId);
@@ -56,7 +56,7 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
 
     @Order(2)
     @Test
-    void get() {
+    public void get() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -73,7 +73,7 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
 
     @Order(3)
     @Test
-    void update() {
+    public void update() {
         BusinessService business = getBusinessServices();
         String requestBody = getRequestBody(business);
         Response response = given()
@@ -94,7 +94,7 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
 
     @Order(4)
     @Test
-    void getAll() {
+    public void getAll() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -109,7 +109,7 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
 
     @Order(5)
     @Test
-    void delete() {
+    public void delete() {
         assertThat(createdId).isNotNull();
         Response response = given()
                 .header("Content-type", "application/json")
@@ -133,7 +133,7 @@ class BusinessServiceApiTest extends AbstractApiTest<BusinessServiceDto>{
     }
 
     @Override
-    protected BusinessServiceDto generatedObject() {
+    public BusinessServiceDto generatedObject() {
         return Instancio.of(BusinessServiceDto.class)
                 .ignore(field(BusinessServiceDto::getId))
                 .create();

@@ -1,21 +1,22 @@
 package org.booking.core.api;
 
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.dto.EmployeeDto;
+import org.booking.core.domain.entity.employee.Employee;
 import org.instancio.Instancio;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-class BusinessApiTest extends AbstractApiTest <Business>{
-
-    public static final String API_BUSINESSES = "/api/businesses/";
+class EmployeeApiTestAssured extends AbstractApiTestAssured<EmployeeDto> {
+    public static final String API_EMPLOYEES = "/api/employees/";
     public static Long createdId;
 
     @BeforeAll
@@ -25,15 +26,15 @@ class BusinessApiTest extends AbstractApiTest <Business>{
 
     @Order(1)
     @Test
-    void post() {
-        Business business = generatedObject();
+    public void post() {
+        EmployeeDto business = generatedObject();
         String requestBody = getRequestBody(business);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .post(API_BUSINESSES)
+                .post(API_EMPLOYEES)
                 .then()
                 .extract()
                 .response();
@@ -42,18 +43,16 @@ class BusinessApiTest extends AbstractApiTest <Business>{
                 .isEqualTo(HttpStatus.OK.value());
         createdId = response.jsonPath().getLong("id");
         assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("address")).isEqualTo(business.getAddress());
-        assertThat(response.jsonPath().getString("description")).isEqualTo(business.getDescription());
-        assertThat(response.jsonPath().getString("type")).isEqualTo(business.getType().name());
+        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
     }
 
     @Order(2)
     @Test
-    void get() {
+    public void get() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_BUSINESSES + createdId)
+                .get(API_EMPLOYEES + createdId)
                 .then()
                 .extract()
                 .response();
@@ -66,33 +65,32 @@ class BusinessApiTest extends AbstractApiTest <Business>{
 
     @Order(3)
     @Test
-    void update() {
-        Business business = generatedObject();
-        String requestBody = getRequestBody(business);
+    public void update() {
+        EmployeeDto employeeDto = generatedObject();
+        String requestBody = getRequestBody(employeeDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .put(API_BUSINESSES + createdId)
+                .put(API_EMPLOYEES + createdId)
                 .then()
                 .extract()
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("address")).isEqualTo(business.getAddress());
-        assertThat(response.jsonPath().getString("description")).isEqualTo(business.getDescription());
-        assertThat(response.jsonPath().getString("type")).isEqualTo(business.getType().name());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(employeeDto.getName());
+        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
+
     }
 
     @Order(4)
     @Test
-    void getAll() {
+    public void getAll() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_BUSINESSES)
+                .get(API_EMPLOYEES)
                 .then()
                 .extract()
                 .response();
@@ -102,12 +100,12 @@ class BusinessApiTest extends AbstractApiTest <Business>{
 
     @Order(5)
     @Test
-    void delete() {
+    public void delete() {
         assertThat(createdId).isNotNull();
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete(API_BUSINESSES + createdId)
+                .delete(API_EMPLOYEES + createdId)
                 .then()
                 .extract()
                 .response();
@@ -117,12 +115,9 @@ class BusinessApiTest extends AbstractApiTest <Business>{
     }
 
     @Override
-
-    protected Business generatedObject() {
-        return Instancio.of(Business.class)
-                .ignore(field(Business::getId))
-                .ignore(field(Business::getCreatedAt))
-                .ignore(field(Business::getModifiedAt))
+    public EmployeeDto generatedObject() {
+        return Instancio.of(EmployeeDto.class)
+                .ignore(field(Employee::getId))
                 .create();
     }
 

@@ -1,9 +1,11 @@
 package org.booking.core.api;
 
+
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.entity.customer.Customer;
+import org.booking.core.domain.dto.BusinessDto;
+import org.booking.core.domain.entity.business.Business;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
@@ -14,8 +16,9 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-class CustomerApiTest extends AbstractApiTest<Customer> {
-    public static final String API_CUSTOMERS = "/api/customers/";
+class BusinessApiTestAssured extends AbstractApiTestAssured<BusinessDto> {
+
+    public static final String API_BUSINESSES = "/api/businesses/";
     public static Long createdId;
 
     @BeforeAll
@@ -25,15 +28,15 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
 
     @Order(1)
     @Test
-    void post() {
-        Customer business = generatedObject();
-        String requestBody = getRequestBody(business);
+    public void post() {
+        BusinessDto businessDto = generatedObject();
+        String requestBody = getRequestBody(businessDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .post(API_CUSTOMERS)
+                .post(API_BUSINESSES)
                 .then()
                 .extract()
                 .response();
@@ -41,17 +44,19 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
         createdId = response.jsonPath().getLong("id");
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(businessDto.getName());
+        assertThat(response.jsonPath().getString("address")).isEqualTo(businessDto.getAddress());
+        assertThat(response.jsonPath().getString("description")).isEqualTo(businessDto.getDescription());
+        assertThat(response.jsonPath().getString("type")).isEqualTo(businessDto.getType());
     }
 
     @Order(2)
     @Test
-    void get() {
+    public void get() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_CUSTOMERS + createdId)
+                .get(API_BUSINESSES + createdId)
                 .then()
                 .extract()
                 .response();
@@ -64,48 +69,51 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
 
     @Order(3)
     @Test
+    public
     void update() {
-        Customer business = generatedObject();
-        String requestBody = getRequestBody(business);
+        BusinessDto businessDto = generatedObject();
+        String requestBody = getRequestBody(businessDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .put(API_CUSTOMERS + createdId)
+                .put(API_BUSINESSES + createdId)
                 .then()
                 .extract()
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
-
+        assertThat(response.jsonPath().getString("name")).isEqualTo(businessDto.getName());
+        assertThat(response.jsonPath().getString("address")).isEqualTo(businessDto.getAddress());
+        assertThat(response.jsonPath().getString("description")).isEqualTo(businessDto.getDescription());
+        assertThat(response.jsonPath().getString("type")).isEqualTo(businessDto.getType());
     }
 
     @Order(4)
     @Test
+    public
     void getAll() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_CUSTOMERS)
+                .get(API_BUSINESSES)
                 .then()
                 .extract()
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-//        List<Long> idList = response.jsonPath().getList("id");
     }
 
     @Order(5)
     @Test
+    public
     void delete() {
         assertThat(createdId).isNotNull();
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete(API_CUSTOMERS + createdId)
+                .delete(API_BUSINESSES + createdId)
                 .then()
                 .extract()
                 .response();
@@ -115,11 +123,10 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
     }
 
     @Override
-    protected Customer generatedObject() {
-        return Instancio.of(Customer.class)
-                .ignore(field(Customer::getId))
-                .ignore(field(Customer::getCreatedAt))
-                .ignore(field(Customer::getModifiedAt))
+
+    public BusinessDto generatedObject() {
+        return Instancio.of(BusinessDto.class)
+                .ignore(field(Business::getId))
                 .create();
     }
 

@@ -46,7 +46,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
 
     //Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
@@ -126,7 +125,6 @@ sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"
 
 tasks.named('test') {
     useJUnitPlatform()
-    exclude '/org/booking/core/api/**'
 }
 
 build.dependsOn update

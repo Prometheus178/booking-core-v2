@@ -14,7 +14,7 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-class EmployeeApiTestAssured extends AbstractApiTestAssured<EmployeeDto> {
+public class EmployeeApiTestAssured extends AbstractApiTestAssured<EmployeeDto> {
     public static final String API_EMPLOYEES = "/api/employees/";
     public static Long createdId;
 

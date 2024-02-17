@@ -53,6 +53,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                 List<TimeSlot> availableTimeSlots = computeTimeSlots(businessService.get());
                 cachingAppointmentSchedulerService.saveAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                         businessServiceId), availableTimeSlots);
+                return availableTimeSlots;
             }
             return availableTimeSlotsByDay;
         } else {

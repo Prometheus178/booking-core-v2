@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
 
 class CustomerApiTestAssured extends AbstractApiTestAssured<CustomerDto> {
     public static final String API_CUSTOMERS = "/api/customers/";
@@ -94,7 +95,6 @@ class CustomerApiTestAssured extends AbstractApiTestAssured<CustomerDto> {
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-//        List<Long> idList = response.jsonPath().getList("id");
     }
 
     @Order(5)
@@ -116,6 +116,8 @@ class CustomerApiTestAssured extends AbstractApiTestAssured<CustomerDto> {
     @Override
     public CustomerDto generatedObject() {
         return Instancio.of(CustomerDto.class)
+                .ignore(field(CustomerDto::getId))
+                .ignore(field(CustomerDto::getReservationHistory))
                 .create();
     }
 

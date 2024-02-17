@@ -118,6 +118,7 @@ class EmployeeApiTestAssured extends AbstractApiTestAssured<EmployeeDto> {
     public EmployeeDto generatedObject() {
         return Instancio.of(EmployeeDto.class)
                 .ignore(field(Employee::getId))
+                .ignore(field(EmployeeDto::getReservationHistoryDto))
                 .create();
     }
 

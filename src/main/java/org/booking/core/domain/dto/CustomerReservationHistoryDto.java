@@ -8,7 +8,7 @@ import java.util.Set;
 public class CustomerReservationHistoryDto {
     private Long id;
     private Set<ReservationDto> reservations;
-    private CustomerDto customer;
+    private Long customerId;
     private String eventType;
     private String eventTime;
     private String details;

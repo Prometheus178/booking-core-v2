@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.booking.core.domain.dto.EmployeeDto;
-import org.booking.core.domain.entity.employee.Employee;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
@@ -117,7 +116,7 @@ class EmployeeApiTestAssured extends AbstractApiTestAssured<EmployeeDto> {
     @Override
     public EmployeeDto generatedObject() {
         return Instancio.of(EmployeeDto.class)
-                .ignore(field(Employee::getId))
+                .ignore(field(EmployeeDto::getId))
                 .ignore(field(EmployeeDto::getReservationHistoryDto))
                 .create();
     }

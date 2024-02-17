@@ -4,13 +4,18 @@ package org.booking.core.api;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
+import org.booking.core.domain.dto.BusinessDto;
+import org.booking.core.domain.dto.BusinessHoursDto;
 import org.booking.core.domain.dto.BusinessServiceDto;
-import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.business.Business;
+import org.booking.core.util.LogActionType;
+import org.booking.core.util.LoggerUtil;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.*;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
+import java.time.LocalTime;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,18 +28,49 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
 
     public static final String API_BUSINESSES_SERVICES = "/api/business-services/";
     public static Long createdId;
+    public static Long createdIdBusinessDto;
 
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = BASE_URI;
     }
 
+    @Order(0)
+    @Test
+    public void postBusinessDto() {
+        BusinessDto businessDto = generatedBusinessDto();
+        BusinessHoursDto businessHoursDto = new BusinessHoursDto();
+        businessHoursDto.setOpenTime(LocalTime.of(10, 0).toString());
+        businessHoursDto.setCloseTime(LocalTime.of(18, 0).toString());
+        businessDto.setBusinessHours(businessHoursDto);
+        businessDto.setType("BARBERSHOP");
+
+        String requestBody = getRequestBody(businessDto);
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post(API_BUSINESSES)
+                .then()
+                .extract()
+                .response();
+
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        createdIdBusinessDto = response.jsonPath().getLong("id");
+        LoggerUtil.logInfo(LogActionType.CREATE, Business.ENTITY_NAME, createdIdBusinessDto);
+
+        assertThat(response.jsonPath().getString("name")).isEqualTo(businessDto.getName());
+        assertThat(response.jsonPath().getString("address")).isEqualTo(businessDto.getAddress());
+        assertThat(response.jsonPath().getString("description")).isEqualTo(businessDto.getDescription());
+        assertThat(response.jsonPath().getString("type")).isEqualTo(businessDto.getType());
+    }
     @Order(1)
     @Test
     public void post() {
-        Long anyBusinessId = getAnyBusinessId();
         BusinessServiceDto businessServiceDto = generatedObject();
-        businessServiceDto.setBusinessId(anyBusinessId);
+        businessServiceDto.setBusinessId(createdIdBusinessDto);
         String requestBody = getRequestBody(businessServiceDto);
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -74,8 +110,9 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
     @Order(3)
     @Test
     public void update() {
-        BusinessService business = getBusinessServices();
-        String requestBody = getRequestBody(business);
+        BusinessServiceDto businessServiceDto = generatedObject();
+        businessServiceDto.setBusinessId(createdIdBusinessDto);
+        String requestBody = getRequestBody(businessServiceDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
@@ -87,9 +124,11 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getDouble("price")).isEqualTo(business.getPrice().doubleValue());
-        assertThat(response.jsonPath().getString("description")).isEqualTo(business.getDescription());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(businessServiceDto.getName());
+
+        assertThat(response.jsonPath().getDouble("price")).isCloseTo(businessServiceDto.getPrice(),
+                Assertions.within(delta));
+        assertThat(response.jsonPath().getString("description")).isEqualTo(businessServiceDto.getDescription());
     }
 
     @Order(4)
@@ -123,13 +162,22 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
                 .isEqualTo(HttpStatus.OK.value());
     }
 
+    @Order(6)
+    @Test
+    public void deleteBusinessDto() {
+        assertThat(createdIdBusinessDto).isNotNull();
+        Response response = given()
+                .header("Content-type", "application/json")
+                .when()
+                .delete(API_BUSINESSES + createdId)
+                .then()
+                .extract()
+                .response();
 
-    private BusinessService getBusinessServices() {
-        return Instancio.of(BusinessService.class)
-                .ignore(field(BusinessService::getId))
-                .ignore(field(BusinessService::getCreatedAt))
-                .ignore(field(BusinessService::getModifiedAt))
-                .create();
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        LoggerUtil.logInfo(LogActionType.DELETE, Business.ENTITY_NAME, createdId);
+
     }
 
     @Override
@@ -139,18 +187,14 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
                 .create();
     }
 
-    private Long getAnyBusinessId() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get(API_BUSINESSES)
-                .then()
-                .extract()
-                .response();
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-        List<Integer> idList = response.jsonPath().getList("id");
-        return idList.get(0).longValue();
+
+    public BusinessDto generatedBusinessDto() {
+        return Instancio.of(BusinessDto.class)
+                .ignore(field(BusinessDto::getId))
+                .ignore(field(BusinessDto::getBusinessHours))
+                .ignore(field(BusinessDto::getType))
+                .ignore(field(BusinessDto::getReservationSchedule))
+                .create();
     }
 
 }

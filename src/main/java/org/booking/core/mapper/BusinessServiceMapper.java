@@ -7,17 +7,19 @@ import org.booking.core.repository.BusinessRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public abstract class BusinessServiceMapper {
 
-    @Autowired
+    @Inject
     private BusinessRepository businessRepository;
 
     static BusinessServiceMapper INSTANCE = Mappers.getMapper(BusinessServiceMapper.class);
+
 
     @Mapping(source = "business", target = "businessId")
     public abstract BusinessServiceDto toDto(BusinessService obj);
@@ -27,7 +29,11 @@ public abstract class BusinessServiceMapper {
 
 
     protected Business fromLongToEntity(Long businessId) throws EntityNotFoundException {
-        return businessRepository.findById(businessId).get();
+        Optional<Business> optionalBusiness = businessRepository.findById(businessId);
+        if (optionalBusiness.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return optionalBusiness.get();
     }
 
     protected Long fromEntityToLong(Business business) throws EntityNotFoundException {

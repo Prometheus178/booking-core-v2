@@ -8,3 +8,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: 20240214122642_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240220100028_changelog.yml

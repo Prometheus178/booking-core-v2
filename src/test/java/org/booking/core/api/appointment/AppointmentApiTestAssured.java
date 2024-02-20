@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.withPrecision;
 import static org.booking.core.api.AbstractApiTestAssured.BASE_URI;
 import static org.booking.core.api.BusinessApiTestAssured.API_BUSINESSES;
 import static org.booking.core.api.BusinessServiceApiTestAssured.API_BUSINESSES_SERVICES;
+import static org.booking.core.api.CustomerApiTestAssured.API_CUSTOMERS;
 import static org.booking.core.api.EmployeeApiTestAssured.API_EMPLOYEES;
 import static org.instancio.Select.field;
 
@@ -32,6 +33,7 @@ public class AppointmentApiTestAssured {
     public static Long createdIdBusinessService;
     public static Long createdIdBusinessDto;
     public static Long createdIdEmployeeDto;
+    public static Long createdIdCustomerDto;
 
     @BeforeAll
     public static void setup() {
@@ -96,24 +98,6 @@ public class AppointmentApiTestAssured {
 
     @Order(3)
     @Test
-    void findAvailableTimeSlots() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .param("businessServiceId", createdIdBusinessService)
-                .param("day", LocalDate.now().toEpochDay())
-                .when()
-                .get(API_APPOINTMENTS + "find/available-time-slots")
-                .then()
-                .extract()
-                .response();
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-        List<Object> timeSlot = response.jsonPath().getList("TimeSlot");
-        System.out.println(timeSlot);
-
-
-    }
-
     void postEmployeeDto() {
         EmployeeDto business = generatedObjectEmployeeDto();
         String requestBody = getRequestBody(business);
@@ -133,12 +117,51 @@ public class AppointmentApiTestAssured {
         assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
         assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
     }
+    @Order(4)
+    @Test
+    public void postCustomerDto() {
+        CustomerDto customerDto = generatedObjectCustomerDto();
+        String requestBody = getRequestBody(customerDto);
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post(API_CUSTOMERS)
+                .then()
+                .extract()
+                .response();
 
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        createdIdCustomerDto = response.jsonPath().getLong("id");
+        assertThat(response.jsonPath().getString("name")).isEqualTo(customerDto.getName());
+        assertThat(response.jsonPath().getString("email")).isEqualTo(customerDto.getEmail());
+    }
+
+    void findAvailableTimeSlots() {
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .param("businessServiceId", createdIdBusinessService)
+                .param("day", LocalDate.now().toEpochDay())
+                .when()
+                .get(API_APPOINTMENTS + "find/available-time-slots")
+                .then()
+                .extract()
+                .response();
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        List<Object> timeSlot = response.jsonPath().getList("TimeSlot");
+        System.out.println(timeSlot);
+
+
+    }
     public ReservationDto generatedObjectReservationDto() {
         return Instancio.of(ReservationDto.class)
                 .ignore(field(ReservationDto::getId))
                 .create();
     }
+
     public BusinessDto generatedObjectBusinessDto() {
         return Instancio.of(BusinessDto.class)
                 .ignore(field(BusinessDto::getId))
@@ -159,6 +182,14 @@ public class AppointmentApiTestAssured {
         return Instancio.of(EmployeeDto.class)
                 .ignore(field(EmployeeDto::getId))
                 .ignore(field(EmployeeDto::getReservationHistoryDto))
+                .create();
+    }
+
+
+    public CustomerDto generatedObjectCustomerDto() {
+        return Instancio.of(CustomerDto.class)
+                .ignore(field(CustomerDto::getId))
+                .ignore(field(CustomerDto::getReservationHistory))
                 .create();
     }
 

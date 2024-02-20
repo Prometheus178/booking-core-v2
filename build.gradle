@@ -93,11 +93,10 @@ dependencies {
 
 if (!project.hasProperty("runList")) {
     project.ext.runList = "main"
-    //project.ext.runList = "diffChangeLog"
+    project.ext.runList = "diffChangeLog"
 }
 
-File newChangeLogFile =  new File("src/main/resources/db/changelog/" + new Date().format ("yyyyMMddHHmmss") + "_changelog.yml")
-project.ext.diffChangelogFile = "src/main/resources/config/liquibase/changelog/" + new Date().format("yyyyMMddHHmmss") + "_changelog.yml"
+project.ext.diffChangelogFile = "src/main/resources/db/changelog/" + new Date().format("yyyyMMddHHmmss") + "_changelog.yml"
 
 liquibase {
     activities {
@@ -109,14 +108,14 @@ liquibase {
             referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
             logLevel "info"
         }
-//        diffChangeLog {
-//            changeLogFile newChangeLogFile
-//            url databaseProps.getProperty("url")
-//            username databaseProps.getProperty("username")
-//            password databaseProps.getProperty("password")
-//            referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
-//            logLevel "info"
-//        }
+       diffChangeLog {
+           changeLogFile project.ext.diffChangelogFile
+           url databaseProps.getProperty("url")
+           username databaseProps.getProperty("username")
+           password databaseProps.getProperty("password")
+           referenceUrl 'hibernate:spring:org.booking.core.domain.entity?dialect=org.hibernate.dialect.PostgreSQLDialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
+           logLevel "info"
+       }
     }
     runList = project.ext.runList
 }

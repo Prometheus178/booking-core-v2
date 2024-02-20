@@ -23,18 +23,18 @@ public class EmployeeControllerBean implements EmployeeController {
     }
 
     @Override
-    public EmployeeDto create(EmployeeDto obj) {
-        Employee businessService = employeeMapper.dtoTo(obj);
+    public EmployeeDto create(EmployeeDto dto) {
+        Employee businessService = employeeMapper.toEntity(dto);
         Employee save = employeeRepository.save(businessService);
         return employeeMapper.toDto(save);
     }
 
     @Override
-    public EmployeeDto update(Long aLong, EmployeeDto obj) {
+    public EmployeeDto update(Long aLong, EmployeeDto dto) {
         Optional<Employee> optionalBusinessService = employeeRepository.findById(aLong);
         if (optionalBusinessService.isPresent()) {
             Employee existed = optionalBusinessService.get();
-            Employee businessService = employeeMapper.dtoTo(obj);
+            Employee businessService = employeeMapper.toEntity(dto);
             existed.setEmail(businessService.getEmail());
             existed.setName(businessService.getName());
             Employee save = employeeRepository.save(businessService);

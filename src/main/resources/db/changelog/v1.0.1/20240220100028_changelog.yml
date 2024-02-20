@@ -1,0 +1,49 @@
+databaseChangeLog:
+- changeSet:
+    id: 1708398030370-1
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: employee_businessPK
+            name: employee_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: employee_businessPK
+            name: business_id
+            type: BIGINT
+        tableName: employee_business
+- changeSet:
+    id: 1708398030370-2
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: business_id
+        baseTableName: employee_business
+        constraintName: FKdowonnhw1flh9ant9fkrd4ab6
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: business
+        validate: true
+- changeSet:
+    id: 1708398030370-3
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: employee_business
+        constraintName: FKhfi0ag0yjmfl7wygiuw7om0xl
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employees
+        validate: true
+

@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.employee.Employee;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
@@ -38,6 +39,9 @@ public class Business extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_schedule_id")
     private ReservationSchedule reservationSchedule;
+
+    @ManyToMany(mappedBy = "businesses")
+    private Set<Employee> employees = new HashSet<>();
 
     public void addBusinessService(BusinessService businessService) {
         businessServices.add(businessService);

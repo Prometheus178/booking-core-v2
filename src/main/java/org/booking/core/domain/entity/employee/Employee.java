@@ -5,10 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
+import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @Entity(name = Employee.ENTITY_NAME)
@@ -24,6 +27,18 @@ public class Employee extends User {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reservation_history_id")
     private EmployeeReservationHistory reservationHistory;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "employee_business",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "business_id")
+    )
+    private Set<Business> businesses = new HashSet<>();
+
+    public void addBusiness(Business business) {
+        this.businesses.add(business);
+    }
 
     @Override
     public boolean equals(Object object) {

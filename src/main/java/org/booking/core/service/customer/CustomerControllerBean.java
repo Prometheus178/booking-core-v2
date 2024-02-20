@@ -24,7 +24,7 @@ public class CustomerControllerBean implements CustomerController {
 
     @Override
     public CustomerDto create(CustomerDto obj) {
-        Customer businessService = customerMapper.dtoTo(obj);
+        Customer businessService = customerMapper.toEntity(obj);
         Customer save = customerRepository.save(businessService);
         return customerMapper.toDto(save);
     }
@@ -34,7 +34,7 @@ public class CustomerControllerBean implements CustomerController {
         Optional<Customer> optionalBusinessService = customerRepository.findById(aLong);
         if (optionalBusinessService.isPresent()) {
             Customer existed = optionalBusinessService.get();
-            Customer businessService = customerMapper.dtoTo(obj);
+            Customer businessService = customerMapper.toEntity(obj);
             existed.setEmail(businessService.getEmail());
             existed.setName(businessService.getName());
             Customer save = customerRepository.save(businessService);

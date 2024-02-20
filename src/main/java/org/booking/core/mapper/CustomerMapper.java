@@ -16,7 +16,7 @@ public interface CustomerMapper {
 
     CustomerDto toDto(Customer obj);
 
-    Customer dtoTo(CustomerDto dto);
+    Customer toEntity(CustomerDto dto);
 
     Set<Reservation> mapToEntitySet(Set<ReservationDto> dtoSet);
 

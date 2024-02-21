@@ -22,7 +22,7 @@ public abstract class EmployeeMapper {
     @Inject
     private BusinessRepository businessRepository;
 
-    EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
+    static EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
 
     @Mapping(target = "reservationHistory", source = "reservationHistoryDto")
     @Mapping(target = "businesses", source = "businessIds", qualifiedByName = "mapBusinessIdsToBusinesses")

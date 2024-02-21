@@ -28,6 +28,7 @@ public class Employee extends User {
     @JoinColumn(name = "reservation_history_id")
     private EmployeeReservationHistory reservationHistory;
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "employee_business",
@@ -36,8 +37,9 @@ public class Employee extends User {
     )
     private Set<Business> businesses = new HashSet<>();
 
-    public void addBusiness(Business business) {
-        this.businesses.add(business);
+
+    public void setBusinesses(Set<Business> businesses) {
+        this.businesses.addAll(businesses);
     }
 
     @Override

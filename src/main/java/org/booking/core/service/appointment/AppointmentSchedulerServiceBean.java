@@ -49,7 +49,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             List<TimeSlot> availableTimeSlotsByDay =
                     cachingAppointmentSchedulerService.findAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                             businessServiceId));
-            if (availableTimeSlotsByDay == null){
+            if (availableTimeSlotsByDay.isEmpty()){
                 List<TimeSlot> availableTimeSlots = computeTimeSlots(businessService.get());
                 cachingAppointmentSchedulerService.saveAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
                         businessServiceId), availableTimeSlots);
@@ -63,7 +63,13 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
     @Override
     public ReservationDto reserve(ReservationDto reservationDto) {
-        Reservation reservation = reservationMapper.dtoTo(reservationDto);
+        Reservation reservation = reservationMapper.toEntity(reservationDto);
+        return reserve(reservation);
+    }
+
+    private ReservationDto reserve(Reservation reservation) {
+        cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
+                reservation.getService().getId()), computeTimeSlot(reservation.getDuration()));
         Reservation saved = reservationRepository.save(reservation);
         return reservationMapper.toDto(saved);
     }
@@ -72,17 +78,14 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     public ReservationDto modifyReservation(Long reservationId, ReservationDto reservationDto) {
         Optional<Reservation> existOptional = reservationRepository.findById(reservationId);
         if (existOptional.isPresent()){
-            Reservation newReservation = reservationMapper.dtoTo(reservationDto);
             Reservation existReservation = existOptional.get();
-            LocalDateTime bookingTime = newReservation.getBookingTime();
-            existReservation.setBookingTime(bookingTime);
-
+            existReservation.setCanceled(true);
+            Reservation reservation = reservationMapper.toEntity(reservationDto);
+            ReservationDto newReservation = reserve(reservation);
             updateTimeSlotsInCache(existReservation.getService().getId(), existReservation.getDuration(),
-                    newReservation.getDuration(),
-                    bookingTime.toLocalDate());
-
-            Reservation saved = reservationRepository.save(existReservation);
-            return reservationMapper.toDto(saved);
+                    reservation.getDuration(),
+                    reservation.getBookingTime().toLocalDate());
+            return newReservation;
         } else {
             throw new BusinessEntityNotFoundException(Reservation.ENTITY_NAME, reservationId);
         }
@@ -95,9 +98,9 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         TimeSlot existTimeSlot = computeTimeSlot(existReservationDuration);
         TimeSlot newTimeSlot = computeTimeSlot(newReservationDuration);
         cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(date,
-                businessServiceId), existTimeSlot);
-        cachingAppointmentSchedulerService.addTimeSlotByKey(KeyUtil.generateKey(date,
                 businessServiceId), newTimeSlot);
+        cachingAppointmentSchedulerService.addTimeSlotByKey(KeyUtil.generateKey(date,
+                businessServiceId), existTimeSlot);
     }
 
     private  TimeSlot computeTimeSlot(Duration duration) {

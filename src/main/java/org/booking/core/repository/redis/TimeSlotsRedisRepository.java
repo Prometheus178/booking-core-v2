@@ -27,6 +27,7 @@ public class TimeSlotsRedisRepository {
     }
 
     public TimeSlotList get(String key) {
+        log.info(String.format("Find TIME_SLOTS with ID %s", key));
         return (TimeSlotList) hashOperations.get("TIME_SLOTS", key);
     }
 

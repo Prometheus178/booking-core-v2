@@ -6,6 +6,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.booking.core.domain.dto.*;
 import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.util.LogActionType;
 import org.booking.core.util.LoggerUtil;
 import org.instancio.Instancio;
@@ -13,8 +14,11 @@ import org.junit.jupiter.api.*;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,6 +38,8 @@ public class AppointmentApiTestAssured {
     public static Long createdIdBusinessDto;
     public static Long createdIdEmployeeDto;
     public static Long createdIdCustomerDto;
+    public static Long createdIdReservationDto;
+    public static List<TimeSlot> timeSlots;
 
     @BeforeAll
     public static void setup() {
@@ -75,6 +81,7 @@ public class AppointmentApiTestAssured {
     @Test
     void postBusinessServiceDto() {
         BusinessServiceDto businessServiceDto = generatedObjectBusinessServiceDto();
+        businessServiceDto.setDuration(60);
         businessServiceDto.setBusinessId(createdIdBusinessDto);
         String requestBody = getRequestBody(businessServiceDto);
         Response response = given()
@@ -91,7 +98,8 @@ public class AppointmentApiTestAssured {
                 .isEqualTo(HttpStatus.OK.value());
         createdIdBusinessService = response.jsonPath().getLong("id");
         assertThat(response.jsonPath().getString("name")).isEqualTo(businessServiceDto.getName());
-        assertThat(response.jsonPath().getDouble("price")).isEqualTo(businessServiceDto.getPrice(), withPrecision(2d));
+        assertThat(response.jsonPath().getDouble("price")).isEqualTo(businessServiceDto.getPrice(),
+                withPrecision(2d));
         assertThat(response.jsonPath().getString("description")).isEqualTo(businessServiceDto.getDescription());
     }
 
@@ -99,8 +107,12 @@ public class AppointmentApiTestAssured {
     @Order(3)
     @Test
     void postEmployeeDto() {
-        EmployeeDto business = generatedObjectEmployeeDto();
-        String requestBody = getRequestBody(business);
+        EmployeeDto employeeDto = generatedObjectEmployeeDto();
+        Set<Long> ids = new HashSet<>();
+        ids.add(createdIdBusinessDto);
+        employeeDto.setBusinessIds(ids);
+
+        String requestBody = getRequestBody(employeeDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
@@ -114,12 +126,12 @@ public class AppointmentApiTestAssured {
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
         createdIdEmployeeDto = response.jsonPath().getLong("id");
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(employeeDto.getName());
+        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
     }
     @Order(4)
     @Test
-    public void postCustomerDto() {
+    void postCustomerDto() {
         CustomerDto customerDto = generatedObjectCustomerDto();
         String requestBody = getRequestBody(customerDto);
         Response response = given()
@@ -139,6 +151,8 @@ public class AppointmentApiTestAssured {
         assertThat(response.jsonPath().getString("email")).isEqualTo(customerDto.getEmail());
     }
 
+    @Order(5)
+    @Test
     void findAvailableTimeSlots() {
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -151,15 +165,49 @@ public class AppointmentApiTestAssured {
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-        List<Object> timeSlot = response.jsonPath().getList("TimeSlot");
-        System.out.println(timeSlot);
-
-
+        timeSlots = response.jsonPath().getList(".", TimeSlot.class);
+        assertThat(timeSlots).isNotEmpty();
     }
-    public ReservationDto generatedObjectReservationDto() {
-        return Instancio.of(ReservationDto.class)
-                .ignore(field(ReservationDto::getId))
-                .create();
+
+    @Order(6)
+    @Test
+    void postReservationDto() {
+        ReservationDto dto = new ReservationDto();
+        dto.setCanceled(false);
+        dto.setCustomerId(createdIdCustomerDto);
+        dto.setEmployeeId(createdIdEmployeeDto);
+        dto.setServiceId(createdIdBusinessService);
+        TimeSlot timeSlot = timeSlots.get(0);
+        LocalTime startTime = timeSlot.getStartTime();
+        LocalTime endTime = timeSlot.getEndTime();
+
+        LocalDate currentDay = LocalDate.now();
+        LocalDateTime reservedTime = LocalDateTime.of(currentDay.getYear(), currentDay.getMonth(), currentDay.getDayOfMonth(),
+                startTime.getHour(), startTime.getMinute());
+        dto.setBookingTime(reservedTime.toString());
+        DurationDto durationDto = new DurationDto();
+        durationDto.setStartTime(reservedTime.toString());
+        LocalDateTime endDateTime = LocalDateTime.of(currentDay.getYear(), currentDay.getMonth(),
+                currentDay.getDayOfMonth(),
+                endTime.getHour(), endTime.getMinute());
+        durationDto.setEndTime(endDateTime.toString());
+        dto.setDuration(durationDto);
+
+        String requestBody = getRequestBody(dto);
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post(API_APPOINTMENTS)
+                .then()
+                .extract()
+                .response();
+
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        createdIdReservationDto = response.jsonPath().getLong("id");
+
     }
 
     public BusinessDto generatedObjectBusinessDto() {
@@ -174,6 +222,7 @@ public class AppointmentApiTestAssured {
     public BusinessServiceDto generatedObjectBusinessServiceDto() {
         return Instancio.of(BusinessServiceDto.class)
                 .ignore(field(BusinessServiceDto::getId))
+                .ignore(field(BusinessServiceDto::getDuration))
                 .create();
     }
 

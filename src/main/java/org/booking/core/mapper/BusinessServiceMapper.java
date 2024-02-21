@@ -25,11 +25,14 @@ public abstract class BusinessServiceMapper {
     public abstract BusinessServiceDto toDto(BusinessService obj);
 
     @Mapping(source = "businessId", target = "business")
-    public abstract BusinessService dtoTo(BusinessServiceDto dto);
+    public abstract BusinessService toEntity(BusinessServiceDto dto);
 
 
-    protected Business fromLongToEntity(Long businessId) throws EntityNotFoundException {
-        Optional<Business> optionalBusiness = businessRepository.findById(businessId);
+    protected Business fromLongToEntity(Long id) throws EntityNotFoundException {
+        if (id == null){
+            return null;
+        }
+        Optional<Business> optionalBusiness = businessRepository.findById(id);
         if (optionalBusiness.isEmpty()) {
             throw new EntityNotFoundException();
         }
@@ -37,6 +40,9 @@ public abstract class BusinessServiceMapper {
     }
 
     protected Long fromEntityToLong(Business business) throws EntityNotFoundException {
+        if (business == null){
+            return null;
+        }
         return business.getId();
     }
 }

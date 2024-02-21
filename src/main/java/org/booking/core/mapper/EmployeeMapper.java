@@ -51,8 +51,11 @@ public abstract class EmployeeMapper {
                 .collect(Collectors.toSet());
     }
 
-    private Business fromLongToEntity(Long businessId) throws EntityNotFoundException {
-        Optional<Business> optionalBusiness = businessRepository.findById(businessId);
+    private Business fromLongToEntity(Long id) throws EntityNotFoundException {
+        if (id == null){
+            return null;
+        }
+        Optional<Business> optionalBusiness = businessRepository.findById(id);
         if (optionalBusiness.isEmpty()) {
             throw new EntityNotFoundException();
         }

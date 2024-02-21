@@ -12,6 +12,6 @@ public interface DurationMapper {
 
     DurationDto toDto(Duration obj);
 
-    Duration dtoTo(DurationDto dto);
+    Duration toEntity(DurationDto dto);
 
 }

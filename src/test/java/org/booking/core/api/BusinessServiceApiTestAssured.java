@@ -71,6 +71,7 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
     public void post() {
         BusinessServiceDto businessServiceDto = generatedObject();
         businessServiceDto.setBusinessId(createdIdBusinessDto);
+        businessServiceDto.setDuration(60);
         String requestBody = getRequestBody(businessServiceDto);
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -184,6 +185,7 @@ public class BusinessServiceApiTestAssured extends AbstractApiTestAssured<Busine
     public BusinessServiceDto generatedObject() {
         return Instancio.of(BusinessServiceDto.class)
                 .ignore(field(BusinessServiceDto::getId))
+                .ignore(field(BusinessServiceDto::getDuration))
                 .create();
     }
 

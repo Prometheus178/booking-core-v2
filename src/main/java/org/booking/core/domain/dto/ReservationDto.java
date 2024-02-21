@@ -7,12 +7,11 @@ import lombok.Data;
 public class ReservationDto {
 
     private Long id;
-    private CustomerDto customer;
-    private BusinessServiceDto service;
-    private EmployeeDto employee;
+    private Long customerId;
+    private Long serviceId;
+    private Long employeeId;
     private String bookingTime;
-    private DurationDto DurationDto;
-    private String state;
+    private DurationDto duration;
     private boolean canceled;
 
 }

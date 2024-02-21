@@ -171,28 +171,8 @@ public class AppointmentApiTestAssured {
 
     @Order(6)
     @Test
-    void postReservationDto() {
-        ReservationDto dto = new ReservationDto();
-        dto.setCanceled(false);
-        dto.setCustomerId(createdIdCustomerDto);
-        dto.setEmployeeId(createdIdEmployeeDto);
-        dto.setServiceId(createdIdBusinessService);
-        TimeSlot timeSlot = timeSlots.get(0);
-        LocalTime startTime = timeSlot.getStartTime();
-        LocalTime endTime = timeSlot.getEndTime();
-
-        LocalDate currentDay = LocalDate.now();
-        LocalDateTime reservedTime = LocalDateTime.of(currentDay.getYear(), currentDay.getMonth(), currentDay.getDayOfMonth(),
-                startTime.getHour(), startTime.getMinute());
-        dto.setBookingTime(reservedTime.toString());
-        DurationDto durationDto = new DurationDto();
-        durationDto.setStartTime(reservedTime.toString());
-        LocalDateTime endDateTime = LocalDateTime.of(currentDay.getYear(), currentDay.getMonth(),
-                currentDay.getDayOfMonth(),
-                endTime.getHour(), endTime.getMinute());
-        durationDto.setEndTime(endDateTime.toString());
-        dto.setDuration(durationDto);
-
+    void reservation() {
+        ReservationDto dto = createReservation(0);
         String requestBody = getRequestBody(dto);
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -207,8 +187,52 @@ public class AppointmentApiTestAssured {
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
         createdIdReservationDto = response.jsonPath().getLong("id");
-
     }
+
+    @Order(7)
+    @Test
+    void modifyReservation() {
+        ReservationDto dto = createReservation(1);
+        String requestBody = getRequestBody(dto);
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .put(API_APPOINTMENTS  + createdIdReservationDto)
+                .then()
+                .extract()
+                .response();
+
+        assertThat(response.statusCode())
+                .isEqualTo(HttpStatus.OK.value());
+        createdIdReservationDto = response.jsonPath().getLong("id");
+    }
+
+    private ReservationDto createReservation(int i) {
+        ReservationDto dto = new ReservationDto();
+        dto.setCanceled(false);
+        dto.setCustomerId(createdIdCustomerDto);
+        dto.setEmployeeId(createdIdEmployeeDto);
+        dto.setServiceId(createdIdBusinessService);
+        TimeSlot timeSlot = timeSlots.get(i);
+        LocalTime startTime = timeSlot.getStartTime();
+        LocalTime endTime = timeSlot.getEndTime();
+
+        LocalDate currentDay = LocalDate.now();
+        LocalDateTime reservedTime = LocalDateTime.of(currentDay.getYear(), currentDay.getMonth(), currentDay.getDayOfMonth(),
+                startTime.getHour(), startTime.getMinute());
+        dto.setBookingTime(reservedTime.toString());
+        DurationDto durationDto = new DurationDto();
+        durationDto.setStartTime(reservedTime.toString());
+        LocalDateTime endDateTime = LocalDateTime.of(currentDay.getYear(), currentDay.getMonth(),
+                currentDay.getDayOfMonth(),
+                endTime.getHour(), endTime.getMinute());
+        durationDto.setEndTime(endDateTime.toString());
+        dto.setDuration(durationDto);
+        return dto;
+    }
+
 
     public BusinessDto generatedObjectBusinessDto() {
         return Instancio.of(BusinessDto.class)

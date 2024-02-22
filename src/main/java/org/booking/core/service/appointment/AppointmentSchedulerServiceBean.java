@@ -1,5 +1,6 @@
 package org.booking.core.service.appointment;
 
+import lombok.extern.java.Log;
 import org.booking.core.BusinessEntityNotFoundException;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.Business;
@@ -13,10 +14,12 @@ import org.booking.core.domain.entity.employee.history.EmployeeReservationHistor
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
+import org.booking.core.lock.RedisDistributedLock;
 import org.booking.core.mapper.ReservationMapper;
 import org.booking.core.repository.*;
 import org.booking.core.service.appointment.cache.CachingAppointmentSchedulerService;
 import org.booking.core.util.KeyUtil;
+import org.redisson.api.RLock;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,10 +28,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
+@Log
 @Service
 public class AppointmentSchedulerServiceBean implements AppointmentSchedulerService{
 
+    public static final String RESERVED = "Reserved";
     private final ReservationRepository reservationRepository;
     private final BusinessServiceRepository businessServiceRepository;
     private final CachingAppointmentSchedulerService cachingAppointmentSchedulerService;
@@ -36,6 +42,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     private final EmployeeReservationHistoryRepository employeeReservationHistoryRepository;
     private final ReservationMapper reservationMapper;
     private final ReservationScheduleRepository reservationScheduleRepository;
+    private final RedisDistributedLock redisDistributedLock;
 
     public AppointmentSchedulerServiceBean(ReservationRepository reservationRepository,
                                            BusinessServiceRepository businessServiceRepository,
@@ -43,7 +50,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                                            CustomerReservationHistoryRepository customerReservationHistoryRepository,
                                            EmployeeReservationHistoryRepository employeeReservationHistoryRepository,
                                            ReservationMapper reservationMapper,
-                                           ReservationScheduleRepository reservationScheduleRepository) {
+                                           ReservationScheduleRepository reservationScheduleRepository, RedisDistributedLock redisDistributedLock) {
         this.reservationRepository = reservationRepository;
         this.businessServiceRepository = businessServiceRepository;
         this.cachingAppointmentSchedulerService = cachingAppointmentSchedulerService;
@@ -51,6 +58,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         this.employeeReservationHistoryRepository = employeeReservationHistoryRepository;
         this.reservationMapper = reservationMapper;
         this.reservationScheduleRepository = reservationScheduleRepository;
+        this.redisDistributedLock = redisDistributedLock;
     }
 
 
@@ -85,27 +93,59 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     public ReservationDto modifyReservation(Long reservationId, ReservationDto reservationDto) {
         Optional<Reservation> existOptional = reservationRepository.findById(reservationId);
         if (existOptional.isPresent()){
-            Reservation existReservation = existOptional.get();
-            existReservation.setCanceled(true);
             Reservation reservation = reservationMapper.toEntity(reservationDto);
-            ReservationDto newReservation = reserve(reservation);
-            updateTimeSlotsInCache(existReservation.getService().getId(), existReservation.getDuration(),
-                    reservation.getDuration(),
-                    reservation.getBookingTime().toLocalDate());
-            return newReservation;
+            String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
+                    reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));
+            RLock lock = redisDistributedLock.getLock(lockName);
+            try {
+                boolean locked = lock.tryLock(5, TimeUnit.SECONDS);
+                if (locked) {
+                    log.info("Locked: " + lockName);
+                    Reservation existReservation = existOptional.get();
+                    existReservation.setCanceled(true);
+                    ReservationDto newReservation = reserve(reservation);
+                    updateTimeSlotsInCache(existReservation.getService().getId(), existReservation.getDuration(),
+                            reservation.getDuration(),
+                            reservation.getBookingTime().toLocalDate());
+                    return newReservation;
+                } else {
+                    throw new RuntimeException(RESERVED);
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } finally {
+                lock.unlock();
+            }
         } else {
             throw new BusinessEntityNotFoundException(Reservation.ENTITY_NAME, reservationId);
         }
     }
 
     private ReservationDto reserve(Reservation reservation) {
-        cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
-                reservation.getService().getId()), computeTimeSlot(reservation.getDuration()));
-        Reservation savedReservation = reservationRepository.save(reservation);
-        addReservationToBusinessSchedule(savedReservation);
-        addReservationToEmployeeSchedule(savedReservation);
-        addReservationToCustomerSchedule(savedReservation);
-        return reservationMapper.toDto(savedReservation);
+
+        String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
+                reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));
+        RLock lock = redisDistributedLock.getLock(lockName);
+        try {
+            boolean locked = lock.tryLock(5, TimeUnit.SECONDS);
+            if (locked) {
+                log.info("Locked: " + lockName);
+                cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
+                        reservation.getService().getId()), computeTimeSlot(reservation.getDuration()));
+                Reservation savedReservation = reservationRepository.save(reservation);
+                addReservationToBusinessSchedule(savedReservation);
+                addReservationToEmployeeSchedule(savedReservation);
+                addReservationToCustomerSchedule(savedReservation);
+                return reservationMapper.toDto(savedReservation);
+            } else {
+                throw new RuntimeException(RESERVED);
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            log.info("Unlocked: " + lockName);
+            lock.unlock();
+        }
     }
 
     private void addReservationToBusinessSchedule(Reservation savedReservation) {

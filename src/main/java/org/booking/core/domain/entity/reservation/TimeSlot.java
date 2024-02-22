@@ -2,7 +2,6 @@ package org.booking.core.domain.entity.reservation;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -24,7 +23,7 @@ public class TimeSlot implements Serializable {
 
     @Override
     public String toString() {
-        return startTime + " - " + endTime;
+        return startTime + "-" + endTime;
     }
 
     @Override

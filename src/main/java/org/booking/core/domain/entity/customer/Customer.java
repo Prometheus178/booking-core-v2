@@ -7,7 +7,10 @@ import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
 import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Getter
@@ -21,8 +24,7 @@ public class Customer extends User {
     public static final String TABLE_NAME = "customers";
     public static final String ENTITY_NAME = "Customer";
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservation_history_id")
+    @OneToOne(cascade = CascadeType.ALL , mappedBy = "customer")
     private CustomerReservationHistory reservationHistory;
 
     @Override

@@ -24,8 +24,7 @@ public class Employee extends User {
     public static final String TABLE_NAME = "employees";
     public static final String ENTITY_NAME = "Employee";
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "reservation_history_id")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee")
     private EmployeeReservationHistory reservationHistory;
 
 

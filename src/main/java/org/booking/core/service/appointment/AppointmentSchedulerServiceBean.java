@@ -4,14 +4,17 @@ import org.booking.core.BusinessEntityNotFoundException;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
+import org.booking.core.domain.entity.business.ReservationSchedule;
 import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.customer.Customer;
+import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
+import org.booking.core.domain.entity.employee.Employee;
+import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.mapper.ReservationMapper;
-import org.booking.core.repository.BusinessServiceRepository;
-import org.booking.core.repository.ReservationRepository;
-import org.booking.core.repository.ReservationScheduleRepository;
+import org.booking.core.repository.*;
 import org.booking.core.service.appointment.cache.CachingAppointmentSchedulerService;
 import org.booking.core.util.KeyUtil;
 import org.springframework.stereotype.Service;
@@ -29,16 +32,25 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     private final ReservationRepository reservationRepository;
     private final BusinessServiceRepository businessServiceRepository;
     private final CachingAppointmentSchedulerService cachingAppointmentSchedulerService;
+    private final CustomerReservationHistoryRepository customerReservationHistoryRepository;
+    private final EmployeeReservationHistoryRepository employeeReservationHistoryRepository;
     private final ReservationMapper reservationMapper;
+    private final ReservationScheduleRepository reservationScheduleRepository;
 
-    public AppointmentSchedulerServiceBean(ReservationScheduleRepository reservationScheduleRepository,
-                                           ReservationRepository reservationRepository, BusinessServiceRepository businessServiceRepository,
+    public AppointmentSchedulerServiceBean(ReservationRepository reservationRepository,
+                                           BusinessServiceRepository businessServiceRepository,
                                            CachingAppointmentSchedulerService cachingAppointmentSchedulerService,
-                                           ReservationMapper reservationMapper) {
+                                           CustomerReservationHistoryRepository customerReservationHistoryRepository,
+                                           EmployeeReservationHistoryRepository employeeReservationHistoryRepository,
+                                           ReservationMapper reservationMapper,
+                                           ReservationScheduleRepository reservationScheduleRepository) {
         this.reservationRepository = reservationRepository;
         this.businessServiceRepository = businessServiceRepository;
         this.cachingAppointmentSchedulerService = cachingAppointmentSchedulerService;
+        this.customerReservationHistoryRepository = customerReservationHistoryRepository;
+        this.employeeReservationHistoryRepository = employeeReservationHistoryRepository;
         this.reservationMapper = reservationMapper;
+        this.reservationScheduleRepository = reservationScheduleRepository;
     }
 
 
@@ -67,12 +79,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         return reserve(reservation);
     }
 
-    private ReservationDto reserve(Reservation reservation) {
-        cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
-                reservation.getService().getId()), computeTimeSlot(reservation.getDuration()));
-        Reservation saved = reservationRepository.save(reservation);
-        return reservationMapper.toDto(saved);
-    }
+
 
     @Override
     public ReservationDto modifyReservation(Long reservationId, ReservationDto reservationDto) {
@@ -88,6 +95,58 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             return newReservation;
         } else {
             throw new BusinessEntityNotFoundException(Reservation.ENTITY_NAME, reservationId);
+        }
+    }
+
+    private ReservationDto reserve(Reservation reservation) {
+        cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
+                reservation.getService().getId()), computeTimeSlot(reservation.getDuration()));
+        Reservation savedReservation = reservationRepository.save(reservation);
+        addReservationToBusinessSchedule(savedReservation);
+        addReservationToEmployeeSchedule(savedReservation);
+        addReservationToCustomerSchedule(savedReservation);
+        return reservationMapper.toDto(savedReservation);
+    }
+
+    private void addReservationToBusinessSchedule(Reservation savedReservation) {
+        Business business = savedReservation.getService().getBusiness();
+        Optional<ReservationSchedule> reservationScheduleByBusinessId = reservationScheduleRepository.findByBusinessId(business.getId());
+        if (reservationScheduleByBusinessId.isPresent()) {
+            ReservationSchedule reservationSchedule = reservationScheduleByBusinessId.get();
+            reservationSchedule.addReservation(savedReservation);
+        } else {
+            ReservationSchedule reservationSchedule = new ReservationSchedule();
+            reservationSchedule.setBusiness(business);
+            reservationSchedule.addReservation(savedReservation);
+            reservationScheduleRepository.save(reservationSchedule);
+        }
+    }
+
+    private void addReservationToEmployeeSchedule(Reservation savedReservation) {
+        Customer customer = savedReservation.getCustomer();
+        Optional<CustomerReservationHistory> optionalCustomerReservationHistory = customerReservationHistoryRepository.findByCustomerId(customer.getId());
+        if (optionalCustomerReservationHistory.isPresent()) {
+            CustomerReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
+            reservationHistory.addReservation(savedReservation);
+        } else {
+            CustomerReservationHistory reservationHistory = new CustomerReservationHistory();
+            reservationHistory.setCustomer(customer);
+            reservationHistory.addReservation(savedReservation);
+            customerReservationHistoryRepository.save(reservationHistory);
+        }
+    }
+
+    private void addReservationToCustomerSchedule(Reservation savedReservation) {
+        Employee employee = savedReservation.getEmployee();
+        Optional<EmployeeReservationHistory> optionalEmployeeReservationHistory = employeeReservationHistoryRepository.findByEmployeeId(employee.getId());
+        if (optionalEmployeeReservationHistory.isPresent()) {
+            EmployeeReservationHistory reservationHistory = optionalEmployeeReservationHistory.get();
+            reservationHistory.addReservation(savedReservation);
+        } else {
+            EmployeeReservationHistory reservationHistory = new EmployeeReservationHistory();
+            reservationHistory.setEmployee(employee);
+            reservationHistory.addReservation(savedReservation);
+            employeeReservationHistoryRepository.save(reservationHistory);
         }
     }
 

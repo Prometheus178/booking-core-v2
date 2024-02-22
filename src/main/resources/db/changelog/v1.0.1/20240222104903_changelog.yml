@@ -1,0 +1,76 @@
+databaseChangeLog:
+- changeSet:
+    id: 1708573745026-1
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: customer_id
+            type: int8
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1708573745026-2
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: employee_id
+            type: int8
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1708573745026-3
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: customer_id
+        baseTableName: customer_reservation_history
+        constraintName: FKbct35luu2ne20yat87tugab52
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: customers
+        validate: true
+- changeSet:
+    id: 1708573745026-4
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: employee_reservation_history
+        constraintName: FKd4lulg9sm0rjbopfjsefolgp8
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employees
+        validate: true
+- changeSet:
+    id: 1708573745026-5
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: customers
+        constraintName: FK5i7isgr3ve7y6020buom6wqre
+- changeSet:
+    id: 1708573745026-6
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employees
+        constraintName: FKf2ixia1ytyolbj77rord07fs0
+- changeSet:
+    id: 1708573745026-7
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: reservation_history_id
+        tableName: customers
+- changeSet:
+    id: 1708573745026-8
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: reservation_history_id
+        tableName: employees
+

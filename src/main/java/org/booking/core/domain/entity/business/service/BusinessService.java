@@ -2,16 +2,14 @@ package org.booking.core.domain.entity.business.service;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
+import org.booking.core.domain.entity.business.Business;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@ToString
 @Entity(name = BusinessService.ENTITY_NAME)
 @Table(name = BusinessService.TABLE_NAME)
 @Getter
@@ -19,11 +17,16 @@ import java.util.Objects;
 public class BusinessService extends AbstractEntity {
 
     public static final String TABLE_NAME = "business_services";
-    public static final String ENTITY_NAME = "BUSINESS_SERVICE";
+    public static final String ENTITY_NAME = "BusinessService";
 
     private String name;
     private String description;
     private BigDecimal price;
+    private int duration;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_id", referencedColumnName = "id")
+    private Business business;
 
     @Override
     public final boolean equals(Object o) {

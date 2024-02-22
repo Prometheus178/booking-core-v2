@@ -2,3 +2,21 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: 20231210003318_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240202093334_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240214122642_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240220100028_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240221124942_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240222101747_changelog.yml
+  - include:
+      relativeToChangelogFile: true
+      file: 20240222104903_changelog.yml

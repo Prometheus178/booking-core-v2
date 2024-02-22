@@ -1,8 +1,11 @@
 package org.booking.core.domain.entity.base;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
 
 @NoArgsConstructor
 @AllArgsConstructor

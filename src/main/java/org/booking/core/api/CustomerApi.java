@@ -2,7 +2,6 @@ package org.booking.core.api;
 
 
 import org.booking.core.domain.dto.CustomerDto;
-import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.service.customer.CustomerController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class CustomerApi implements Api<CustomerDto> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity update(@PathVariable("id") Long aLong,@RequestBody CustomerDto obj) {
+    public ResponseEntity update(@PathVariable("id") Long aLong, @RequestBody CustomerDto obj) {
         return ResponseEntity.ok().body(customerService.update(aLong, obj));
     }
 

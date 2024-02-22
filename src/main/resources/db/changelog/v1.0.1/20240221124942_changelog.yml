@@ -1,0 +1,126 @@
+databaseChangeLog:
+- changeSet:
+    id: 1708494584767-1
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: customer_reservation_history_reservationsPK
+            name: customer_reservation_history_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: customer_reservation_history_reservationsPK
+            name: reservation_id
+            type: BIGINT
+        tableName: customer_reservation_history_reservations
+- changeSet:
+    id: 1708494584767-2
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: employee_reservation_history_reservationsPK
+            name: employee_reservation_history_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: employee_reservation_history_reservationsPK
+            name: reservation_id
+            type: BIGINT
+        tableName: employee_reservation_history_reservations
+- changeSet:
+    id: 1708494584767-3
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: reservation_id
+        constraintName: UK_44g0k2ilq72dr69xmuy45gytl
+        tableName: customer_reservation_history_reservations
+- changeSet:
+    id: 1708494584767-4
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: reservation_id
+        constraintName: UK_782mfvyvr9rjxo5eeblm02nq5
+        tableName: employee_reservation_history_reservations
+- changeSet:
+    id: 1708494584767-5
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_id
+        baseTableName: employee_reservation_history_reservations
+        constraintName: FK2dl7v7ngm0iyaq9cf056tqq4v
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservations
+        validate: true
+- changeSet:
+    id: 1708494584767-6
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: customer_reservation_history_id
+        baseTableName: customer_reservation_history_reservations
+        constraintName: FKmyxaowx6940n1e0tk62vx5t6m
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: customer_reservation_history
+        validate: true
+- changeSet:
+    id: 1708494584767-7
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_reservation_history_id
+        baseTableName: employee_reservation_history_reservations
+        constraintName: FKooqi35quo56qebcdkhdrd8ymj
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employee_reservation_history
+        validate: true
+- changeSet:
+    id: 1708494584767-8
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_id
+        baseTableName: customer_reservation_history_reservations
+        constraintName: FKqlntmclcy8pd4tyq3lvnl0g0o
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservations
+        validate: true
+- changeSet:
+    id: 1708494584767-9
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: reservations
+        constraintName: FKg6fsilthl358o4up5myifbsl0
+- changeSet:
+    id: 1708494584767-10
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: reservation_id
+        tableName: reservations
+

@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
+import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.employee.Employee;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @ToString
 @Entity(name = Business.ENTITY_NAME)
@@ -18,21 +20,36 @@ import java.util.Objects;
 @Setter
 public class Business extends AbstractEntity {
     public static final String TABLE_NAME = "business";
-    public static final String ENTITY_NAME = "BUSINESS";
+    public static final String ENTITY_NAME = "Business";
 
-    @Enumerated
+
+    @Enumerated(EnumType.STRING)
     private Type type;
     private String name;
     private String address;
     private String description;
 
-//    @Basic(fetch = FetchType.LAZY)
-//    @ElementCollection
-//    @CollectionTable(name = "business_services_map", joinColumns = @JoinColumn(name = "business_id"))
-//    @MapKeyJoinColumn(name = "business_service_map_id")
-//    @Column(name = "business_service_map_id")
-//    private Map<String, BusinessService> businessServiceMap;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="business_hours_id")
+    private BusinessHours businessHours;
 
+    @OneToMany(mappedBy = "business", fetch = FetchType.LAZY)
+    private Set<BusinessService> businessServices = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_schedule_id")
+    private ReservationSchedule reservationSchedule;
+
+    @ManyToMany(mappedBy = "businesses")
+    private Set<Employee> employees = new HashSet<>();
+
+    public void addBusinessService(BusinessService businessService) {
+        businessServices.add(businessService);
+    }
+
+    public void removeBusinessService(BusinessService businessService) {
+        businessServices.remove(businessService);
+    }
 
     @Override
     public final boolean equals(Object o) {

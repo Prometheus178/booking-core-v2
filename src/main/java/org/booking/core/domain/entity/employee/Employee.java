@@ -1,36 +1,56 @@
 package org.booking.core.domain.entity.employee;
 
 import lombok.AllArgsConstructor;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.booking.core.domain.entity.base.User;
-import org.hibernate.proxy.HibernateProxy;
+import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@ToString
 @AllArgsConstructor
 @Entity(name = Employee.ENTITY_NAME)
 @Table(name = Employee.TABLE_NAME)
+@Getter
+@Setter
+@NoArgsConstructor
 public class Employee extends User {
 
     public static final String TABLE_NAME = "employees";
-    public static final String ENTITY_NAME = "EMPLOYEE";
+    public static final String ENTITY_NAME = "Employee";
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Employee employee = (Employee) o;
-        return getId() != null && Objects.equals(getId(), employee.getId());
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee")
+    private EmployeeReservationHistory reservationHistory;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "employee_business",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "business_id")
+    )
+    private Set<Business> businesses = new HashSet<>();
+
+
+    public void setBusinesses(Set<Business> businesses) {
+        this.businesses.addAll(businesses);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Employee employee = (Employee) object;
+        return Objects.equals(reservationHistory, employee.reservationHistory);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reservationHistory);
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class ReservationControllerBean implements ReservationController {
 
-    private ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
 
     public ReservationControllerBean(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
@@ -23,7 +23,7 @@ public class ReservationControllerBean implements ReservationController {
     @Override
     public Reservation update(Long id, Reservation reservation) {
         Reservation existingUser = reservationRepository.findById(id).get();
-// TODO: 02.12.2023 update 
+        // TODO: 02.12.2023 implement update
         return reservationRepository.save(existingUser);
     }
 

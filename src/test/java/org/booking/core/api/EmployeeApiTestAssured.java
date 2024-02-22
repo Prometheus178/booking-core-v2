@@ -3,7 +3,7 @@ package org.booking.core.api;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.entity.customer.Customer;
+import org.booking.core.domain.dto.EmployeeDto;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
@@ -14,26 +14,26 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-class CustomerApiTest extends AbstractApiTest<Customer> {
-    public static final String API_CUSTOMERS = "/api/customers/";
+public class EmployeeApiTestAssured extends AbstractApiTestAssured<EmployeeDto> {
+    public static final String API_EMPLOYEES = "/api/employees/";
     public static Long createdId;
 
     @BeforeAll
     public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.baseURI = BASE_URI;
     }
 
     @Order(1)
     @Test
-    void post() {
-        Customer business = generatedObject();
+    public void post() {
+        EmployeeDto business = generatedObject();
         String requestBody = getRequestBody(business);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .post(API_CUSTOMERS)
+                .post(API_EMPLOYEES)
                 .then()
                 .extract()
                 .response();
@@ -47,11 +47,11 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
 
     @Order(2)
     @Test
-    void get() {
+    public void get() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_CUSTOMERS + createdId)
+                .get(API_EMPLOYEES + createdId)
                 .then()
                 .extract()
                 .response();
@@ -64,48 +64,47 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
 
     @Order(3)
     @Test
-    void update() {
-        Customer business = generatedObject();
-        String requestBody = getRequestBody(business);
+    public void update() {
+        EmployeeDto employeeDto = generatedObject();
+        String requestBody = getRequestBody(employeeDto);
         Response response = given()
                 .contentType(ContentType.JSON)
                 .and()
                 .body(requestBody)
                 .when()
-                .put(API_CUSTOMERS + createdId)
+                .put(API_EMPLOYEES + createdId)
                 .then()
                 .extract()
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
+        assertThat(response.jsonPath().getString("name")).isEqualTo(employeeDto.getName());
+        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
 
     }
 
     @Order(4)
     @Test
-    void getAll() {
+    public void getAll() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_CUSTOMERS)
+                .get(API_EMPLOYEES)
                 .then()
                 .extract()
                 .response();
         assertThat(response.statusCode())
                 .isEqualTo(HttpStatus.OK.value());
-//        List<Long> idList = response.jsonPath().getList("id");
     }
 
     @Order(5)
     @Test
-    void delete() {
+    public void delete() {
         assertThat(createdId).isNotNull();
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete(API_CUSTOMERS + createdId)
+                .delete(API_EMPLOYEES + createdId)
                 .then()
                 .extract()
                 .response();
@@ -115,11 +114,10 @@ class CustomerApiTest extends AbstractApiTest<Customer> {
     }
 
     @Override
-    protected Customer generatedObject() {
-        return Instancio.of(Customer.class)
-                .ignore(field(Customer::getId))
-                .ignore(field(Customer::getCreatedAt))
-                .ignore(field(Customer::getModifiedAt))
+    public EmployeeDto generatedObject() {
+        return Instancio.of(EmployeeDto.class)
+                .ignore(field(EmployeeDto::getId))
+                .ignore(field(EmployeeDto::getReservationHistoryDto))
                 .create();
     }
 

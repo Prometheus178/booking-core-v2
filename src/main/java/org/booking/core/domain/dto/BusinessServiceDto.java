@@ -5,8 +5,11 @@ import lombok.Data;
 @Data
 public class BusinessServiceDto {
 
-    private int id;
-    private double price;
-    private String description;
+    private Long id;
     private String name;
+    private String description;
+    private double price;
+    private int duration;
+    private Long businessId;
+
 }

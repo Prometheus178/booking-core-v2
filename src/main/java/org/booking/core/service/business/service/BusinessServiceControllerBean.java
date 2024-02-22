@@ -24,7 +24,7 @@ public class BusinessServiceControllerBean implements BusinessServiceController 
 
     @Override
     public BusinessServiceDto create(BusinessServiceDto obj) {
-        BusinessService businessService = businessServiceMapper.dtoTo(obj);
+        BusinessService businessService = businessServiceMapper.toEntity(obj);
         BusinessService save = businessServiceRepository.save(businessService);
         return businessServiceMapper.toDto(save);
     }
@@ -34,7 +34,7 @@ public class BusinessServiceControllerBean implements BusinessServiceController 
         Optional<BusinessService> optionalBusinessService = businessServiceRepository.findById(aLong);
         if (optionalBusinessService.isPresent()) {
             BusinessService existed = optionalBusinessService.get();
-            BusinessService businessService = businessServiceMapper.dtoTo(obj);
+            BusinessService businessService = businessServiceMapper.toEntity(obj);
             existed.setDescription(businessService.getDescription());
             existed.setPrice(businessService.getPrice());
             existed.setName(businessService.getName());

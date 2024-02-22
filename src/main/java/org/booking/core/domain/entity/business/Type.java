@@ -4,17 +4,17 @@ public enum Type {
 
     BARBERSHOP("BARBERSHOP");
 
-    private String name;
+    private final String name;
 
-    private Type(String name) {
+    Type(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static Type getByName(String name) {
         return Type.valueOf(name);
+    }
+
+    public String getName() {
+        return name;
     }
 }

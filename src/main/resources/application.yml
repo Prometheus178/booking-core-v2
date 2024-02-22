@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: booking-core
+  main:
+    lazy-initialization: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://booking-core_db:5432/core_db
+    #    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+    #Embbeded tomcat server settings
+#    url: jdbc:postgresql://0.0.0.0:5432/core_db
+#    username: core_user
+#    password: core
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy"
+    show-sql: false
+    properties:
+      hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    url: jdbc:postgresql://0.0.0.0:5432/core_db
+    user: core_user
+    password: core

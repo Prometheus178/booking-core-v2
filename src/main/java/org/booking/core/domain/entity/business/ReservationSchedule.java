@@ -5,11 +5,7 @@ import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.reservation.Reservation;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,9 +21,12 @@ public class ReservationSchedule extends AbstractEntity {
     @OneToOne(mappedBy = "reservationSchedule")
     private Business business;
 
-    private LocalDate date;
-
-    @ElementCollection
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "reservation_schedule_reservations", joinColumns = { @JoinColumn(name =
+            "reservation_schedule_reservation_id") }, inverseJoinColumns = { @JoinColumn(name = "reservation_id") })
     private Set<Reservation> reservations = new HashSet<>();
 
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+    }
 }

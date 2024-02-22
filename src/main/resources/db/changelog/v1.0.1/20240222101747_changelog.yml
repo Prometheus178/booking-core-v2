@@ -1,0 +1,165 @@
+databaseChangeLog:
+- changeSet:
+    id: 1708571869299-3
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: reservation_id
+            type: int8
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1708571869299-4
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: reservation_schedule_reservation_id
+            type: int8
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1708571869299-5
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: reservation_id
+        constraintName: UK_86gm3v6l5mvvr7we459evgbux
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1708571869299-6
+    author: sergey (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: reservation_schedule_reservation_id
+        - column:
+            name: reservation_id
+        indexName: IX_reservation_schedule_reservationsPK
+        tableName: reservation_schedule_reservations
+        unique: true
+- changeSet:
+    id: 1708571869299-7
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_id
+        baseTableName: reservation_schedule_reservations
+        constraintName: FK4ops04ioasn7bqr33niy39dsd
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservations
+        validate: true
+- changeSet:
+    id: 1708571869299-8
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_schedule_reservation_id
+        baseTableName: reservation_schedule_reservations
+        constraintName: FKjpqpbyl8ni9dm3ja87bwrkevb
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservation_schedule
+        validate: true
+- changeSet:
+    id: 1708571869299-9
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: reservation_schedule_reservations
+        constraintName: FK92n1u1d15kubl2ljsd8ibspjd
+- changeSet:
+    id: 1708571869299-10
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: reservation_schedule_reservations
+        constraintName: FKc32c37436l3fttq8u84cqefvf
+- changeSet:
+    id: 1708571869299-11
+    author: sergey (generated)
+    changes:
+    - dropUniqueConstraint:
+        constraintName: UK_ikxlr8ygci5mmbjqgh6mjas5v
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1708571869299-12
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: reservation_schedule_id
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1708571869299-13
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: reservations_id
+        tableName: reservation_schedule_reservations
+- changeSet:
+    id: 1708571869299-14
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: date
+        tableName: reservation_schedule
+- changeSet:
+    id: 1708571869299-15
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: details
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1708571869299-16
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: details
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1708571869299-17
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: event_time
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1708571869299-18
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: event_time
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1708571869299-19
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: event_type
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1708571869299-20
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: event_type
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1708571869299-2
+    author: sergey (generated)
+    changes:
+    - addPrimaryKey:
+        columnNames: reservation_schedule_reservation_id, reservation_id
+        constraintName: reservation_schedule_reservationsPK
+        tableName: reservation_schedule_reservations
+

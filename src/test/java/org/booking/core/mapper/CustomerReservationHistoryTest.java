@@ -15,12 +15,6 @@ class CustomerReservationHistoryTest extends AbstractMapperTest<CustomerReservat
         CustomerReservationHistoryDto customerReservationHistoryDto = CustomerReservationHistoryMapper.INSTANCE.toDto(customerReservationHistory);
 
         assertThat(customerReservationHistoryDto.getId()).isEqualTo(customerReservationHistory.getId());
-        //assertThat(customerReservationHistoryDto.getCustomer()).isEqualTo(customerReservationHistory.getCustomer());
-        assertThat(customerReservationHistoryDto.getDetails()).isEqualTo(customerReservationHistory.getDetails());
-        assertThat(customerReservationHistoryDto.getEventTime()).isEqualTo(customerReservationHistory.getEventTime());
-        assertThat(customerReservationHistoryDto.getEventType()).isEqualTo(customerReservationHistory.getEventType().name());
-        //assertThat(customerReservationHistoryDto.getReservations()).isEqualTo(customerReservationHistory
-        // .getReservations());
     }
 
 

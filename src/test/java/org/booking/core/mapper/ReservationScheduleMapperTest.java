@@ -15,7 +15,6 @@ class ReservationScheduleMapperTest extends AbstractMapperTest<ReservationSchedu
         ReservationScheduleDto reservationScheduleDto = ReservationScheduleMapper.INSTANCE.toDto(reservationSchedule);
 
         assertThat(reservationScheduleDto.getId()).isEqualTo(reservationSchedule.getId());
-       // assertThat(reservationScheduleDto.getBusiness()).isEqualTo(reservationSchedule.getBusiness());
     }
 
 

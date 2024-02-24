@@ -11,7 +11,7 @@ on:
       -  '**'   # matches every branch
       - '!main'     # excludes main
 jobs:
-  build:
+  compile:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,6 +31,7 @@ jobs:
       - name: Compile with Gradle
         run: ./gradlew compileJava
   test:
+    needs: compile
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -56,7 +56,7 @@ jobs:
         with:
           fetch-depth: 0
         env:
-          FILTER_REGEX_EXCLUDE: .github/
+          FILTER_REGEX_EXCLUDE: .*github/.*
       - name: Analyse by Lint Code Base
         uses: github/super-linter@v4
         env:

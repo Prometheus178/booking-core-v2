@@ -5,13 +5,15 @@ on:
     branches:
       - 'main'
       - 'release_*'
+      - 'dev_*'
+      - 'test_*'
       - 'ISSUE-46'
   pull_request:
     branches:
       -  '**'   # matches every branch
       - '!main'     # excludes main
 jobs:
-  compile:
+  Compile:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,8 +32,8 @@ jobs:
 
       - name: Compile with Gradle
         run: ./gradlew compileJava
-  test:
-    needs: compile
+  Test:
+    needs: Compile
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -50,3 +52,9 @@ jobs:
 
       - name: Run Test with Gradle
         run: ./gradlew compileTestJava
+  Analyse:
+    needs: [Compile , Test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Analyze with SonarQube
+        uses: SonarSource/sonarqube-scan-action@7295e71c9583053f5bf40e9d4068a0c974603ec8

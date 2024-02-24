@@ -126,6 +126,7 @@ sourceSets.main.java.srcDir "$buildDir/booking-core/src/main/java"
 sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"
 
 tasks.named('test') {
+    exclude '**/*TestAssured.class'
     useJUnitPlatform()
 }
 

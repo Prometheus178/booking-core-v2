@@ -56,14 +56,14 @@ jobs:
     needs: [Compile , Test]
     run-lint:
       runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-        - name: Analyse by Lint Code Base
-          uses: github/super-linter@v4
-          env:
-            VALIDATE_ALL_CODEBASE: false
-            DEFAULT_BRANCH: "main"
+      - name: Analyse by Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: "main"

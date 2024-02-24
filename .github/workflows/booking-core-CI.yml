@@ -6,7 +6,6 @@ on:
       - 'release_*'
       - 'dev_*'
       - 'test_*'
-      - 'ISSUE-46'
   pull_request:
     branches:
       -  '**'   # matches every branch

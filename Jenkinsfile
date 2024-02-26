@@ -1,8 +1,7 @@
 pipeline {
   agent {
     node {
-      label
-      'docker-agent'
+      label 'docker-agent'
     }
   }
   parameters {
@@ -26,8 +25,8 @@ pipeline {
       steps {
         echo 'Deploy....'
         sh '''
-docker compose up -d
-'''
+        docker compose up -d
+        '''
       }
     }
   }

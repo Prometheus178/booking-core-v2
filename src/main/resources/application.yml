@@ -5,14 +5,14 @@ spring:
     lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://booking-core_db:5432/core_db
-#    username: ${DATABASE_USERNAME}
-#    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://booking-core_db:5432/core_db
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
 #    Embbeded tomcat server settings
-    url: jdbc:postgresql://0.0.0.0:5432/core_db
-    username: core_user
-    password: core
+#    url: jdbc:postgresql://0.0.0.0:5432/core_db
+#    username: core_user
+#    password: core
   jpa:
     database: POSTGRESQL
     hibernate:

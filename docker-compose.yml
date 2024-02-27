@@ -15,10 +15,9 @@ services:
       - postgres-data:/var/lib/postgresql/data
   booking-core_app:
     container_name: 'booking-core_app'
-    image: 'booking-core'
     build: .
     ports:
-      - 8080:8080
+      - 8181:8181
       - 8787:8787
     environment:
       DATABASE_URL: postgresql://booking-core_db:5432/core_db
@@ -29,12 +28,7 @@ services:
   redis:
     container_name: 'booking-core_redis'
     image: redis:7-alpine
-#    environment:
-#      - REDIS_AOF_ENABLED=yes
-#      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - "6379:6379"
-#    volumes:
-#      - ./redis/data:/redis/data
 volumes:
   postgres-data:

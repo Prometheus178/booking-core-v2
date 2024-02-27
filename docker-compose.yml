@@ -17,7 +17,7 @@ services:
     container_name: 'booking-core_app'
     build: .
     ports:
-      - 8080:8080
+      - 8181:8181
       - 8787:8787
     environment:
       DATABASE_URL: postgresql://booking-core_db:5432/core_db

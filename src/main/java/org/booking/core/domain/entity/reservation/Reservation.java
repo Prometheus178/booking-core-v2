@@ -1,6 +1,5 @@
 package org.booking.core.domain.entity.reservation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;

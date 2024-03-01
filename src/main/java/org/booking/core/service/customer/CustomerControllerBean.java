@@ -2,6 +2,7 @@ package org.booking.core.service.customer;
 
 import org.booking.core.domain.dto.CustomerDto;
 import org.booking.core.domain.entity.customer.Customer;
+import org.booking.core.domain.entity.customer.User;
 import org.booking.core.mapper.CustomerMapper;
 import org.booking.core.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,12 @@ public class CustomerControllerBean implements CustomerController {
         Optional<Customer> optionalBusinessService = customerRepository.findById(aLong);
         if (optionalBusinessService.isPresent()) {
             Customer existed = optionalBusinessService.get();
-            Customer businessService = customerMapper.toEntity(obj);
-            existed.setEmail(businessService.getEmail());
-            existed.setName(businessService.getName());
-            Customer save = customerRepository.save(businessService);
+            User existedUser = existed.getUser();
+            Customer customer = customerMapper.toEntity(obj);
+            User user = customer.getUser();
+            existedUser.setEmail(user.getEmail());
+            existedUser.setName(user.getName());
+            Customer save = customerRepository.save(customer);
             return customerMapper.toDto(save);
         } else {
             return null;

@@ -1,0 +1,225 @@
+databaseChangeLog:
+- changeSet:
+    id: 1709280429123-1
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usersPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: BOOLEAN
+        - column:
+            name: modified_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: password
+            type: VARCHAR(255)
+        - column:
+            name: role
+            type: VARCHAR(255)
+        - column:
+            name: salt
+            type: VARCHAR(255)
+        tableName: users
+- changeSet:
+    id: 1709280429123-2
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: business
+- changeSet:
+    id: 1709280429123-3
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: business_hours
+- changeSet:
+    id: 1709280429123-4
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: business_services
+- changeSet:
+    id: 1709280429123-5
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1709280429123-6
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: customers
+- changeSet:
+    id: 1709280429123-7
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1709280429123-8
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: employees
+- changeSet:
+    id: 1709280429123-9
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: reservation_schedule
+- changeSet:
+    id: 1709280429123-10
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: boolean
+        tableName: reservations
+- changeSet:
+    id: 1709280429123-11
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: user_id
+            type: int8
+        tableName: customers
+- changeSet:
+    id: 1709280429123-12
+    author: sergey (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: user_id
+            type: int8
+        tableName: employees
+- changeSet:
+    id: 1709280429123-13
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: employees
+        constraintName: FK69x3vjuy1t5p18a5llb8h2fjx
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709280429123-14
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: customers
+        constraintName: FKrh1g1a20omjmn6kurd35o3eit
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709280429123-15
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: email
+        tableName: customers
+- changeSet:
+    id: 1709280429123-16
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: email
+        tableName: employees
+- changeSet:
+    id: 1709280429123-17
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: name
+        tableName: customers
+- changeSet:
+    id: 1709280429123-18
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: name
+        tableName: employees
+

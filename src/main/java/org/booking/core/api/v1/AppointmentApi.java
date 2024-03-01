@@ -1,4 +1,4 @@
-package org.booking.core.api;
+package org.booking.core.api.v1;
 
 
 import org.booking.core.domain.dto.ReservationDto;

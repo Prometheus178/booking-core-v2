@@ -2,7 +2,6 @@ package org.booking.core.domain.entity.business;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.employee.Employee;
@@ -13,7 +12,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@ToString
 @Entity(name = Business.ENTITY_NAME)
 @Table(name = Business.TABLE_NAME)
 @Getter

@@ -26,6 +26,8 @@ public abstract class AbstractEntity {
     @Column(name = "modified_at")
     protected Date modifiedAt;
 
+    protected boolean deleted = false;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();

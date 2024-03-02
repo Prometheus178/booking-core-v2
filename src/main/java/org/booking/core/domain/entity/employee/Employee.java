@@ -1,12 +1,12 @@
 package org.booking.core.domain.entity.employee;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.customer.User;
 import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

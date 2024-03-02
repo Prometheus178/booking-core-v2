@@ -1,5 +1,9 @@
 package org.booking.core.domain.entity.customer;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.booking.core.domain.entity.Role;
 import org.booking.core.domain.entity.base.AbstractEntity;
@@ -7,10 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
 import java.util.Collection;
 import java.util.List;
 

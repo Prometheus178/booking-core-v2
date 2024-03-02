@@ -1,5 +1,6 @@
 package org.booking.core.domain.entity.business;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
@@ -7,7 +8,6 @@ import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.employee.Employee;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

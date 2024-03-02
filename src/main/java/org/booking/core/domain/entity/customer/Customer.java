@@ -1,10 +1,10 @@
 package org.booking.core.domain.entity.customer;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 @Getter

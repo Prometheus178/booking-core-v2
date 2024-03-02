@@ -1,7 +1,8 @@
 package org.booking.core.mapper;
 
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import org.booking.core.domain.dto.ReservationDto;
-import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.domain.entity.employee.Employee;
@@ -11,11 +12,8 @@ import org.booking.core.repository.CustomerRepository;
 import org.booking.core.repository.EmployeeRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Mapper(componentModel = "spring")

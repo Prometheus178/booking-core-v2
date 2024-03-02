@@ -1,5 +1,6 @@
 package org.booking.core.service.security;
 
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.booking.core.config.security.JWTService;
 import org.booking.core.domain.dto.security.AuthenticationRequest;
@@ -13,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.NotFoundException;
 
 @RequiredArgsConstructor
 @Service

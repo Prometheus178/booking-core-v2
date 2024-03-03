@@ -1,27 +1,23 @@
-package org.booking.core.config;
+package org.booking.core.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.booking.core.repository.UserRepository;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @RequiredArgsConstructor
+@EnableWebSecurity
 @Configuration
-@ComponentScan
-@EnableTransactionManagement
-@EnableAutoConfiguration
-public class ApplicationConfig {
+public class SecurityConfig {
 
     private final UserRepository userRepository;
 
@@ -29,7 +25,9 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return userName ->
                 userRepository.findByEmail(userName)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                        .orElseThrow(
+                                () -> new UsernameNotFoundException(String.format("User:%s not found", userName))
+                        );
     }
 
     @Bean
@@ -49,5 +47,4 @@ public class ApplicationConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 }

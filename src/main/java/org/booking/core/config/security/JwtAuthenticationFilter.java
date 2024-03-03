@@ -26,6 +26,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String AUTHORIZATION = "authorization";
+    public static final String BEARER_ = "Bearer ";
+
     private final JWTService jwtService;
     private final UserDetailsService userDetailService;
     private final TokenRepository tokenRepository;
@@ -34,34 +37,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest,
                                     @NonNull HttpServletResponse httpServletResponse,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = httpServletRequest.getHeader("authorization");
-        if (authHeader == null) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
-            return;
-        }
-        if (authHeader.startsWith("Bearer ")) {
+        String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
+        if (authHeader != null && authHeader.startsWith(BEARER_) && SecurityContextHolder.getContext().getAuthentication() == null) {
             var jwtToken = authHeader.substring(7);
             DecodedJWT decodedJWT = JWT.decode(jwtToken);
             var userEmail = decodedJWT.getSubject();
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                Date currentTime = new Date();
-                Date tokenExpirationTime = decodedJWT.getExpiresAt();
-                if (tokenExpirationTime.before(currentTime)) {
-                    Log.warn("Token has expired");
-                    if (isProlongationAvailable(currentTime, tokenExpirationTime)) {
+            if (userEmail == null) {
+                throw new RuntimeException("Incorrect token");
+            }
+            Token token = tokenRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("Token not found"));
+            if (token.isDeleted()) {
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+                return;
+            }
+
+            Date currentTime = new Date();
+            Date tokenExpirationTime = decodedJWT.getExpiresAt();
+            if (tokenExpirationTime.before(currentTime)) {
+                Log.warn("Token has expired");
+                if (isProlongationAvailable(currentTime, tokenExpirationTime)) {
                         String refreshedToken = jwtService.refreshToken(jwtToken, currentTime);
-                        Token token = tokenRepository.findByEmail(userEmail).orElseThrow(
-                                () -> new RuntimeException("Token not found")
-                        );
                         token.setToken(refreshedToken);
                         tokenRepository.save(token);
                         httpServletResponse.setHeader("authorization-fresh-token", refreshedToken);
                         Log.info("Token is refreshed");
-                        authenticated(httpServletRequest, userEmail);
-                    }
-                } else {
+
                     authenticated(httpServletRequest, userEmail);
                 }
+            } else {
+                authenticated(httpServletRequest, userEmail);
             }
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * Author: Sergey.
  */
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
@@ -38,11 +40,4 @@ public abstract class AbstractEntity {
         this.modifiedAt = new Date();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

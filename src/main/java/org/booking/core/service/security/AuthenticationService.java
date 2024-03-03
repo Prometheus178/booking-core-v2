@@ -75,6 +75,7 @@ public class AuthenticationService {
     private String refreshToken(Token existToken) {
         var jwtToken = jwtService.refreshToken(existToken.getToken(), new Date());
         existToken.setToken(jwtToken);
+        existToken.setDeleted(false);
         tokenRepository.save(existToken);
         return jwtToken;
     }

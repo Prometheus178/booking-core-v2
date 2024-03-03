@@ -7,10 +7,7 @@ import org.booking.core.domain.dto.security.RegisterRequest;
 import org.booking.core.service.security.AuthenticationService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/v1/auth", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -24,7 +21,7 @@ public class AuthenticationApi {
         return ResponseEntity.ok(authenticationService.register(registerRequest));
     }
 
-    @PostMapping("/login")
+    @PutMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest authenticationRequest){
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));

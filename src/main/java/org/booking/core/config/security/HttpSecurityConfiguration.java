@@ -18,14 +18,14 @@ public class HttpSecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final AuthenticationProvider authenticationProvider;
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**"};
+    private static final String[] PUBLIC_LIST_URL = {"/api/v1/auth/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
+                        req.requestMatchers(PUBLIC_LIST_URL)
                                 .permitAll()
                            .anyRequest()
                                 .authenticated()

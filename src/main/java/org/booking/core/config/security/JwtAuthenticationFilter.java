@@ -8,6 +8,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.booking.core.domain.entity.security.Token;
+import org.booking.core.repository.TokenRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private final UserDetailsService userDetailService;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest,
@@ -47,6 +50,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     Log.warn("Token has expired");
                     if (isProlongationAvailable(currentTime, tokenExpirationTime)) {
                         String refreshedToken = jwtService.refreshToken(jwtToken, currentTime);
+                        Token token = tokenRepository.findByEmail(userEmail).orElseThrow(
+                                () -> new RuntimeException("Token not found")
+                        );
+                        token.setToken(refreshedToken);
+                        tokenRepository.save(token);
                         httpServletResponse.setHeader("authorization-fresh-token", refreshedToken);
                         Log.info("Token is refreshed");
                         authenticated(httpServletRequest, userEmail);

@@ -7,12 +7,17 @@ import org.booking.core.domain.dto.security.AuthenticationResponse;
 import org.booking.core.domain.dto.security.RegisterRequest;
 import org.booking.core.domain.entity.Role;
 import org.booking.core.domain.entity.customer.User;
+import org.booking.core.domain.entity.security.Token;
+import org.booking.core.repository.TokenRepository;
 import org.booking.core.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -23,13 +28,13 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final TokenRepository tokenRepository;
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
         String email = registerRequest.getEmail();
         if (userRepository.findByEmail(email).isPresent()) {
             throw new AuthenticationServiceException(String.format("User with email: %s exist", email));
         }
-       // String salt = RandomStringUtils.random(10, true, false);
         var user = User.builder()
                 .email(email)
                 .name(registerRequest.getUsername())
@@ -37,7 +42,7 @@ public class AuthenticationService {
                 .role(Role.valueOf(registerRequest.getRole())) //todo remove the ability to create Admin user
                 .build();
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = generateToken(user, email);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -52,12 +57,34 @@ public class AuthenticationService {
 
         boolean isEquals = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
         if (isEquals) {
-            var jwtToken = jwtService.generateToken(user);
+            Optional<Token> optionalExistToken = tokenRepository.findByEmail(email);
+            String jwtToken;
+            if (optionalExistToken.isPresent()) {
+                jwtToken = refreshToken(optionalExistToken.get());
+            } else {
+                jwtToken = generateToken(user, email);
+            }
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .build();
         } else {
             throw new RuntimeException("password is incorrect");
         }
+    }
+
+    private String refreshToken(Token existToken) {
+        var jwtToken = jwtService.refreshToken(existToken.getToken(), new Date());
+        existToken.setToken(jwtToken);
+        tokenRepository.save(existToken);
+        return jwtToken;
+    }
+
+    private String generateToken(User user, String email) {
+        var jwtToken = jwtService.generateToken(user);
+        Token token = Token.builder()
+                .token(jwtToken)
+                .email(email).build();
+        tokenRepository.save(token);
+        return jwtToken;
     }
 }

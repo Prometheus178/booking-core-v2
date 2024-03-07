@@ -1,6 +1,7 @@
 package org.booking.core.service.employee;
 
 import org.booking.core.domain.dto.EmployeeDto;
+import org.booking.core.domain.entity.customer.User;
 import org.booking.core.domain.entity.employee.Employee;
 import org.booking.core.mapper.EmployeeMapper;
 import org.booking.core.repository.EmployeeRepository;
@@ -34,10 +35,12 @@ public class EmployeeControllerBean implements EmployeeController {
         Optional<Employee> optionalBusinessService = employeeRepository.findById(aLong);
         if (optionalBusinessService.isPresent()) {
             Employee existed = optionalBusinessService.get();
-            Employee businessService = employeeMapper.toEntity(dto);
-            existed.setEmail(businessService.getEmail());
-            existed.setName(businessService.getName());
-            Employee save = employeeRepository.save(businessService);
+            Employee employee = employeeMapper.toEntity(dto);
+            User employeeUser = employee.getUser();
+            User user = existed.getUser();
+            user.setEmail(employeeUser.getEmail());
+            user.setName(employeeUser.getName());
+            Employee save = employeeRepository.save(employee);
             return employeeMapper.toDto(save);
         } else {
             return null;

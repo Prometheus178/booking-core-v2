@@ -1,14 +1,14 @@
 package org.booking.core.service.appointment.cache;
 
+import jakarta.inject.Singleton;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
 import org.booking.core.repository.redis.TimeSlotsRedisRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
-@Service
+@Singleton
 public class CachingAppointmentSchedulerServiceBean implements CachingAppointmentSchedulerService{
 
     private final TimeSlotsRedisRepository timeSlotsRedisRepository;

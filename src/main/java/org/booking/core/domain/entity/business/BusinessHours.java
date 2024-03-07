@@ -1,11 +1,11 @@
 package org.booking.core.domain.entity.business;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalTime;
 
 @Getter

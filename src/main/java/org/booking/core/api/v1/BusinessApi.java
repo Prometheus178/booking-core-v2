@@ -1,6 +1,7 @@
-package org.booking.core.api;
+package org.booking.core.api.v1;
 
 
+import org.booking.core.api.Api;
 import org.booking.core.domain.dto.BusinessDto;
 import org.booking.core.service.business.BusinessController;
 import org.springframework.http.MediaType;

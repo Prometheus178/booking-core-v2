@@ -1,28 +1,30 @@
 package org.booking.core.domain.entity.employee;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.booking.core.domain.entity.base.User;
+import jakarta.persistence.*;
+import lombok.*;
+import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.entity.customer.User;
 import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-@AllArgsConstructor
-@Entity(name = Employee.ENTITY_NAME)
-@Table(name = Employee.TABLE_NAME)
 @Getter
 @Setter
 @NoArgsConstructor
-public class Employee extends User {
+@AllArgsConstructor
+@Builder
+@Entity(name = Employee.ENTITY_NAME)
+@Table(name = Employee.TABLE_NAME)
+public class Employee extends AbstractEntity {
 
     public static final String TABLE_NAME = "employees";
     public static final String ENTITY_NAME = "Employee";
+
+    @OneToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee")
     private EmployeeReservationHistory reservationHistory;

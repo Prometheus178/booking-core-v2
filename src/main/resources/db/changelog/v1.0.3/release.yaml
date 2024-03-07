@@ -1,7 +1,7 @@
 databaseChangeLog:
   - include:
       relativeToChangelogFile: true
-      file: v1.0.1/release.yaml
+      file: 20240301150707_changelog.yml
   - include:
       relativeToChangelogFile: true
-      file: v1.0.3/release.yaml
+      file: 20240303221707_changelog.yml

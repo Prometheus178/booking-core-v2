@@ -1,30 +1,29 @@
 package org.booking.core.domain.entity.customer;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.booking.core.domain.entity.base.User;
+import jakarta.persistence.*;
+import lombok.*;
+import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = Customer.ENTITY_NAME)
 @Table(name = Customer.TABLE_NAME)
-@NoArgsConstructor
-public class Customer extends User {
+public class Customer extends AbstractEntity {
 
     public static final String TABLE_NAME = "customers";
     public static final String ENTITY_NAME = "Customer";
 
-    @OneToOne(cascade = CascadeType.ALL , mappedBy = "customer")
+    @OneToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "customer")
     private CustomerReservationHistory reservationHistory;
 
     @Override

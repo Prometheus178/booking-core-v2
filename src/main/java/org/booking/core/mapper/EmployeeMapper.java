@@ -1,5 +1,7 @@
 package org.booking.core.mapper;
 
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import org.booking.core.domain.dto.EmployeeDto;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.Business;
@@ -11,8 +13,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -1,16 +1,18 @@
 package org.booking.core.domain.entity.base;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Author: Sergey.
  */
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
@@ -26,6 +28,8 @@ public abstract class AbstractEntity {
     @Column(name = "modified_at")
     protected Date modifiedAt;
 
+    protected boolean deleted = false;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
@@ -36,11 +40,4 @@ public abstract class AbstractEntity {
         this.modifiedAt = new Date();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

@@ -1,13 +1,13 @@
 package org.booking.core.repository;
 
-import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
+import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CustomerReservationHistoryRepository extends JpaRepository<CustomerReservationHistory, Long> {
+public interface CustomerReservationHistoryRepository extends JpaRepository<UserReservationHistory, Long> {
 
-    Optional<CustomerReservationHistory> findByCustomerId(Long customerId);
+    Optional<UserReservationHistory> findByCustomerId(Long customerId);
 }

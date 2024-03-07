@@ -5,8 +5,7 @@ import org.booking.core.config.security.JWTService;
 import org.booking.core.domain.dto.security.AuthenticationRequest;
 import org.booking.core.domain.dto.security.AuthenticationResponse;
 import org.booking.core.domain.dto.security.RegisterRequest;
-import org.booking.core.domain.entity.Role;
-import org.booking.core.domain.entity.customer.User;
+import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.entity.security.Token;
 import org.booking.core.repository.TokenRepository;
 import org.booking.core.repository.UserRepository;
@@ -39,7 +38,7 @@ public class AuthenticationService {
                 .email(email)
                 .name(registerRequest.getUsername())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(Role.valueOf(registerRequest.getRole())) //todo remove the ability to create Admin user
+            //    .roles(Role.valueOf(registerRequest.getRole())) //todo remove the ability to create Admin user
                 .build();
         userRepository.save(user);
         var jwtToken = generateToken(user, email);

@@ -7,10 +7,8 @@ import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
 import org.booking.core.domain.entity.business.ReservationSchedule;
 import org.booking.core.domain.entity.business.service.BusinessService;
-import org.booking.core.domain.entity.customer.Customer;
-import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
+import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.booking.core.domain.entity.employee.Employee;
-import org.booking.core.domain.entity.employee.history.EmployeeReservationHistory;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
@@ -164,13 +162,13 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
     private void addReservationToEmployeeSchedule(Reservation savedReservation) {
         Customer customer = savedReservation.getCustomer();
-        Optional<CustomerReservationHistory> optionalCustomerReservationHistory = customerReservationHistoryRepository.findByCustomerId(customer.getId());
+        Optional<UserReservationHistory> optionalCustomerReservationHistory = customerReservationHistoryRepository.findByCustomerId(customer.getId());
         if (optionalCustomerReservationHistory.isPresent()) {
-            CustomerReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
+            UserReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
             reservationHistory.addReservation(savedReservation);
         } else {
-            CustomerReservationHistory reservationHistory = new CustomerReservationHistory();
-            reservationHistory.setCustomer(customer);
+            UserReservationHistory reservationHistory = new UserReservationHistory();
+            reservationHistory.setUser(customer);
             reservationHistory.addReservation(savedReservation);
             customerReservationHistoryRepository.save(reservationHistory);
         }

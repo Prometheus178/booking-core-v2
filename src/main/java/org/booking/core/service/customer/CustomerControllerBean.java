@@ -1,56 +1,50 @@
 package org.booking.core.service.customer;
 
+import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.dto.CustomerDto;
-import org.booking.core.domain.entity.customer.Customer;
-import org.booking.core.domain.entity.customer.User;
 import org.booking.core.mapper.CustomerMapper;
-import org.booking.core.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
+@RequiredArgsConstructor
 @Service
 public class CustomerControllerBean implements CustomerController {
 
 
-    private final CustomerRepository customerRepository;
+
     private final CustomerMapper customerMapper;
 
-    public CustomerControllerBean(CustomerRepository customerRepository, CustomerMapper customerMapper) {
-        this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
-    }
+
 
     @Override
     public CustomerDto create(CustomerDto obj) {
-        Customer businessService = customerMapper.toEntity(obj);
-        Customer save = customerRepository.save(businessService);
-        return customerMapper.toDto(save);
+//        Customer businessService = customerMapper.toEntity(obj);
+//        Customer save = customerRepository.save(businessService);
+//        return customerMapper.toDto(save);
+        return null;
     }
 
     @Override
     public CustomerDto update(Long aLong, CustomerDto obj) {
-        Optional<Customer> optionalBusinessService = customerRepository.findById(aLong);
-        if (optionalBusinessService.isPresent()) {
-            Customer existed = optionalBusinessService.get();
-            User existedUser = existed.getUser();
-            Customer customer = customerMapper.toEntity(obj);
-            User user = customer.getUser();
-            existedUser.setEmail(user.getEmail());
-            existedUser.setName(user.getName());
-            Customer save = customerRepository.save(customer);
-            return customerMapper.toDto(save);
-        } else {
+//        Optional<Customer> optionalBusinessService = customerRepository.findById(aLong);
+//        if (optionalBusinessService.isPresent()) {
+//            Customer existed = optionalBusinessService.get();
+//            User existedUser = existed.getUser();
+//            Customer customer = customerMapper.toEntity(obj);
+//            User user = customer.getUser();
+//            existedUser.setEmail(user.getEmail());
+//            existedUser.setName(user.getName());
+//            Customer save = customerRepository.save(customer);
+//            return customerMapper.toDto(save);
+//        } else {
             return null;
-        }
+//        }
     }
 
     @Override
     public boolean delete(Long id) {
         try {
-            customerRepository.deleteById(id);
+          //  customerRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             return false;
@@ -60,23 +54,23 @@ public class CustomerControllerBean implements CustomerController {
 
     @Override
     public CustomerDto getById(Long userId) {
-        Optional<Customer> optionalBusinessService = customerRepository.findById(userId);
-        if (optionalBusinessService.isPresent()) {
-            return customerMapper.toDto(optionalBusinessService.get());
-        }
+//        Optional<Customer> optionalBusinessService = customerRepository.findById(userId);
+//        if (optionalBusinessService.isPresent()) {
+//            return customerMapper.toDto(optionalBusinessService.get());
+//        }
         return null;
     }
 
     @Override
     public List<CustomerDto> getAll() {
-        List<Customer> all = customerRepository.findAll();
-        if (!all.isEmpty()) {
-            List<CustomerDto> services = new ArrayList<>();
-            all.forEach(business -> {
-                services.add(customerMapper.toDto(business));
-            });
-            return services;
-        }
+//        List<Customer> all = customerRepository.findAll();
+//        if (!all.isEmpty()) {
+//            List<CustomerDto> services = new ArrayList<>();
+//            all.forEach(business -> {
+//                services.add(customerMapper.toDto(business));
+//            });
+//            return services;
+//        }
         return null;
     }
 }

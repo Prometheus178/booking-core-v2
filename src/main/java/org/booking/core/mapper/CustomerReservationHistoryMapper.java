@@ -12,8 +12,6 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public abstract class CustomerReservationHistoryMapper {
-    @Inject
-    private CustomerRepository repository;
 
 
     static CustomerReservationHistoryMapper INSTANCE = Mappers.getMapper(CustomerReservationHistoryMapper.class);

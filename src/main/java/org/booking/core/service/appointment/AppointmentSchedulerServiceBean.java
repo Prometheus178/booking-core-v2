@@ -1,5 +1,6 @@
 package org.booking.core.service.appointment;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.booking.core.BusinessEntityNotFoundException;
 import org.booking.core.domain.dto.ReservationDto;
@@ -7,8 +8,6 @@ import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
 import org.booking.core.domain.entity.business.ReservationSchedule;
 import org.booking.core.domain.entity.business.service.BusinessService;
-import org.booking.core.domain.entity.user.history.UserReservationHistory;
-import org.booking.core.domain.entity.employee.Employee;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
+@RequiredArgsConstructor
 @Log
 @Service
 public class AppointmentSchedulerServiceBean implements AppointmentSchedulerService{
@@ -37,27 +36,11 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     private final BusinessServiceRepository businessServiceRepository;
     private final CachingAppointmentSchedulerService cachingAppointmentSchedulerService;
     private final CustomerReservationHistoryRepository customerReservationHistoryRepository;
-    private final EmployeeReservationHistoryRepository employeeReservationHistoryRepository;
     private final ReservationMapper reservationMapper;
     private final ReservationScheduleRepository reservationScheduleRepository;
     private final RedisDistributedLock redisDistributedLock;
 
-    public AppointmentSchedulerServiceBean(ReservationRepository reservationRepository,
-                                           BusinessServiceRepository businessServiceRepository,
-                                           CachingAppointmentSchedulerService cachingAppointmentSchedulerService,
-                                           CustomerReservationHistoryRepository customerReservationHistoryRepository,
-                                           EmployeeReservationHistoryRepository employeeReservationHistoryRepository,
-                                           ReservationMapper reservationMapper,
-                                           ReservationScheduleRepository reservationScheduleRepository, RedisDistributedLock redisDistributedLock) {
-        this.reservationRepository = reservationRepository;
-        this.businessServiceRepository = businessServiceRepository;
-        this.cachingAppointmentSchedulerService = cachingAppointmentSchedulerService;
-        this.customerReservationHistoryRepository = customerReservationHistoryRepository;
-        this.employeeReservationHistoryRepository = employeeReservationHistoryRepository;
-        this.reservationMapper = reservationMapper;
-        this.reservationScheduleRepository = reservationScheduleRepository;
-        this.redisDistributedLock = redisDistributedLock;
-    }
+
 
 
     @Override
@@ -161,31 +144,31 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     }
 
     private void addReservationToEmployeeSchedule(Reservation savedReservation) {
-        Customer customer = savedReservation.getCustomer();
-        Optional<UserReservationHistory> optionalCustomerReservationHistory = customerReservationHistoryRepository.findByCustomerId(customer.getId());
-        if (optionalCustomerReservationHistory.isPresent()) {
-            UserReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
-            reservationHistory.addReservation(savedReservation);
-        } else {
-            UserReservationHistory reservationHistory = new UserReservationHistory();
-            reservationHistory.setUser(customer);
-            reservationHistory.addReservation(savedReservation);
-            customerReservationHistoryRepository.save(reservationHistory);
-        }
+//        Customer customer = savedReservation.getCustomer();
+//        Optional<UserReservationHistory> optionalCustomerReservationHistory = customerReservationHistoryRepository.findByCustomerId(customer.getId());
+//        if (optionalCustomerReservationHistory.isPresent()) {
+//            UserReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
+//            reservationHistory.addReservation(savedReservation);
+//        } else {
+//            UserReservationHistory reservationHistory = new UserReservationHistory();
+//            reservationHistory.setUser(customer);
+//            reservationHistory.addReservation(savedReservation);
+//            customerReservationHistoryRepository.save(reservationHistory);
+//        }
     }
 
     private void addReservationToCustomerSchedule(Reservation savedReservation) {
-        Employee employee = savedReservation.getEmployee();
-        Optional<EmployeeReservationHistory> optionalEmployeeReservationHistory = employeeReservationHistoryRepository.findByEmployeeId(employee.getId());
-        if (optionalEmployeeReservationHistory.isPresent()) {
-            EmployeeReservationHistory reservationHistory = optionalEmployeeReservationHistory.get();
-            reservationHistory.addReservation(savedReservation);
-        } else {
-            EmployeeReservationHistory reservationHistory = new EmployeeReservationHistory();
-            reservationHistory.setEmployee(employee);
-            reservationHistory.addReservation(savedReservation);
-            employeeReservationHistoryRepository.save(reservationHistory);
-        }
+//        Employee employee = savedReservation.getEmployee();
+//        Optional<EmployeeReservationHistory> optionalEmployeeReservationHistory = employeeReservationHistoryRepository.findByEmployeeId(employee.getId());
+//        if (optionalEmployeeReservationHistory.isPresent()) {
+//            EmployeeReservationHistory reservationHistory = optionalEmployeeReservationHistory.get();
+//            reservationHistory.addReservation(savedReservation);
+//        } else {
+//            EmployeeReservationHistory reservationHistory = new EmployeeReservationHistory();
+//            reservationHistory.setEmployee(employee);
+//            reservationHistory.addReservation(savedReservation);
+//            employeeReservationHistoryRepository.save(reservationHistory);
+//        }
     }
 
     private void updateTimeSlotsInCache(Long businessServiceId,

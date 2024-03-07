@@ -25,12 +25,6 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  liquibase:
-    enabled: false
-    change-log: classpath:/db/changelog/db.changelog-master.yml
-    url: jdbc:postgresql://booking-core_db:5432/core_db
-    user: core_user
-    password: core
   redis:
     database: 0
     host: localhost

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-public class CustomerReservationHistoryDto {
+public class UserReservationHistoryDto {
     private Long id;
     private Set<ReservationDto> reservations;
     private Long customerId;

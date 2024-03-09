@@ -1,4 +1,4 @@
-package org.booking.core.api.v1;
+package org.booking.core.api.v1.employee.manager;
 
 
 import org.booking.core.api.Api;
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/api/business-services", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
+@RequestMapping(path = "/api/v1/managements/business-services", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
         MediaType.APPLICATION_JSON_VALUE)
 public class BusinessServiceApi implements Api<BusinessServiceDto> {
 

@@ -1,4 +1,4 @@
-package org.booking.core.api.v1;
+package org.booking.core.api.v1.employee.manager;
 
 
 import org.booking.core.api.Api;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
-        path = "/api/businesses",
+        path = "/api/v1/managements/businesses",
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE
 )

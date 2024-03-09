@@ -1,4 +1,4 @@
-package org.booking.core.domain.entity;
+package org.booking.core.domain.entity.role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

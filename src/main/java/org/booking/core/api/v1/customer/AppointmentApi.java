@@ -1,6 +1,7 @@
-package org.booking.core.api.v1;
+package org.booking.core.api.v1.customer;
 
 
+import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.service.appointment.AppointmentSchedulerService;
@@ -11,15 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/api/appointments", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1/customers/appointments", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
+        MediaType.APPLICATION_JSON_VALUE)
 public class AppointmentApi {
 
     private final AppointmentSchedulerService appointmentSchedulerService;
 
-    public AppointmentApi(AppointmentSchedulerService appointmentSchedulerService) {
-        this.appointmentSchedulerService = appointmentSchedulerService;
-    }
 
     @GetMapping("/find/available-time-slots")
     public ResponseEntity<List<TimeSlot>> findAvailableTimeSlots(@RequestParam("businessServiceId") Long businessServiceId,

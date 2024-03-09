@@ -2,7 +2,7 @@ package org.booking.core.domain.entity.user;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.booking.core.domain.entity.Role;
+import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.springframework.security.core.GrantedAuthority;

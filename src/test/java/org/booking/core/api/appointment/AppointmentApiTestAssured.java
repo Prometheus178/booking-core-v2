@@ -16,9 +16,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +24,7 @@ import static org.assertj.core.api.Assertions.withPrecision;
 import static org.booking.core.api.AbstractApiTestAssured.BASE_URI;
 import static org.booking.core.api.BusinessApiTestAssured.API_BUSINESSES;
 import static org.booking.core.api.BusinessServiceApiTestAssured.API_BUSINESSES_SERVICES;
-import static org.booking.core.api.CustomerApiTestAssured.API_CUSTOMERS;
+import static org.booking.core.api.EmployeeApiTestAssured.API_CUSTOMERS;
 import static org.instancio.Select.field;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

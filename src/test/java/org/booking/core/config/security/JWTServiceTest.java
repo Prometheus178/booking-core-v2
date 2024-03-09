@@ -3,11 +3,9 @@ package org.booking.core.config.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.booking.core.domain.entity.user.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

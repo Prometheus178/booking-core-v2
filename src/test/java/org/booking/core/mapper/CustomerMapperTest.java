@@ -1,6 +1,5 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.dto.CustomerDto;
 import org.booking.core.domain.entity.user.User;
 import org.junit.jupiter.api.Test;
 

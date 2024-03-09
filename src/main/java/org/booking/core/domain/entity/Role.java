@@ -4,13 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.booking.core.domain.entity.base.AbstractEntity;
-import org.booking.core.domain.entity.user.User;
 
 @Getter
 @Setter
 @Builder
-@Entity(name = User.ENTITY_NAME)
-@Table(name = User.TABLE_NAME)
+@Entity(name = Role.ENTITY_NAME)
+@Table(name = Role.TABLE_NAME)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role extends AbstractEntity {

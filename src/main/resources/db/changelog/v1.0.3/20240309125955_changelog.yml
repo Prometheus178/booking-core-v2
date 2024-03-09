@@ -1,0 +1,450 @@
+databaseChangeLog:
+- changeSet:
+    id: 1709963997451-5
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: business_employeesPK
+            name: business_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: business_employeesPK
+            name: employee_id
+            type: BIGINT
+        tableName: business_employees
+- changeSet:
+    id: 1709963997451-6
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: rolesPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: BOOLEAN
+        - column:
+            name: modified_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: roles
+- changeSet:
+    id: 1709963997451-7
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_reservation_historyPK
+            name: id
+            type: BIGINT
+        - column:
+            name: created_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: deleted
+            type: BOOLEAN
+        - column:
+            name: modified_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: user_id
+            type: BIGINT
+        tableName: user_reservation_history
+- changeSet:
+    id: 1709963997451-8
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_reservation_history_reservationsPK
+            name: user_reservation_history_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_reservation_history_reservationsPK
+            name: reservation_id
+            type: BIGINT
+        tableName: user_reservation_history_reservations
+- changeSet:
+    id: 1709963997451-9
+    author: sergey (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_rolesPK
+            name: user_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: user_rolesPK
+            name: role_id
+            type: BIGINT
+        tableName: user_roles
+- changeSet:
+    id: 1709963997451-10
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: business_hours_id
+        constraintName: UC_BUSINESSBUSINESS_HOURS_ID_COL
+        tableName: business
+- changeSet:
+    id: 1709963997451-11
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: reservation_schedule_id
+        constraintName: UC_BUSINESSRESERVATION_SCHEDULE_ID_COL
+        tableName: business
+- changeSet:
+    id: 1709963997451-12
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: employee_id
+        constraintName: UC_BUSINESS_EMPLOYEESEMPLOYEE_ID_COL
+        tableName: business_employees
+- changeSet:
+    id: 1709963997451-13
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: user_id
+        constraintName: UC_USER_RESERVATION_HISTORYUSER_ID_COL
+        tableName: user_reservation_history
+- changeSet:
+    id: 1709963997451-14
+    author: sergey (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: reservation_id
+        constraintName: UC_USER_RESERVATION_HISTORY_RESERVATIONSRESERVATION_ID_COL
+        tableName: user_reservation_history_reservations
+- changeSet:
+    id: 1709963997451-15
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: business_id
+        baseTableName: business_employees
+        constraintName: FK3pvqgl26jpf8yqw0wbvpxdwns
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: business
+        validate: true
+- changeSet:
+    id: 1709963997451-16
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: customer_id
+        baseTableName: reservations
+        constraintName: FKcmkyuub3ieebwbnrvh5710ply
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709963997451-17
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: business_employees
+        constraintName: FKdga7ek7o4oe1cbew3wdcv9eun
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709963997451-18
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: role_id
+        baseTableName: user_roles
+        constraintName: FKh8ciramu9cc9q3qcqiv4ue8a6
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: roles
+        validate: true
+- changeSet:
+    id: 1709963997451-19
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_roles
+        constraintName: FKhfh9dx7w3ubf1co1vdev94g3f
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709963997451-20
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_reservation_history_id
+        baseTableName: user_reservation_history_reservations
+        constraintName: FKlpkxpu84haafl70ugoukc2x71
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: user_reservation_history
+        validate: true
+- changeSet:
+    id: 1709963997451-21
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reservation_id
+        baseTableName: user_reservation_history_reservations
+        constraintName: FKlt585aelaqjtgsld95x23ce2e
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: reservations
+        validate: true
+- changeSet:
+    id: 1709963997451-22
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: reservations
+        constraintName: FKpemncff6f47oeiwv1p24oa5gk
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709963997451-23
+    author: sergey (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_reservation_history
+        constraintName: FKrao3a1utoc4rw7wnaweik2h0p
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1709963997451-24
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: reservations
+        constraintName: FK26cya250clfqgfl59s9vi9e8x
+- changeSet:
+    id: 1709963997451-25
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employee_reservation_history_reservations
+        constraintName: FK2dl7v7ngm0iyaq9cf056tqq4v
+- changeSet:
+    id: 1709963997451-26
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employees
+        constraintName: FK69x3vjuy1t5p18a5llb8h2fjx
+- changeSet:
+    id: 1709963997451-27
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: reservations
+        constraintName: FK8eccffekcj27jkdiyw2e9r8ks
+- changeSet:
+    id: 1709963997451-28
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: customer_reservation_history
+        constraintName: FKbct35luu2ne20yat87tugab52
+- changeSet:
+    id: 1709963997451-29
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employee_reservation_history
+        constraintName: FKd4lulg9sm0rjbopfjsefolgp8
+- changeSet:
+    id: 1709963997451-30
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employee_business
+        constraintName: FKdowonnhw1flh9ant9fkrd4ab6
+- changeSet:
+    id: 1709963997451-31
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employee_business
+        constraintName: FKhfi0ag0yjmfl7wygiuw7om0xl
+- changeSet:
+    id: 1709963997451-32
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: customer_reservation_history_reservations
+        constraintName: FKmyxaowx6940n1e0tk62vx5t6m
+- changeSet:
+    id: 1709963997451-33
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: employee_reservation_history_reservations
+        constraintName: FKooqi35quo56qebcdkhdrd8ymj
+- changeSet:
+    id: 1709963997451-34
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: customer_reservation_history_reservations
+        constraintName: FKqlntmclcy8pd4tyq3lvnl0g0o
+- changeSet:
+    id: 1709963997451-35
+    author: sergey (generated)
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: customers
+        constraintName: FKrh1g1a20omjmn6kurd35o3eit
+- changeSet:
+    id: 1709963997451-36
+    author: sergey (generated)
+    changes:
+    - dropUniqueConstraint:
+        constraintName: UK_44g0k2ilq72dr69xmuy45gytl
+        tableName: customer_reservation_history_reservations
+- changeSet:
+    id: 1709963997451-37
+    author: sergey (generated)
+    changes:
+    - dropUniqueConstraint:
+        constraintName: UK_782mfvyvr9rjxo5eeblm02nq5
+        tableName: employee_reservation_history_reservations
+- changeSet:
+    id: 1709963997451-38
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: customer_reservation_history
+- changeSet:
+    id: 1709963997451-39
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: customer_reservation_history_reservations
+- changeSet:
+    id: 1709963997451-40
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: customers
+- changeSet:
+    id: 1709963997451-41
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: employee_business
+- changeSet:
+    id: 1709963997451-42
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: employee_reservation_history
+- changeSet:
+    id: 1709963997451-43
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: employee_reservation_history_reservations
+- changeSet:
+    id: 1709963997451-44
+    author: sergey (generated)
+    changes:
+    - dropTable:
+        tableName: employees
+- changeSet:
+    id: 1709963997451-45
+    author: sergey (generated)
+    changes:
+    - dropColumn:
+        columnName: role
+        tableName: users
+- changeSet:
+    id: 1709963997451-1
+    author: sergey (generated)
+    changes:
+    - modifyDataType:
+        columnName: close_time
+        newDataType: time
+        tableName: business_hours
+- changeSet:
+    id: 1709963997451-2
+    author: sergey (generated)
+    changes:
+    - modifyDataType:
+        columnName: open_time
+        newDataType: time
+        tableName: business_hours
+- changeSet:
+    id: 1709963997451-3
+    author: sergey (generated)
+    changes:
+    - modifyDataType:
+        columnName: price
+        newDataType: number(38,2)
+        tableName: business_services

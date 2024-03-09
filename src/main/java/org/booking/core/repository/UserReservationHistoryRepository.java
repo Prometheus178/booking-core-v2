@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CustomerReservationHistoryRepository extends JpaRepository<UserReservationHistory, Long> {
+public interface UserReservationHistoryRepository extends JpaRepository<UserReservationHistory, Long> {
 
-    Optional<UserReservationHistory> findByCustomerId(Long customerId);
+    Optional<UserReservationHistory> findByUserId(Long userId);
 }

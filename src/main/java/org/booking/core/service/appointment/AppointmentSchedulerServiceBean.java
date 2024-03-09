@@ -35,7 +35,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     private final ReservationRepository reservationRepository;
     private final BusinessServiceRepository businessServiceRepository;
     private final CachingAppointmentSchedulerService cachingAppointmentSchedulerService;
-    private final CustomerReservationHistoryRepository customerReservationHistoryRepository;
+    private final UserReservationHistoryRepository userReservationHistoryRepository;
     private final ReservationMapper reservationMapper;
     private final ReservationScheduleRepository reservationScheduleRepository;
     private final RedisDistributedLock redisDistributedLock;

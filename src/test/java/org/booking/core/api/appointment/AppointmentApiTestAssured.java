@@ -16,9 +16,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,8 +24,7 @@ import static org.assertj.core.api.Assertions.withPrecision;
 import static org.booking.core.api.AbstractApiTestAssured.BASE_URI;
 import static org.booking.core.api.BusinessApiTestAssured.API_BUSINESSES;
 import static org.booking.core.api.BusinessServiceApiTestAssured.API_BUSINESSES_SERVICES;
-import static org.booking.core.api.CustomerApiTestAssured.API_CUSTOMERS;
-import static org.booking.core.api.EmployeeApiTestAssured.API_EMPLOYEES;
+import static org.booking.core.api.EmployeeApiTestAssured.API_CUSTOMERS;
 import static org.instancio.Select.field;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -104,31 +101,31 @@ public class AppointmentApiTestAssured {
     }
 
 
-    @Order(3)
-    @Test
-    void postEmployeeDto() {
-        EmployeeDto employeeDto = generatedObjectEmployeeDto();
-        Set<Long> ids = new HashSet<>();
-        ids.add(createdIdBusinessDto);
-        employeeDto.setBusinessIds(ids);
-
-        String requestBody = getRequestBody(employeeDto);
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .and()
-                .body(requestBody)
-                .when()
-                .post(API_EMPLOYEES)
-                .then()
-                .extract()
-                .response();
-
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-        createdIdEmployeeDto = response.jsonPath().getLong("id");
-        assertThat(response.jsonPath().getString("name")).isEqualTo(employeeDto.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
-    }
+//    @Order(3)
+//    @Test
+//    void postEmployeeDto() {
+//        EmployeeDto employeeDto = generatedObjectEmployeeDto();
+//        Set<Long> ids = new HashSet<>();
+//        ids.add(createdIdBusinessDto);
+//        employeeDto.setBusinessIds(ids);
+//
+//        String requestBody = getRequestBody(employeeDto);
+//        Response response = given()
+//                .contentType(ContentType.JSON)
+//                .and()
+//                .body(requestBody)
+//                .when()
+//                //.post(API_EMPLOYEES)
+//                .then()
+//              //  .extract()
+//                .response();
+//
+//        assertThat(response.statusCode())
+//                .isEqualTo(HttpStatus.OK.value());
+//        createdIdEmployeeDto = response.jsonPath().getLong("id");
+//        assertThat(response.jsonPath().getString("name")).isEqualTo(employeeDto.getName());
+//        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
+//    }
     @Order(4)
     @Test
     void postCustomerDto() {
@@ -251,12 +248,12 @@ public class AppointmentApiTestAssured {
     }
 
 
-    public EmployeeDto generatedObjectEmployeeDto() {
-        return Instancio.of(EmployeeDto.class)
-                .ignore(field(EmployeeDto::getId))
-                .ignore(field(EmployeeDto::getReservationHistoryDto))
-                .create();
-    }
+//    public EmployeeDto generatedObjectEmployeeDto() {
+//        return Instancio.of(EmployeeDto.class)
+//                .ignore(field(EmployeeDto::getId))
+//                .ignore(field(EmployeeDto::getReservationHistoryDto))
+//                .create();
+//    }
 
 
     public CustomerDto generatedObjectCustomerDto() {

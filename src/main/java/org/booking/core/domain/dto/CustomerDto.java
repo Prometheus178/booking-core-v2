@@ -8,5 +8,5 @@ public class CustomerDto {
     private Long id;
     private String email;
     private String name;
-    private CustomerReservationHistoryDto reservationHistory;
+    private UserReservationHistoryDto reservationHistory;
 }

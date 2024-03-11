@@ -13,7 +13,6 @@ public class RedisDistributedLock {
         this.redisson = redisson;
     }
 
-
     public RLock getLock(String name) {
         return redisson.getLock(name);
     }

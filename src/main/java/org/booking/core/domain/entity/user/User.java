@@ -1,18 +1,15 @@
-package org.booking.core.domain.entity.customer;
+package org.booking.core.domain.entity.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import org.booking.core.domain.entity.Role;
 import org.booking.core.domain.entity.base.AbstractEntity;
+import org.booking.core.domain.entity.role.Role;
+import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -28,14 +25,28 @@ public class User extends AbstractEntity implements UserDetails {
 
     private String name;
     private String email;
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
     private String password;
     private String salt;
 
+    @Singular
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private UserReservationHistory reservationHistory;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(
+                role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()))
+        );
+        return authorities;
     }
 
     @Override

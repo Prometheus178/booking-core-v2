@@ -2,8 +2,8 @@ package org.booking.core.mapper;
 
 import org.booking.core.domain.dto.CustomerDto;
 import org.booking.core.domain.dto.ReservationDto;
-import org.booking.core.domain.entity.customer.Customer;
 import org.booking.core.domain.entity.reservation.Reservation;
+import org.booking.core.domain.entity.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -14,9 +14,9 @@ public interface CustomerMapper {
 
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    CustomerDto toDto(Customer obj);
+    CustomerDto toDto(User obj);
 
-    Customer toEntity(CustomerDto dto);
+    User toEntity(CustomerDto dto);
 
     Set<Reservation> mapToEntitySet(Set<ReservationDto> dtoSet);
 

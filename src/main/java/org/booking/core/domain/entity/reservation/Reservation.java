@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessService;
-import org.booking.core.domain.entity.customer.Customer;
-import org.booking.core.domain.entity.employee.Employee;
+import org.booking.core.domain.entity.user.User;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
@@ -23,7 +22,7 @@ public class Reservation extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private User customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_service_id")
@@ -31,7 +30,7 @@ public class Reservation extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
-    private Employee employee;
+    private User employee;
 
     private LocalDateTime bookingTime;
 

@@ -2,8 +2,8 @@ package org.booking.core.domain.entity.user;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.base.AbstractEntity;
+import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,7 +28,8 @@ public class User extends AbstractEntity implements UserDetails {
     private String password;
     private String salt;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @Singular
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -43,7 +44,7 @@ public class User extends AbstractEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         roles.forEach(
-                role -> authorities.add(new SimpleGrantedAuthority(role.getName()))
+                role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()))
         );
         return authorities;
     }

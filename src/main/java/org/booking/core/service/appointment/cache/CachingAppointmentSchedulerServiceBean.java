@@ -1,21 +1,19 @@
 package org.booking.core.service.appointment.cache;
 
-import jakarta.inject.Singleton;
+import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
 import org.booking.core.repository.redis.TimeSlotsRedisRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-
-@Singleton
+@RequiredArgsConstructor
+@Service
 public class CachingAppointmentSchedulerServiceBean implements CachingAppointmentSchedulerService{
 
     private final TimeSlotsRedisRepository timeSlotsRedisRepository;
 
-    public CachingAppointmentSchedulerServiceBean(TimeSlotsRedisRepository timeSlotsRedisRepository) {
-        this.timeSlotsRedisRepository = timeSlotsRedisRepository;
-    }
 
     @Override
     public List<TimeSlot> findAvailableTimeSlotsByKey(String key) {

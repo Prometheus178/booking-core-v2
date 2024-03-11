@@ -4,11 +4,12 @@ import org.booking.core.domain.dto.CustomerDto;
 import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.user.User;
+import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Set;
 
-//@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);

@@ -63,7 +63,7 @@ public class HttpSecurityConfiguration {
     }
 
     @Bean
-    @Order(2)
+    @Order(3)
     public SecurityFilterChain managementFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
@@ -77,7 +77,7 @@ public class HttpSecurityConfiguration {
                 .build();
     }
 
-    @Order(3)
+    @Order(4)
     public SecurityFilterChain customerFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->

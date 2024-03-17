@@ -2,8 +2,8 @@ package org.booking.core.api.v1.customer;
 
 
 import lombok.RequiredArgsConstructor;
-import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.reservation.TimeSlot;
+import org.booking.core.domain.request.ReservationRequest;
 import org.booking.core.service.appointment.AppointmentSchedulerService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,15 +30,15 @@ public class AppointmentApi {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ReservationDto> create(@RequestBody ReservationDto dto) {
-        ReservationDto reserved = appointmentSchedulerService.reserve(dto);
+	public ResponseEntity<ReservationRequest> create(@RequestBody ReservationRequest dto) {
+		ReservationRequest reserved = appointmentSchedulerService.reserve(dto);
         return ResponseEntity.ok().body(reserved);
 
     }
 
     @PutMapping("/{reservationId}")
-    public ResponseEntity<ReservationDto> update(@PathVariable("reservationId")Long reservationId, @RequestBody ReservationDto dto) {
-        ReservationDto modifiedReservation = appointmentSchedulerService.modifyReservation(reservationId, dto);
+	public ResponseEntity<ReservationRequest> update(@PathVariable("reservationId") Long reservationId, @RequestBody ReservationRequest dto) {
+		ReservationRequest modifiedReservation = appointmentSchedulerService.modifyReservation(reservationId, dto);
         return ResponseEntity.ok().body(modifiedReservation);
     }
 

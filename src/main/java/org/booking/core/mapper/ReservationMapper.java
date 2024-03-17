@@ -2,13 +2,13 @@ package org.booking.core.mapper;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
-import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.reservation.Reservation;
+import org.booking.core.domain.request.ReservationRequest;
+import org.booking.core.domain.response.ReservationResponse;
 import org.booking.core.repository.BusinessServiceRepository;
 import org.booking.core.repository.UserRepository;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Optional;
@@ -27,11 +27,11 @@ public abstract class ReservationMapper {
 //    @Mapping(source = "customer", target = "customerId")
 //    @Mapping(source = "service", target = "serviceId")
 //    @Mapping(source = "employee", target = "employeeId")
-    public abstract ReservationDto toDto(Reservation obj);
+public abstract ReservationResponse toDto(Reservation obj);
 //    @Mapping(source = "customerId", target = "customer")
 //    @Mapping(source = "serviceId", target = "service")
 //    @Mapping(source = "employeeId", target = "employee")
-    public abstract Reservation toEntity(ReservationDto dto);
+public abstract Reservation toEntity(ReservationRequest dto);
 
 //    protected Customer fromLongToCustomer(Long customerId) throws EntityNotFoundException {
 //        if (customerId == null){

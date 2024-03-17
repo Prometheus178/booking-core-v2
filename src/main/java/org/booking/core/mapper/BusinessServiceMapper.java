@@ -2,9 +2,10 @@ package org.booking.core.mapper;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
-import org.booking.core.domain.dto.BusinessServiceDto;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.request.BusinessServiceRequest;
+import org.booking.core.domain.response.BusinessServiceResponse;
 import org.booking.core.repository.BusinessRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,10 +23,10 @@ public abstract class BusinessServiceMapper {
 
 
     @Mapping(source = "business", target = "businessId")
-    public abstract BusinessServiceDto toDto(BusinessService obj);
+    public abstract BusinessServiceResponse toDto(BusinessService obj);
 
     @Mapping(source = "businessId", target = "business")
-    public abstract BusinessService toEntity(BusinessServiceDto dto);
+    public abstract BusinessService toEntity(BusinessServiceRequest dto);
 
 
     protected Business fromLongToEntity(Long id) throws EntityNotFoundException {

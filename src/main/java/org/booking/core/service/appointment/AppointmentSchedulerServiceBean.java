@@ -3,7 +3,6 @@ package org.booking.core.service.appointment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.booking.core.BusinessEntityNotFoundException;
-import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
 import org.booking.core.domain.entity.business.ReservationSchedule;
@@ -11,9 +10,13 @@ import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
+import org.booking.core.domain.request.ReservationRequest;
 import org.booking.core.lock.RedisDistributedLock;
 import org.booking.core.mapper.ReservationMapper;
-import org.booking.core.repository.*;
+import org.booking.core.repository.BusinessServiceRepository;
+import org.booking.core.repository.ReservationRepository;
+import org.booking.core.repository.ReservationScheduleRepository;
+import org.booking.core.repository.UserReservationHistoryRepository;
 import org.booking.core.service.appointment.cache.CachingAppointmentSchedulerService;
 import org.booking.core.util.KeyUtil;
 import org.redisson.api.RLock;
@@ -63,18 +66,18 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     }
 
     @Override
-    public ReservationDto reserve(ReservationDto reservationDto) {
-        Reservation reservation = reservationMapper.toEntity(reservationDto);
+	public ReservationRequest reserve(ReservationRequest reservationRequest) {
+		Reservation reservation = reservationMapper.toEntity(reservationRequest);
         return reserve(reservation);
     }
 
 
 
     @Override
-    public ReservationDto modifyReservation(Long reservationId, ReservationDto reservationDto) {
+	public ReservationRequest modifyReservation(Long reservationId, ReservationRequest reservationRequest) {
         Optional<Reservation> existOptional = reservationRepository.findById(reservationId);
         if (existOptional.isPresent()){
-            Reservation reservation = reservationMapper.toEntity(reservationDto);
+			Reservation reservation = reservationMapper.toEntity(reservationRequest);
             String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
                     reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));
             RLock lock = redisDistributedLock.getLock(lockName);
@@ -84,7 +87,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                     log.info("Locked: " + lockName);
                     Reservation existReservation = existOptional.get();
                     existReservation.setCanceled(true);
-                    ReservationDto newReservation = reserve(reservation);
+					ReservationRequest newReservation = reserve(reservation);
                     updateTimeSlotsInCache(existReservation.getService().getId(), existReservation.getDuration(),
                             reservation.getDuration(),
                             reservation.getBookingTime().toLocalDate());
@@ -102,7 +105,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         }
     }
 
-    private ReservationDto reserve(Reservation reservation) {
+	private ReservationRequest reserve(Reservation reservation) {
 
         String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
                 reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));

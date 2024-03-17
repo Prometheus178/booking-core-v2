@@ -1,16 +1,18 @@
 package org.booking.core.api;
 
 
+import org.springframework.http.ResponseEntity;
+
 public interface BaseApi<T, R, I> {
 
-    R create(T obj);
+    ResponseEntity<R> create(T obj);
 
-    R update(I i, T obj);
+    ResponseEntity<R> update(I i, T obj);
 
-    R delete(I i);
+    ResponseEntity<Boolean> delete(I i);
 
-    R getById(I i);
+    ResponseEntity<R> getById(I i);
 
-    R getAllUsers();
+//    ResponseEntity<List<R>> getAll();
 
 }

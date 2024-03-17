@@ -1,7 +1,7 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.dto.BusinessDto;
-import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.request.BusinessRequest;
+import org.booking.core.domain.response.BusinessResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -10,8 +10,8 @@ public interface BusinessMapper {
 
     BusinessMapper INSTANCE = Mappers.getMapper(BusinessMapper.class);
 
-    BusinessDto toDto(Business business);
+    org.booking.core.domain.entity.business.Business dtoTo(BusinessRequest businessRequest);
 
-    Business dtoTo(BusinessDto businessDto);
+    BusinessResponse toDto(org.booking.core.domain.entity.business.Business business);
 
 }

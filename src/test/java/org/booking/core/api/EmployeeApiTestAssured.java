@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.instancio.Select.field;
 
 public class EmployeeApiTestAssured extends AbstractApiTestAssured<CustomerRequest> {
     public static final String API_CUSTOMERS = "/api/customers/";
@@ -116,8 +115,7 @@ public class EmployeeApiTestAssured extends AbstractApiTestAssured<CustomerReque
     @Override
 	public CustomerRequest generatedObject() {
 		return Instancio.of(CustomerRequest.class)
-				.ignore(field(CustomerRequest::getId))
-				.ignore(field(CustomerRequest::getReservationHistory))
+
                 .create();
     }
 

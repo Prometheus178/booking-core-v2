@@ -10,7 +10,10 @@ import org.booking.core.domain.entity.business.service.BusinessService;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
+import org.booking.core.domain.entity.user.User;
+import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.booking.core.domain.request.ReservationRequest;
+import org.booking.core.domain.response.ReservationResponse;
 import org.booking.core.lock.RedisDistributedLock;
 import org.booking.core.mapper.ReservationMapper;
 import org.booking.core.repository.BusinessServiceRepository;
@@ -43,9 +46,6 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     private final ReservationScheduleRepository reservationScheduleRepository;
     private final RedisDistributedLock redisDistributedLock;
 
-
-
-
     @Override
     public List<TimeSlot> findAvailableSlots( Long businessServiceId, LocalDate date) {
        Optional<BusinessService> businessService = businessServiceRepository.findById(businessServiceId);
@@ -66,7 +66,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     }
 
     @Override
-	public ReservationRequest reserve(ReservationRequest reservationRequest) {
+    public ReservationResponse reserve(ReservationRequest reservationRequest) {
 		Reservation reservation = reservationMapper.toEntity(reservationRequest);
         return reserve(reservation);
     }
@@ -74,7 +74,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
 
     @Override
-	public ReservationRequest modifyReservation(Long reservationId, ReservationRequest reservationRequest) {
+    public ReservationResponse modifyReservation(Long reservationId, ReservationRequest reservationRequest) {
         Optional<Reservation> existOptional = reservationRepository.findById(reservationId);
         if (existOptional.isPresent()){
 			Reservation reservation = reservationMapper.toEntity(reservationRequest);
@@ -87,7 +87,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                     log.info("Locked: " + lockName);
                     Reservation existReservation = existOptional.get();
                     existReservation.setCanceled(true);
-					ReservationRequest newReservation = reserve(reservation);
+                    ReservationResponse newReservation = reserve(reservation);
                     updateTimeSlotsInCache(existReservation.getService().getId(), existReservation.getDuration(),
                             reservation.getDuration(),
                             reservation.getBookingTime().toLocalDate());
@@ -105,8 +105,19 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         }
     }
 
-	private ReservationRequest reserve(Reservation reservation) {
+    @Override
+    public boolean cancelReservation(Long reservationId) {
+        Optional<Reservation> existOptional = reservationRepository.findById(reservationId);
+        if (existOptional.isPresent()) {
+            Reservation existReservation = existOptional.get();
+            existReservation.setCanceled(true);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    private ReservationResponse reserve(Reservation reservation) {
         String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
                 reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));
         RLock lock = redisDistributedLock.getLock(lockName);
@@ -147,31 +158,13 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     }
 
     private void addReservationToEmployeeSchedule(Reservation savedReservation) {
-//        Customer customer = savedReservation.getCustomer();
-//        Optional<UserReservationHistory> optionalCustomerReservationHistory = customerReservationHistoryRepository.findByCustomerId(customer.getId());
-//        if (optionalCustomerReservationHistory.isPresent()) {
-//            UserReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
-//            reservationHistory.addReservation(savedReservation);
-//        } else {
-//            UserReservationHistory reservationHistory = new UserReservationHistory();
-//            reservationHistory.setUser(customer);
-//            reservationHistory.addReservation(savedReservation);
-//            customerReservationHistoryRepository.save(reservationHistory);
-//        }
+        User employee = savedReservation.getEmployee();
+        saveToUserHistory(savedReservation, employee);
     }
 
     private void addReservationToCustomerSchedule(Reservation savedReservation) {
-//        Employee employee = savedReservation.getEmployee();
-//        Optional<EmployeeReservationHistory> optionalEmployeeReservationHistory = employeeReservationHistoryRepository.findByEmployeeId(employee.getId());
-//        if (optionalEmployeeReservationHistory.isPresent()) {
-//            EmployeeReservationHistory reservationHistory = optionalEmployeeReservationHistory.get();
-//            reservationHistory.addReservation(savedReservation);
-//        } else {
-//            EmployeeReservationHistory reservationHistory = new EmployeeReservationHistory();
-//            reservationHistory.setEmployee(employee);
-//            reservationHistory.addReservation(savedReservation);
-//            employeeReservationHistoryRepository.save(reservationHistory);
-//        }
+        User customer = savedReservation.getCustomer();
+        saveToUserHistory(savedReservation, customer);
     }
 
     private void updateTimeSlotsInCache(Long businessServiceId,
@@ -186,22 +179,23 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                 businessServiceId), existTimeSlot);
     }
 
+    private void saveToUserHistory(Reservation savedReservation, User customer) {
+        Optional<UserReservationHistory> optionalCustomerReservationHistory = userReservationHistoryRepository.findById(customer.getId());
+        if (optionalCustomerReservationHistory.isPresent()) {
+            UserReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
+            reservationHistory.addReservation(savedReservation);
+        } else {
+            UserReservationHistory reservationHistory = new UserReservationHistory();
+            reservationHistory.setUser(customer);
+            reservationHistory.addReservation(savedReservation);
+            userReservationHistoryRepository.save(reservationHistory);
+        }
+    }
+
     private  TimeSlot computeTimeSlot(Duration duration) {
         LocalDateTime startTime = duration.getStartTime();
         LocalDateTime endTime = duration.getEndTime();
         return new TimeSlot(startTime.toLocalTime(), endTime.toLocalTime());
-    }
-
-    @Override
-    public boolean cancelReservation(Long reservationId) {
-        Optional<Reservation> existOptional = reservationRepository.findById(reservationId);
-        if (existOptional.isPresent()){
-            Reservation existReservation = existOptional.get();
-            existReservation.setCanceled(true);
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private List<TimeSlot> computeTimeSlots(BusinessService businessService) {

@@ -2,7 +2,7 @@ package org.booking.core.mapper;
 
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessService;
-import org.booking.core.domain.request.BusinessServiceRequest;
+import org.booking.core.domain.response.BusinessServiceResponse;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class BusinessRequestServiceMapperTest extends AbstractMapperTest<BusinessServic
     @Test
     void test() {
         BusinessService businessService = createObject(BusinessService.class);
-        BusinessServiceRequest businessServiceRequest = BusinessServiceMapper.INSTANCE.toDto(businessService);
+        BusinessServiceResponse businessServiceRequest = BusinessServiceMapper.INSTANCE.toDto(businessService);
 
         assertThat(businessServiceRequest.getId()).isEqualTo(businessService.getId());
         assertThat(businessServiceRequest.getDescription()).isEqualTo(businessService.getDescription());

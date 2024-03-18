@@ -1,5 +1,6 @@
 package org.booking.core.mapper;
 
+import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.request.BusinessRequest;
 import org.booking.core.domain.response.BusinessResponse;
 import org.mapstruct.Mapper;
@@ -10,8 +11,8 @@ public interface BusinessMapper {
 
     BusinessMapper INSTANCE = Mappers.getMapper(BusinessMapper.class);
 
-    org.booking.core.domain.entity.business.Business dtoTo(BusinessRequest businessRequest);
+    Business dtoTo(BusinessRequest businessRequest);
 
-    BusinessResponse toDto(org.booking.core.domain.entity.business.Business business);
+    BusinessResponse toDto(Business business);
 
 }

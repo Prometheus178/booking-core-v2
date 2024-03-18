@@ -16,10 +16,6 @@ public interface CustomerMapper {
 
 	CustomerRequest toDto(User obj);
 
-	User toEntity(CustomerRequest dto);
-
-	Set<Reservation> mapToEntitySet(Set<ReservationRequest> dtoSet);
-
 	Set<ReservationRequest> mapToDtoSet(Set<Reservation> entitySet);
 
 

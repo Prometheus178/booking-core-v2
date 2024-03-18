@@ -9,8 +9,6 @@ import org.booking.core.mapper.BusinessMapper;
 import org.booking.core.repository.BusinessRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -57,16 +55,4 @@ public class BusinessServiceBean implements BusinessService {
             return businessMapper.toDto(optionalBusiness.get());
     }
 
-    @Override
-    public List<BusinessRequest> getAll() {
-        List<org.booking.core.domain.entity.business.Business> all = businessRepository.findAll();
-        if (!all.isEmpty()) {
-            List<BusinessRequest> allUsers = new LinkedList<>();
-            all.forEach(business -> {
-                allUsers.add(businessMapper.toDto(business));
-            });
-            return allUsers;
-        }
-        return null;
-    }
 }

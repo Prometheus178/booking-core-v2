@@ -7,7 +7,6 @@ import lombok.Data;
 public class ReservationResponse {
 
 	private Long id;
-	private Long customerId;
 	private Long serviceId;
 	private Long employeeId;
 	private String bookingTime;

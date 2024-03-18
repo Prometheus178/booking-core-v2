@@ -69,7 +69,6 @@ public class BusinessRequestServiceApiTestAssured extends AbstractApiTestAssured
     @Test
     public void post() {
         BusinessServiceRequest businessServiceRequest = generatedObject();
-        businessServiceRequest.setBusinessId(createdIdBusinessDto);
         businessServiceRequest.setDuration(60);
         String requestBody = getRequestBody(businessServiceRequest);
         Response response = given()
@@ -111,7 +110,6 @@ public class BusinessRequestServiceApiTestAssured extends AbstractApiTestAssured
     @Test
     public void update() {
         BusinessServiceRequest businessServiceRequest = generatedObject();
-        businessServiceRequest.setBusinessId(createdIdBusinessDto);
         String requestBody = getRequestBody(businessServiceRequest);
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -183,7 +181,6 @@ public class BusinessRequestServiceApiTestAssured extends AbstractApiTestAssured
     @Override
     public BusinessServiceRequest generatedObject() {
         return Instancio.of(BusinessServiceRequest.class)
-                .ignore(field(BusinessServiceRequest::getId))
                 .ignore(field(BusinessServiceRequest::getDuration))
                 .create();
     }
@@ -191,10 +188,8 @@ public class BusinessRequestServiceApiTestAssured extends AbstractApiTestAssured
 
     public BusinessRequest generatedBusinessDto() {
         return Instancio.of(BusinessRequest.class)
-                .ignore(field(BusinessRequest::getId))
                 .ignore(field(BusinessRequest::getBusinessHours))
                 .ignore(field(BusinessRequest::getType))
-                .ignore(field(BusinessRequest::getReservationSchedule))
                 .create();
     }
 

@@ -10,7 +10,7 @@ public interface ReservationScheduleMapper {
 
     ReservationScheduleMapper INSTANCE = Mappers.getMapper(ReservationScheduleMapper.class);
 
-    ReservationSchedule dtoTo(ReservationScheduleRequest dto);
+    ReservationSchedule toEntity(ReservationScheduleRequest dto);
 
 
 }

@@ -10,9 +10,9 @@ import org.mapstruct.factory.Mappers;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
-public interface CustomerMapper {
+public interface UserMapper {
 
-    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
 	CustomerRequest toDto(User obj);
 

@@ -3,10 +3,8 @@ package org.booking.core.mapper;
 import org.booking.core.domain.entity.user.User;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-
-class CustomerMapperTest extends AbstractMapperTest<User> {
+class UserMapperTest extends AbstractMapperTest<User> {
 
     @Test
     void test() {

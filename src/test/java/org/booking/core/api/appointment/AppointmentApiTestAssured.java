@@ -78,7 +78,6 @@ public class AppointmentApiTestAssured {
     void postBusinessServiceDto() {
         BusinessServiceRequest businessServiceRequest = generatedObjectBusinessServiceDto();
         businessServiceRequest.setDuration(60);
-        businessServiceRequest.setBusinessId(createdIdBusinessDto);
         String requestBody = getRequestBody(businessServiceRequest);
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -207,8 +206,6 @@ public class AppointmentApiTestAssured {
 
     private ReservationRequest createReservation(int i) {
         ReservationRequest dto = new ReservationRequest();
-        dto.setCanceled(false);
-        dto.setCustomerId(createdIdCustomerDto);
         dto.setEmployeeId(createdIdEmployeeDto);
         dto.setServiceId(createdIdBusinessService);
         TimeSlot timeSlot = timeSlots.get(i);
@@ -232,16 +229,13 @@ public class AppointmentApiTestAssured {
 
     public BusinessRequest generatedObjectBusinessDto() {
         return Instancio.of(BusinessRequest.class)
-                .ignore(field(BusinessRequest::getId))
                 .ignore(field(BusinessRequest::getBusinessHours))
                 .ignore(field(BusinessRequest::getType))
-                .ignore(field(BusinessRequest::getReservationSchedule))
                 .create();
     }
 
     public BusinessServiceRequest generatedObjectBusinessServiceDto() {
         return Instancio.of(BusinessServiceRequest.class)
-                .ignore(field(BusinessServiceRequest::getId))
                 .ignore(field(BusinessServiceRequest::getDuration))
                 .create();
     }
@@ -257,8 +251,6 @@ public class AppointmentApiTestAssured {
 
     public CustomerRequest generatedObjectCustomerDto() {
         return Instancio.of(CustomerRequest.class)
-                .ignore(field(CustomerRequest::getId))
-                .ignore(field(CustomerRequest::getReservationHistory))
                 .create();
     }
 

@@ -143,10 +143,8 @@ public class BusinessRequestApiTestAssured extends AbstractApiTestAssured<Busine
 
     public BusinessRequest generatedObject() {
         return Instancio.of(BusinessRequest.class)
-                .ignore(field(BusinessRequest::getId))
                 .ignore(field(BusinessRequest::getBusinessHours))
                 .ignore(field(BusinessRequest::getType))
-                .ignore(field(BusinessRequest::getReservationSchedule))
                 .create();
     }
 

@@ -2,7 +2,7 @@ package org.booking.core.mapper;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
-import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.ReservationRequest;
@@ -24,11 +24,11 @@ public abstract class ReservationMapper {
     @Inject
     private BusinessServiceRepository businessServiceRepository;
 
-    @Mapping(source = "service", target = "serviceId")
+	// @Mapping(source = "service", target = "serviceId")
     @Mapping(source = "employee", target = "employeeId")
 public abstract ReservationResponse toDto(Reservation obj);
 
-    @Mapping(source = "serviceId", target = "service")
+	// @Mapping(source = "serviceId", target = "service")
     @Mapping(source = "employeeId", target = "employee")
 public abstract Reservation toEntity(ReservationRequest dto);
 
@@ -36,7 +36,7 @@ public abstract Reservation toEntity(ReservationRequest dto);
         return getUser(id);
     }
 
-    protected BusinessService fromLongToBusinessService(Long serviceId) throws EntityNotFoundException {
+	protected BusinessServiceEntity fromLongToBusinessService(Long serviceId) throws EntityNotFoundException {
         if (serviceId == null){
             return null;
         }
@@ -48,11 +48,11 @@ public abstract Reservation toEntity(ReservationRequest dto);
         return getLong(employee);
     }
 
-    protected Long fromBusinessServiceToLong(BusinessService businessService) throws EntityNotFoundException {
-        if (businessService == null) {
+	protected Long fromBusinessServiceToLong(BusinessServiceEntity businessServiceEntity) throws EntityNotFoundException {
+		if (businessServiceEntity == null) {
             return null;
         }
-        return businessService.getId();
+		return businessServiceEntity.getId();
     }
 
     private Long getLong(User employee) {

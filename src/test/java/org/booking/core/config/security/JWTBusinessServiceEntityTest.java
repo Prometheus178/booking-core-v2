@@ -7,10 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-class JWTServiceTest {
+class JWTBusinessServiceEntityTest {
     JWTService jWTService = new JWTService();
 
     @Test

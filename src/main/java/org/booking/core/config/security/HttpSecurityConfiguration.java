@@ -77,6 +77,7 @@ public class HttpSecurityConfiguration {
                 .build();
     }
 
+    @Bean
     @Order(4)
     public SecurityFilterChain customerFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)

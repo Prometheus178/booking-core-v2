@@ -2,40 +2,53 @@ package org.booking.core.service.business.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.booking.core.domain.entity.business.service.BusinessService;
+import lombok.extern.java.Log;
+import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
+import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.BusinessServiceRequest;
 import org.booking.core.domain.response.BusinessServiceResponse;
 import org.booking.core.mapper.BusinessServiceMapper;
 import org.booking.core.repository.BusinessServiceRepository;
-import org.springframework.stereotype.Service;
+import org.booking.core.service.UserService;
+import org.booking.core.service.business.BusinessService;
 
 import java.util.Optional;
 
+@Log
 @RequiredArgsConstructor
-@Service
+@org.springframework.stereotype.Service
 public class BusinessServiceServiceBean implements BusinessServiceService {
 
-
+    private final UserService userService;
+    private final BusinessService businessService;
     private final BusinessServiceRepository businessServiceRepository;
     private final BusinessServiceMapper businessServiceMapper;
 
     @Override
     public BusinessServiceResponse create(BusinessServiceRequest obj) {
-        BusinessService businessService = businessServiceMapper.toEntity(obj);
-        BusinessService save = businessServiceRepository.save(businessService);
+        BusinessServiceEntity businessServiceEntity = businessServiceMapper.toEntity(obj);
+        User currentUser = userService.getCurrentUser();
+        Business business = businessServiceEntity.getBusiness();
+        if (!business.isEmployeeOfBusiness(currentUser)) {
+            throw new RuntimeException("User is not employee of business!");
+        }
+        businessServiceEntity.setModifiedByUser(currentUser);
+        BusinessServiceEntity save = businessServiceRepository.save(businessServiceEntity);
+        log.info("Created new business service by: " + currentUser.getEmail());
         return businessServiceMapper.toDto(save);
     }
 
     @Override
     public BusinessServiceResponse update(Long id, BusinessServiceRequest obj) {
-        Optional<BusinessService> optionalBusinessService = businessServiceRepository.findById(id);
-        BusinessService existed = optionalBusinessService.orElseThrow(EntityNotFoundException::new);
-            BusinessService businessService = businessServiceMapper.toEntity(obj);
-            existed.setDescription(businessService.getDescription());
-            existed.setPrice(businessService.getPrice());
-            existed.setName(businessService.getName());
-            BusinessService save = businessServiceRepository.save(businessService);
-            return businessServiceMapper.toDto(save);
+        Optional<BusinessServiceEntity> optionalBusinessService = businessServiceRepository.findById(id);
+        BusinessServiceEntity existed = optionalBusinessService.orElseThrow(EntityNotFoundException::new);
+        BusinessServiceEntity businessServiceEntity = businessServiceMapper.toEntity(obj);
+        existed.setDescription(businessServiceEntity.getDescription());
+        existed.setPrice(businessServiceEntity.getPrice());
+        existed.setName(businessServiceEntity.getName());
+        BusinessServiceEntity save = businessServiceRepository.save(businessServiceEntity);
+        return businessServiceMapper.toDto(save);
     }
 
     @Override
@@ -51,8 +64,8 @@ public class BusinessServiceServiceBean implements BusinessServiceService {
 
     @Override
     public BusinessServiceResponse getById(Long id) {
-        Optional<BusinessService> optionalBusinessService = businessServiceRepository.findById(id);
-        BusinessService existed = optionalBusinessService.orElseThrow(EntityNotFoundException::new);
+        Optional<BusinessServiceEntity> optionalBusinessService = businessServiceRepository.findById(id);
+        BusinessServiceEntity existed = optionalBusinessService.orElseThrow(EntityNotFoundException::new);
         return businessServiceMapper.toDto(optionalBusinessService.get());
     }
 

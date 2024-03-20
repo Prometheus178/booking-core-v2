@@ -24,7 +24,7 @@ public class AuthenticationApi {
 	@PostMapping("/business/register")
 	public ResponseEntity<AuthenticationResponse> businessRegister(
 			@RequestBody BaseRegisterRequest baseRegisterRequest) {
-		return ResponseEntity.ok(authenticationServiceBean.register(baseRegisterRequest));
+		return ResponseEntity.ok(authenticationServiceBean.businessRegister(baseRegisterRequest));
     }
 
     @PutMapping("/login")

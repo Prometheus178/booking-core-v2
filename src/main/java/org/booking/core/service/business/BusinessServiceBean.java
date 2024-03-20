@@ -2,27 +2,35 @@ package org.booking.core.service.business;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.BusinessRequest;
 import org.booking.core.domain.response.BusinessResponse;
 import org.booking.core.mapper.BusinessMapper;
 import org.booking.core.repository.BusinessRepository;
+import org.booking.core.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Log
 @RequiredArgsConstructor
 @Service
 public class BusinessServiceBean implements BusinessService {
 
     private final BusinessRepository businessRepository;
     private final BusinessMapper businessMapper;
+    private final UserService userService;
 
     @Override
     public BusinessResponse create(BusinessRequest request) {
         Business business = businessMapper.dtoTo(request);
+        User currentUser = userService.getCurrentUser();
+        business.getEmployees().add(currentUser);
         Business saved = businessRepository.save(business);
-        return businessMapper.toDto(business);
+        log.info("Created new business by: " + currentUser.getEmail());
+        return businessMapper.toDto(saved);
     }
 
     @Override

@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/api/v1/managements/business-services", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
-        MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(
+        path = "/api/v1/managements/business-services",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
 public class BusinessServiceApi implements BaseApi<BusinessServiceRequest, BusinessServiceResponse, Long> {
-
 
     private final BusinessServiceService businessServiceService;
 
+    @PostMapping("/")
     @Override
     public ResponseEntity<BusinessServiceResponse> create(@RequestBody BusinessServiceRequest obj) {
         return ResponseEntity.ok().body(businessServiceService.create(obj));

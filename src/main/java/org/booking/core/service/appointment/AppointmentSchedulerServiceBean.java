@@ -6,7 +6,7 @@ import org.booking.core.BusinessEntityNotFoundException;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
 import org.booking.core.domain.entity.business.ReservationSchedule;
-import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
@@ -23,7 +23,6 @@ import org.booking.core.repository.UserReservationHistoryRepository;
 import org.booking.core.service.appointment.cache.CachingAppointmentSchedulerService;
 import org.booking.core.util.KeyUtil;
 import org.redisson.api.RLock;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +33,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Log
-@Service
+@org.springframework.stereotype.Service
 public class AppointmentSchedulerServiceBean implements AppointmentSchedulerService{
 
     public static final String RESERVED = "Reserved";
@@ -48,7 +47,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
     @Override
     public List<TimeSlot> findAvailableSlots( Long businessServiceId, LocalDate date) {
-       Optional<BusinessService> businessService = businessServiceRepository.findById(businessServiceId);
+		Optional<BusinessServiceEntity> businessService = businessServiceRepository.findById(businessServiceId);
         if (businessService.isPresent()){
             List<TimeSlot> availableTimeSlotsByDay =
                     cachingAppointmentSchedulerService.findAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
@@ -61,7 +60,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             }
             return availableTimeSlotsByDay;
         } else {
-            throw new BusinessEntityNotFoundException(BusinessService.ENTITY_NAME, businessServiceId);
+			throw new BusinessEntityNotFoundException(BusinessServiceEntity.ENTITY_NAME, businessServiceId);
         }
     }
 
@@ -79,7 +78,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         if (existOptional.isPresent()){
 			Reservation reservation = reservationMapper.toEntity(reservationRequest);
             String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
-                    reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));
+					reservation.getBusinessServiceEntity().getId(), computeTimeSlot(reservation.getDuration()));
             RLock lock = redisDistributedLock.getLock(lockName);
             try {
                 boolean locked = lock.tryLock(5, TimeUnit.SECONDS);
@@ -88,7 +87,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                     Reservation existReservation = existOptional.get();
                     existReservation.setCanceled(true);
                     ReservationResponse newReservation = reserve(reservation);
-                    updateTimeSlotsInCache(existReservation.getService().getId(), existReservation.getDuration(),
+					updateTimeSlotsInCache(existReservation.getBusinessServiceEntity().getId(), existReservation.getDuration(),
                             reservation.getDuration(),
                             reservation.getBookingTime().toLocalDate());
                     return newReservation;
@@ -119,14 +118,14 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 
     private ReservationResponse reserve(Reservation reservation) {
         String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
-                reservation.getService().getId(), computeTimeSlot(reservation.getDuration()));
+				reservation.getBusinessServiceEntity().getId(), computeTimeSlot(reservation.getDuration()));
         RLock lock = redisDistributedLock.getLock(lockName);
         try {
             boolean locked = lock.tryLock(5, TimeUnit.SECONDS);
             if (locked) {
                 log.info("Locked: " + lockName);
                 cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
-                        reservation.getService().getId()), computeTimeSlot(reservation.getDuration()));
+						reservation.getBusinessServiceEntity().getId()), computeTimeSlot(reservation.getDuration()));
                 Reservation savedReservation = reservationRepository.save(reservation);
                 addReservationToBusinessSchedule(savedReservation);
                 addReservationToEmployeeSchedule(savedReservation);
@@ -144,7 +143,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     }
 
     private void addReservationToBusinessSchedule(Reservation savedReservation) {
-        Business business = savedReservation.getService().getBusiness();
+		Business business = savedReservation.getBusinessServiceEntity().getBusiness();
         Optional<ReservationSchedule> reservationScheduleByBusinessId = reservationScheduleRepository.findByBusinessId(business.getId());
         if (reservationScheduleByBusinessId.isPresent()) {
             ReservationSchedule reservationSchedule = reservationScheduleByBusinessId.get();
@@ -198,9 +197,9 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         return new TimeSlot(startTime.toLocalTime(), endTime.toLocalTime());
     }
 
-    private List<TimeSlot> computeTimeSlots(BusinessService businessService) {
-        int duration = businessService.getDuration();
-        Business business = businessService.getBusiness();
+	private List<TimeSlot> computeTimeSlots(BusinessServiceEntity businessServiceEntity) {
+		int duration = businessServiceEntity.getDuration();
+		Business business = businessServiceEntity.getBusiness();
         BusinessHours businessHours = business.getBusinessHours();
         List<TimeSlot> availableTimeSlots = new ArrayList<>();
 

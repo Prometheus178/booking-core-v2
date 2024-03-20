@@ -5,24 +5,29 @@ import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
+import org.booking.core.domain.entity.user.User;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@Entity(name = BusinessService.ENTITY_NAME)
-@Table(name = BusinessService.TABLE_NAME)
+@Entity(name = BusinessServiceEntity.ENTITY_NAME)
+@Table(name = BusinessServiceEntity.TABLE_NAME)
 @Getter
 @Setter
-public class BusinessService extends AbstractEntity {
+public class BusinessServiceEntity extends AbstractEntity {
 
     public static final String TABLE_NAME = "business_services";
-    public static final String ENTITY_NAME = "BusinessService";
+    public static final String ENTITY_NAME = "BusinessServiceEntity";
 
     private String name;
     private String description;
     private BigDecimal price;
     private int duration;
+
+    @ManyToOne
+    @JoinColumn(name = "modified_by_user_id")
+    private User modifiedByUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_id", referencedColumnName = "id")
@@ -35,7 +40,7 @@ public class BusinessService extends AbstractEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        BusinessService that = (BusinessService) o;
+        BusinessServiceEntity that = (BusinessServiceEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

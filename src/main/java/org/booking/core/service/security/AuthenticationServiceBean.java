@@ -1,6 +1,7 @@
 package org.booking.core.service.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.booking.core.config.security.JWTService;
 import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.role.RoleClassification;
@@ -9,9 +10,9 @@ import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.security.AuthenticationRequest;
 import org.booking.core.domain.request.security.AuthenticationResponse;
 import org.booking.core.domain.request.security.BaseRegisterRequest;
+import org.booking.core.repository.RoleRepository;
 import org.booking.core.repository.TokenRepository;
 import org.booking.core.repository.UserRepository;
-import org.booking.core.service.RoleRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
-
+@Log
 @RequiredArgsConstructor
 @Service
 public class AuthenticationServiceBean implements AuthenticationService {
@@ -96,6 +97,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
 		existToken.setToken(jwtToken);
 		existToken.setDeleted(false);
 		tokenRepository.save(existToken);
+		log.info(String.format("Refreshed token for user with email: %s", existToken.getEmail()));
 		return jwtToken;
 	}
 
@@ -105,6 +107,7 @@ public class AuthenticationServiceBean implements AuthenticationService {
 				.token(jwtToken)
 				.email(email).build();
 		tokenRepository.save(token);
+		log.info(String.format("Generated token for user with email: %s", email));
 		return jwtToken;
 	}
 }

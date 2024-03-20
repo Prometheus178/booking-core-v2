@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
-import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
 import org.booking.core.domain.entity.user.User;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -32,7 +32,7 @@ public class Business extends AbstractEntity {
     private BusinessHours businessHours;
 
     @OneToMany(mappedBy = "business", fetch = FetchType.LAZY)
-    private Set<BusinessService> businessServices = new HashSet<>();
+    private Set<BusinessServiceEntity> businessServiceEntities = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_schedule_id")
@@ -43,12 +43,18 @@ public class Business extends AbstractEntity {
             "business_id") }, inverseJoinColumns = { @JoinColumn(name = "employee_id")})
     private Set<User> employees = new HashSet<>();
 
-    public void addBusinessService(BusinessService businessService) {
-        businessServices.add(businessService);
+    public void addBusinessService(BusinessServiceEntity businessServiceEntity) {
+        businessServiceEntities.add(businessServiceEntity);
     }
 
-    public void removeBusinessService(BusinessService businessService) {
-        businessServices.remove(businessService);
+    public void removeBusinessService(BusinessServiceEntity businessServiceEntity) {
+        businessServiceEntities.remove(businessServiceEntity);
+    }
+
+    public boolean isEmployeeOfBusiness(User user) {
+        return employees.stream().anyMatch(
+                user::equals
+        );
     }
 
     @Override

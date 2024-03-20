@@ -1,4 +1,4 @@
-package org.booking.core.service;
+package org.booking.core.repository;
 
 import org.booking.core.domain.entity.role.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

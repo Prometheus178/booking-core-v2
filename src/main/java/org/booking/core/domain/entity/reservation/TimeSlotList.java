@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.util.List;
+
 @RedisHash
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,8 +16,8 @@ import java.util.List;
 @Getter
 public class TimeSlotList implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    String key;
-    List<TimeSlot> timeSlots;
+	String key;
+	List<TimeSlot> timeSlots;
 }

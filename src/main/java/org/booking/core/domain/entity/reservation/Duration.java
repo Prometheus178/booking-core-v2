@@ -1,9 +1,9 @@
 package org.booking.core.domain.entity.reservation;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Duration {
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
 }

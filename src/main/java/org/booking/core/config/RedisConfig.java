@@ -15,30 +15,29 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class RedisConfig {
 
+	@Value("${spring.redis.host}")
+	private String redisHost;
 
-    @Value("${spring.redis.host}")
-    private String redisHost;
+	@Value("${spring.redis.port}")
+	private int redisPort;
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+	@Bean
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setConnectionFactory(connectionFactory);
+		return redisTemplate;
+	}
 
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(connectionFactory);
-        return redisTemplate;
-    }
+	@Bean
+	public RedissonClient redissonClient() {
+		Config config = new Config();
+		config.useSingleServer()
+				.setAddress("redis://" + redisHost + ":" + redisPort)
+				//    .setPassword(redisPassword)
+				.setConnectTimeout(5000)
+				.setConnectionMinimumIdleSize(5)
+				.setConnectionPoolSize(10);
 
-    @Bean
-    public RedissonClient redissonClient() {
-        Config config = new Config();
-        config.useSingleServer()
-                .setAddress("redis://" + redisHost + ":" + redisPort)
-                //    .setPassword(redisPassword)
-                .setConnectTimeout(5000)
-                .setConnectionMinimumIdleSize(5)
-                .setConnectionPoolSize(10);
-
-        return Redisson.create(config);
-    }
+		return Redisson.create(config);
+	}
 }

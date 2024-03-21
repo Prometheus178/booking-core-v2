@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710925505012-3
+      author: sergey (generated)
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: modified_by_user_id
+                  type: bigint
+            tableName: business_services
+  - changeSet:
+      id: 1710925505012-4
+      author: sergey (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: modified_by_user_id
+            baseTableName: business_services
+            constraintName: FK2ul88xxuqjfkej7rx0drke9mh
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 1710925505012-1
+      author: sergey (generated)
+      changes:
+        - modifyDataType:
+            columnName: close_time
+            newDataType: time
+            tableName: business_hours
+  - changeSet:
+      id: 1710925505012-2
+      author: sergey (generated)
+      changes:
+        - modifyDataType:
+            columnName: open_time
+            newDataType: time
+            tableName: business_hours
+

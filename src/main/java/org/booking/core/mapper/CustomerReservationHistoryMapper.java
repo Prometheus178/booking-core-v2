@@ -1,47 +1,39 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.dto.CustomerReservationHistoryDto;
-import org.booking.core.domain.dto.ReservationDto;
-import org.booking.core.domain.entity.customer.Customer;
-import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
 import org.booking.core.domain.entity.reservation.Reservation;
-import org.booking.core.repository.CustomerRepository;
+import org.booking.core.domain.entity.user.history.UserReservationHistory;
+import org.booking.core.domain.request.ReservationRequest;
+import org.booking.core.domain.request.UserReservationHistoryRequest;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public abstract class CustomerReservationHistoryMapper {
-    @Inject
-    private CustomerRepository repository;
 
 
-    static CustomerReservationHistoryMapper INSTANCE = Mappers.getMapper(CustomerReservationHistoryMapper.class);
-    @Mapping(source = "customer", target = "customerId")
-    abstract CustomerReservationHistoryDto toDto(CustomerReservationHistory obj);
+	static CustomerReservationHistoryMapper INSTANCE = Mappers.getMapper(CustomerReservationHistoryMapper.class);
 
-    @Mapping(source = "customerId", target = "customer")
-    abstract CustomerReservationHistory dtoTo(CustomerReservationHistoryDto dto);
-    abstract  Set<Reservation> mapToEntitySet(Set<ReservationDto> dtoSet);
+	//@Mapping(source = "customer", target = "customerId")
+	abstract UserReservationHistoryRequest toDto(UserReservationHistory obj);
 
-    abstract Set<ReservationDto> mapToDtoSet(Set<Reservation> entitySet);
+	//@Mapping(source = "customerId", target = "customer")
+	abstract Set<Reservation> mapToEntitySet(Set<ReservationRequest> dtoSet);
+
+	abstract Set<ReservationRequest> mapToDtoSet(Set<Reservation> entitySet);
 
 
-    protected Customer fromLongToEntity(Long id) throws EntityNotFoundException {
-        Optional<Customer> optionalEntity = repository.findById(id);
-        if (optionalEntity.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        return optionalEntity.get();
-    }
+//    protected Customer fromLongToEntity(Long id) throws EntityNotFoundException {
+//        Optional<Customer> optionalEntity = repository.findById(id);
+//        if (optionalEntity.isEmpty()) {
+//            throw new EntityNotFoundException();
+//        }
+//        return optionalEntity.get();
+//    }
 
-    protected Long fromEntityToLong(Customer obj) throws EntityNotFoundException {
-        return obj.getId();
-    }
+//    protected Long fromEntityToLong(Customer obj) throws EntityNotFoundException {
+//        return obj.getId();
+//    }
 
 }

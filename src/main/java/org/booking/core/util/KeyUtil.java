@@ -8,10 +8,11 @@ import java.time.LocalDate;
 @UtilityClass
 public class KeyUtil {
 
-    public static String generateKey(LocalDate date, Long businessServiceId){
-        return date.toString() + "|" + businessServiceId;
-    }
-    public static String generateKey(LocalDate date, Long businessServiceId, TimeSlot timeSlot){
-        return date.toString() + "|" + businessServiceId + "|" + timeSlot.toString();
-    }
+	public static String generateKey(LocalDate date, Long businessServiceId) {
+		return date.toString() + "|" + businessServiceId;
+	}
+
+	public static String generateKey(LocalDate date, Long businessServiceId, TimeSlot timeSlot) {
+		return date.toString() + "|" + businessServiceId + "|" + timeSlot.toString();
+	}
 }

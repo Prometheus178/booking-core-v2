@@ -1,46 +1,43 @@
 package org.booking.core.domain.entity.base;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Author: Sergey.
  */
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	protected Long id;
 
-    @Column(name = "created_at")
-    protected Date createdAt;
+	@Column(name = "created_at")
+	protected Date createdAt;
 
-    @Column(name = "modified_at")
-    protected Date modifiedAt;
+	@Column(name = "modified_at")
+	protected Date modifiedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
-    }
+	protected boolean deleted = false;
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.modifiedAt = new Date();
-    }
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+	}
 
-    public Long getId() {
-        return id;
-    }
+	@PreUpdate
+	protected void onUpdate() {
+		this.modifiedAt = new Date();
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

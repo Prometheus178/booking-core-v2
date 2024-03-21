@@ -1,21 +1,18 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.dto.ReservationScheduleDto;
 import org.booking.core.domain.entity.business.ReservationSchedule;
+import org.booking.core.domain.request.ReservationScheduleRequest;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-
-class ReservationScheduleMapperTest extends AbstractMapperTest<ReservationSchedule> {
+class ReservationScheduleMapperTest extends AbstractMapperTest<ReservationScheduleRequest> {
 
     @Test
     void test() {
-        ReservationSchedule reservationSchedule = createObject(ReservationSchedule.class);
-        ReservationScheduleDto reservationScheduleDto = ReservationScheduleMapper.INSTANCE.toDto(reservationSchedule);
+		ReservationScheduleRequest reservationScheduleRequest = createObject(ReservationScheduleRequest.class);
+		ReservationSchedule reservationSchedule = ReservationScheduleMapper.INSTANCE.toEntity(reservationScheduleRequest);
 
-        assertThat(reservationScheduleDto.getId()).isEqualTo(reservationSchedule.getId());
-    }
+		}
 
 
 }

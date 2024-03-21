@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710999690529-3
+      author: sergey (generated)
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: reservation_history_id
+                  type: bigint
+            tableName: users
+  - changeSet:
+      id: 1710999690529-4
+      author: sergey (generated)
+      changes:
+        - addUniqueConstraint:
+            columnNames: reservation_history_id
+            constraintName: UC_USERSRESERVATION_HISTORY_ID_COL
+            tableName: users
+  - changeSet:
+      id: 1710999690529-5
+      author: sergey (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: reservation_history_id
+            baseTableName: users
+            constraintName: FKt72kvyhwc0k59kkkd2do44bgu
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: user_reservation_history
+            validate: true
+  - changeSet:
+      id: 1710999690529-6
+      author: sergey (generated)
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: user_reservation_history
+            constraintName: FKrao3a1utoc4rw7wnaweik2h0p
+  - changeSet:
+      id: 1710999690529-7
+      author: sergey (generated)
+      changes:
+        - dropUniqueConstraint:
+            constraintName: uc_user_reservation_historyuser_id_col
+            tableName: user_reservation_history
+  - changeSet:
+      id: 1710999690529-8
+      author: sergey (generated)
+      changes:
+        - dropColumn:
+            columnName: user_id
+            tableName: user_reservation_history
+  - changeSet:
+      id: 1710999690529-1
+      author: sergey (generated)
+      changes:
+        - modifyDataType:
+            columnName: close_time
+            newDataType: time
+            tableName: business_hours
+  - changeSet:
+      id: 1711000817767-3
+      author: sergey (generated)
+      changes:
+        - dropUniqueConstraint:
+            constraintName: uc_user_reservation_history_reservationsreservation_id_col
+            tableName: user_reservation_history_reservations
+

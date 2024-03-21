@@ -1,20 +1,20 @@
 package org.booking.core.mapper;
 
-import org.booking.core.domain.dto.CustomerReservationHistoryDto;
-import org.booking.core.domain.entity.customer.history.CustomerReservationHistory;
+import org.booking.core.domain.entity.user.history.UserReservationHistory;
+import org.booking.core.domain.request.UserReservationHistoryRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class CustomerReservationHistoryTest extends AbstractMapperTest<CustomerReservationHistory> {
+class CustomerReservationHistoryTest extends AbstractMapperTest<UserReservationHistory> {
 
     @Test
     void test() {
-        CustomerReservationHistory customerReservationHistory = createObject(CustomerReservationHistory.class);
-        CustomerReservationHistoryDto customerReservationHistoryDto = CustomerReservationHistoryMapper.INSTANCE.toDto(customerReservationHistory);
+        UserReservationHistory userReservationHistory = createObject(UserReservationHistory.class);
+		UserReservationHistoryRequest userReservationHistoryRequest = CustomerReservationHistoryMapper.INSTANCE.toDto(userReservationHistory);
 
-        assertThat(customerReservationHistoryDto.getId()).isEqualTo(customerReservationHistory.getId());
+		assertThat(userReservationHistoryRequest.getId()).isEqualTo(userReservationHistory.getId());
     }
 
 

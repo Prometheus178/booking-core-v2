@@ -7,16 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisDistributedLock {
 
-    private final RedissonClient redisson;
+	private final RedissonClient redisson;
 
-    public RedisDistributedLock(RedissonClient redisson) {
-        this.redisson = redisson;
-    }
+	public RedisDistributedLock(RedissonClient redisson) {
+		this.redisson = redisson;
+	}
 
-
-    public RLock getLock(String name) {
-        return redisson.getLock(name);
-    }
+	public RLock getLock(String name) {
+		return redisson.getLock(name);
+	}
 
 
 }

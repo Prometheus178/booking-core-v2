@@ -1,19 +1,20 @@
 package org.booking.core.service.appointment;
 
-import org.booking.core.domain.dto.ReservationDto;
 import org.booking.core.domain.entity.reservation.TimeSlot;
+import org.booking.core.domain.request.ReservationRequest;
+import org.booking.core.domain.response.ReservationResponse;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentSchedulerService {
 
-    List<TimeSlot> findAvailableSlots(Long businessServiceId, LocalDate day);
+	List<TimeSlot> findAvailableSlots(Long businessServiceId, LocalDate day);
 
-    ReservationDto reserve(ReservationDto reservationDto);
+	ReservationResponse reserve(ReservationRequest reservationRequest);
 
-    ReservationDto modifyReservation(Long reservationId, ReservationDto reservationDto);
+	ReservationResponse modifyReservation(Long reservationId, ReservationRequest reservationRequest);
 
-    boolean cancelReservation(Long reservationId);
+	boolean cancelReservation(Long reservationId);
 
 }

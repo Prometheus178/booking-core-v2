@@ -17,21 +17,21 @@ import static org.booking.core.config.security.JwtAuthenticationFilter.BEARER_;
 @RequiredArgsConstructor
 public class CustomLogoutHandler implements LogoutHandler {
 
-    private final TokenRepository tokenRepository;
+	private final TokenRepository tokenRepository;
 
-    @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        final String authHeader = request.getHeader(AUTHORIZATION);
-        if (authHeader == null || !authHeader.startsWith(BEARER_)) {
-            return;
-        }
-        var jwt = authHeader.substring(7);
-        var optionalToken = tokenRepository.findByToken(jwt);
-        if (optionalToken.isPresent()) {
-            Token token = optionalToken.get();
-            token.setDeleted(true);
-            tokenRepository.save(token);
-            SecurityContextHolder.clearContext();
-        }
-    }
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+		final String authHeader = request.getHeader(AUTHORIZATION);
+		if (authHeader == null || !authHeader.startsWith(BEARER_)) {
+			return;
+		}
+		var jwt = authHeader.substring(7);
+		var optionalToken = tokenRepository.findByToken(jwt);
+		if (optionalToken.isPresent()) {
+			Token token = optionalToken.get();
+			token.setDeleted(true);
+			tokenRepository.save(token);
+			SecurityContextHolder.clearContext();
+		}
+	}
 }

@@ -26,68 +26,68 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public static final String AUTHORIZATION = "authorization";
-    public static final String BEARER_ = "Bearer ";
+	public static final String AUTHORIZATION = "authorization";
+	public static final String BEARER_ = "Bearer ";
 
-    private final JWTService jwtService;
-    private final UserDetailsService userDetailService;
-    private final TokenRepository tokenRepository;
+	private final JWTService jwtService;
+	private final UserDetailsService userDetailService;
+	private final TokenRepository tokenRepository;
 
-    @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest,
-                                    @NonNull HttpServletResponse httpServletResponse,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
-        if (authHeader != null && authHeader.startsWith(BEARER_) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var jwtToken = authHeader.substring(7);
-            DecodedJWT decodedJWT = JWT.decode(jwtToken);
-            var userEmail = decodedJWT.getSubject();
-            if (userEmail == null) {
-                throw new RuntimeException("Incorrect token");
-            }
-            Token token = tokenRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("Token not found"));
-            if (token.isDeleted()) {
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
-                return;
-            }
+	@Override
+	protected void doFilterInternal(@NonNull HttpServletRequest httpServletRequest,
+									@NonNull HttpServletResponse httpServletResponse,
+									@NonNull FilterChain filterChain) throws ServletException, IOException {
+		String authHeader = httpServletRequest.getHeader(AUTHORIZATION);
+		if (authHeader != null && authHeader.startsWith(BEARER_) && SecurityContextHolder.getContext().getAuthentication() == null) {
+			var jwtToken = authHeader.substring(7);
+			DecodedJWT decodedJWT = JWT.decode(jwtToken);
+			var userEmail = decodedJWT.getSubject();
+			if (userEmail == null) {
+				throw new RuntimeException("Incorrect token");
+			}
+			Token token = tokenRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("Token not found"));
+			if (token.isDeleted()) {
+				filterChain.doFilter(httpServletRequest, httpServletResponse);
+				return;
+			}
 
-            Date currentTime = new Date();
-            Date tokenExpirationTime = decodedJWT.getExpiresAt();
-            if (tokenExpirationTime.before(currentTime)) {
-                Log.warn("Token has expired");
-                if (isProlongationAvailable(currentTime, tokenExpirationTime)) {
-                        String refreshedToken = jwtService.refreshToken(jwtToken, currentTime);
-                        token.setToken(refreshedToken);
-                        tokenRepository.save(token);
-                        httpServletResponse.setHeader("authorization-fresh-token", refreshedToken);
-                        Log.info("Token is refreshed");
+			Date currentTime = new Date();
+			Date tokenExpirationTime = decodedJWT.getExpiresAt();
+			if (tokenExpirationTime.before(currentTime)) {
+				Log.warn("Token has expired");
+				if (isProlongationAvailable(currentTime, tokenExpirationTime)) {
+					String refreshedToken = jwtService.refreshToken(jwtToken, currentTime);
+					token.setToken(refreshedToken);
+					tokenRepository.save(token);
+					httpServletResponse.setHeader("authorization-fresh-token", refreshedToken);
+					Log.info("Token is refreshed");
 
-                    authenticated(httpServletRequest, userEmail);
-                }
-            } else {
-                authenticated(httpServletRequest, userEmail);
-            }
-        }
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
-    }
+					authenticated(httpServletRequest, userEmail);
+				}
+			} else {
+				authenticated(httpServletRequest, userEmail);
+			}
+		}
+		filterChain.doFilter(httpServletRequest, httpServletResponse);
+	}
 
-    private void authenticated(HttpServletRequest httpServletRequest, String userEmail) {
-        UserDetails userDetails = this.userDetailService.loadUserByUsername(userEmail);
-        UsernamePasswordAuthenticationToken authenticationToken = defineAuthToken(httpServletRequest, userDetails);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-    }
+	private void authenticated(HttpServletRequest httpServletRequest, String userEmail) {
+		UserDetails userDetails = this.userDetailService.loadUserByUsername(userEmail);
+		UsernamePasswordAuthenticationToken authenticationToken = defineAuthToken(httpServletRequest, userDetails);
+		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+	}
 
-    private UsernamePasswordAuthenticationToken defineAuthToken(HttpServletRequest httpServletRequest, UserDetails userDetails) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-        return authenticationToken;
-    }
+	private UsernamePasswordAuthenticationToken defineAuthToken(HttpServletRequest httpServletRequest, UserDetails userDetails) {
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+				userDetails,
+				null,
+				userDetails.getAuthorities());
+		authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+		return authenticationToken;
+	}
 
-    public boolean isProlongationAvailable(Date currentDate, Date date) {
-        long timeDifferenceMillis = currentDate.getTime() - date.getTime();
-        return timeDifferenceMillis < (60 * 1000 * JWTService.EXPIRATION_TIME_IN_MINUTES);
-    }
+	public boolean isProlongationAvailable(Date currentDate, Date date) {
+		long timeDifferenceMillis = currentDate.getTime() - date.getTime();
+		return timeDifferenceMillis < (60 * 1000 * JWTService.EXPIRATION_TIME_IN_MINUTES);
+	}
 }

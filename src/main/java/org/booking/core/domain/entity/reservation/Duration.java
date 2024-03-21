@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Duration {
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
 }

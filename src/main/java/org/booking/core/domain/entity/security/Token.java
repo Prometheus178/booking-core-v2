@@ -16,12 +16,12 @@ import org.booking.core.domain.entity.base.AbstractEntity;
 @Table(name = Token.TABLE_NAME)
 public class Token extends AbstractEntity {
 
-    public static final String TABLE_NAME = "tokens";
-    public static final String ENTITY_NAME = "Token";
+	public static final String TABLE_NAME = "tokens";
+	public static final String ENTITY_NAME = "Token";
 
-    private String email;
+	private String email;
 
-    @Column(length = 765)
-    private String token;
+	@Column(length = 765)
+	private String token;
 
 }

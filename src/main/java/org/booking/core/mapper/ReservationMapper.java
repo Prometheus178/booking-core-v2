@@ -2,88 +2,71 @@ package org.booking.core.mapper;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
-import org.booking.core.domain.dto.ReservationDto;
-import org.booking.core.domain.entity.business.service.BusinessService;
+import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
 import org.booking.core.domain.entity.reservation.Reservation;
+import org.booking.core.domain.entity.user.User;
+import org.booking.core.domain.request.ReservationRequest;
+import org.booking.core.domain.response.ReservationResponse;
 import org.booking.core.repository.BusinessServiceRepository;
 import org.booking.core.repository.UserRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Optional;
-
 @Mapper(componentModel = "spring")
 public abstract class ReservationMapper {
 
-    static ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
+	static ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
 
-    @Inject
-    private UserRepository customerRepository;
+	@Inject
+	private UserRepository userRepository;
 
-    @Inject
-    private BusinessServiceRepository businessServiceRepository;
+	@Inject
+	private BusinessServiceRepository businessServiceRepository;
 
-//    @Mapping(source = "customer", target = "customerId")
-//    @Mapping(source = "service", target = "serviceId")
-//    @Mapping(source = "employee", target = "employeeId")
-    public abstract ReservationDto toDto(Reservation obj);
-//    @Mapping(source = "customerId", target = "customer")
-//    @Mapping(source = "serviceId", target = "service")
-//    @Mapping(source = "employeeId", target = "employee")
-    public abstract Reservation toEntity(ReservationDto dto);
+	@Mapping(source = "businessServiceEntity", target = "businessServiceId")
+	@Mapping(source = "employee", target = "employeeId")
+	public abstract ReservationResponse toDto(Reservation obj);
 
-//    protected Customer fromLongToCustomer(Long customerId) throws EntityNotFoundException {
-//        if (customerId == null){
-//            return null;
-//        }
-//        Optional<Customer> optionalEntity = customerRepository.findById(customerId);
-//        if (optionalEntity.isEmpty()) {
-//            throw new EntityNotFoundException();
-//        }
-//        return optionalEntity.get();
-//    }
-//
-//    protected Employee fromLongToEmployee(Long employeeId) throws EntityNotFoundException {
-//        if (employeeId == null){
-//            return null;
-//        }
-//        Optional<Employee> optionalEntity = employeeRepository.findById(employeeId);
-//        if (optionalEntity.isEmpty()) {
-//            throw new EntityNotFoundException();
-//        }
-//        return optionalEntity.get();
-//    }
+	@Mapping(source = "businessServiceId", target = "businessServiceEntity")
+	@Mapping(source = "employeeId", target = "employee")
+	public abstract Reservation toEntity(ReservationRequest dto);
 
-    protected BusinessService fromLongToBusinessService(Long serviceId) throws EntityNotFoundException {
-        if (serviceId == null){
-            return null;
-        }
-        Optional<BusinessService> optionalEntity = businessServiceRepository.findById(serviceId);
-        if (optionalEntity.isEmpty()) {
-            throw new EntityNotFoundException();
-        }
-        return optionalEntity.get();
-    }
+	protected User fromLongToUser(Long id) throws EntityNotFoundException {
+		return getUser(id);
+	}
 
-//    protected Long fromEmployeeToLong(Employee employee) throws EntityNotFoundException {
-//        if (employee == null){
-//            return null;
-//        }
-//        return employee.getId();
-//    }
-//
-//    protected Long fromBusinessServiceToLong(BusinessService businessService) throws EntityNotFoundException {
-//        if (businessService == null){
-//            return null;
-//        }
-//        return businessService.getId();
-//    }
-//
-//    protected Long fromCustomerToLong(Customer customer) throws EntityNotFoundException {
-//        if (customer == null){
-//            return null;
-//        }
-//        return customer.getId();
-//    }
+	protected BusinessServiceEntity fromLongToBusinessService(Long businessServiceId) throws EntityNotFoundException {
+		if (businessServiceId == null) {
+			return null;
+		}
+		return businessServiceRepository.findById(businessServiceId).orElseThrow(
+				EntityNotFoundException::new);
+	}
+
+	protected Long fromUserToLong(User employee) throws EntityNotFoundException {
+		return getLong(employee);
+	}
+
+	protected Long fromBusinessServiceToLong(BusinessServiceEntity businessServiceEntity) throws EntityNotFoundException {
+		if (businessServiceEntity == null) {
+			return null;
+		}
+		return businessServiceEntity.getId();
+	}
+
+	private Long getLong(User employee) {
+		if (employee == null) {
+			return null;
+		}
+		return employee.getId();
+	}
+
+	private User getUser(Long customerId) {
+		if (customerId == null) {
+			return null;
+		}
+		return userRepository.findById(customerId).orElseThrow(
+				EntityNotFoundException::new);
+	}
 }

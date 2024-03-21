@@ -13,36 +13,36 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(
-        path = "/api/v1/managements/businesses",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE
+		path = "/api/v1/managements/businesses",
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE
 )
 public class BusinessApi implements BaseApi<BusinessRequest, BusinessResponse, Long> {
 
-    private final BusinessService businessService;
+	private final BusinessService businessService;
 
-    @PostMapping("/")
-    @Override
-    public ResponseEntity<BusinessResponse> create(@RequestBody BusinessRequest obj) {
-        return ResponseEntity.ok().body(businessService.create(obj));
-    }
+	@PostMapping("/")
+	@Override
+	public ResponseEntity<BusinessResponse> create(@RequestBody BusinessRequest obj) {
+		return ResponseEntity.ok().body(businessService.create(obj));
+	}
 
-    @PutMapping("/{id}")
-    @Override
-    public ResponseEntity<BusinessResponse> update(@PathVariable("id") Long aLong, @RequestBody BusinessRequest obj) {
-        return ResponseEntity.ok().body(businessService.update(aLong, obj));
-    }
+	@PutMapping("/{id}")
+	@Override
+	public ResponseEntity<BusinessResponse> update(@PathVariable("id") Long aLong, @RequestBody BusinessRequest obj) {
+		return ResponseEntity.ok().body(businessService.update(aLong, obj));
+	}
 
-    @DeleteMapping("/{id}")
-    @Override
-    public ResponseEntity<Boolean> delete(@PathVariable("id") Long aLong) {
-        return ResponseEntity.ok().body(businessService.delete(aLong));
-    }
+	@DeleteMapping("/{id}")
+	@Override
+	public ResponseEntity<Boolean> delete(@PathVariable("id") Long aLong) {
+		return ResponseEntity.ok().body(businessService.delete(aLong));
+	}
 
-    @GetMapping("/{id}")
-    @Override
-    public ResponseEntity<BusinessResponse> getById(@PathVariable("id") Long aLong) {
-        return ResponseEntity.ok().body(businessService.getById(aLong));
-    }
+	@GetMapping("/{id}")
+	@Override
+	public ResponseEntity<BusinessResponse> getById(@PathVariable("id") Long aLong) {
+		return ResponseEntity.ok().body(businessService.getById(aLong));
+	}
 
 }

@@ -15,20 +15,20 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public abstract class BusinessMapper {
 
-    static BusinessMapper INSTANCE = Mappers.getMapper(BusinessMapper.class);
+	static BusinessMapper INSTANCE = Mappers.getMapper(BusinessMapper.class);
 
-    public abstract Business toEntity(BusinessRequest businessRequest);
+	public abstract Business toEntity(BusinessRequest businessRequest);
 
-    @Mapping(source = "employees", target = "employees")
+	@Mapping(source = "employees", target = "employees")
 //            expression = "java(fromEntityEmployeeToLongEmployees(business.getEmployees()))")
-    public abstract BusinessResponse toResponse(Business business);
+	public abstract BusinessResponse toResponse(Business business);
 
-    protected Set<Long> fromEntityEmployeeToLongEmployees(Set<User> employees) {
-        if (employees == null || employees.isEmpty()) {
-            return null;
-        }
-        return employees.stream()
-                .map(AbstractEntity::getId)
-                .collect(Collectors.toSet());
-    }
+	protected Set<Long> fromEntityEmployeeToLongEmployees(Set<User> employees) {
+		if (employees == null || employees.isEmpty()) {
+			return null;
+		}
+		return employees.stream()
+				.map(AbstractEntity::getId)
+				.collect(Collectors.toSet());
+	}
 }

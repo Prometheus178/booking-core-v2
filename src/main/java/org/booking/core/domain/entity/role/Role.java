@@ -14,8 +14,8 @@ import org.booking.core.domain.entity.base.AbstractEntity;
 @AllArgsConstructor
 public class Role extends AbstractEntity {
 
-    public static final String ENTITY_NAME = "Role";
-    public static final String TABLE_NAME = "roles";
+	public static final String ENTITY_NAME = "Role";
+	public static final String TABLE_NAME = "roles";
 
-    private String name;
+	private String name;
 }

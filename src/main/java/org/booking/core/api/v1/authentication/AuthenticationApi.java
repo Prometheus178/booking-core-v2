@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationApi {
 
 	private final AuthenticationServiceBean authenticationServiceBean;
-    @PostMapping("/register")
+
+	@PostMapping("/register")
 	public ResponseEntity<AuthenticationResponse> clientRegister(
 			@RequestBody BaseRegisterRequest baseRegisterRequest) {
 		return ResponseEntity.ok(authenticationServiceBean.register(baseRegisterRequest));
@@ -28,11 +29,11 @@ public class AuthenticationApi {
 	public ResponseEntity<AuthenticationResponse> businessRegister(
 			@RequestBody BaseRegisterRequest baseRegisterRequest) {
 		return ResponseEntity.ok(authenticationServiceBean.businessRegister(baseRegisterRequest));
-    }
+	}
 
-    @PutMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest authenticationRequest){
+	@PutMapping("/login")
+	public ResponseEntity<AuthenticationResponse> authenticate(
+			@RequestBody AuthenticationRequest authenticationRequest) {
 		return ResponseEntity.ok(authenticationServiceBean.authenticate(authenticationRequest));
-    }
+	}
 }

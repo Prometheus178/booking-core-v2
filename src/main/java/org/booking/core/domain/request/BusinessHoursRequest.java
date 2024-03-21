@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class BusinessHoursRequest {
-    private String openTime;
-    private String closeTime;
+	private String openTime;
+	private String closeTime;
 }

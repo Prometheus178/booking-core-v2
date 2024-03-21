@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface DurationMapper {
 
-    DurationMapper INSTANCE = Mappers.getMapper(DurationMapper.class);
+	DurationMapper INSTANCE = Mappers.getMapper(DurationMapper.class);
 
 	DurationRequest toDto(Duration obj);
 

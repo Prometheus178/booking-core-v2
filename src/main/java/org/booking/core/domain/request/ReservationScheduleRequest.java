@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ReservationScheduleRequest {
 
-    private BusinessRequest businessRequest;
+	private BusinessRequest businessRequest;
 
 }

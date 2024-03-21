@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class DurationRequest {
 
-    private String startTime;
-    private String endTime;
+	private String startTime;
+	private String endTime;
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BaseRegisterRequest {
 
-    private String username;
-    private String email;
-    private String password;
+	private String username;
+	private String email;
+	private String password;
 }

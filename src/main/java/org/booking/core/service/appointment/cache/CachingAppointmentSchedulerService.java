@@ -6,9 +6,12 @@ import java.util.List;
 
 public interface CachingAppointmentSchedulerService {
 
-    List<TimeSlot> findAvailableTimeSlotsByKey(String key);
-    void saveAvailableTimeSlotsByKey(String key, List<TimeSlot> availableTimeSlots);
-    void removeTimeSlotByKey(String key, TimeSlot existTimeSlot);
-    void addTimeSlotByKey(String key, TimeSlot newTimeSlot);
+	List<TimeSlot> findAvailableTimeSlotsByKey(String key);
+
+	void saveAvailableTimeSlotsByKey(String key, List<TimeSlot> availableTimeSlots);
+
+	void removeTimeSlotByKey(String key, TimeSlot existTimeSlot);
+
+	void addTimeSlotByKey(String key, TimeSlot newTimeSlot);
 }
 

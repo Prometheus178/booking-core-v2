@@ -8,9 +8,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface ReservationScheduleMapper {
 
-    ReservationScheduleMapper INSTANCE = Mappers.getMapper(ReservationScheduleMapper.class);
+	ReservationScheduleMapper INSTANCE = Mappers.getMapper(ReservationScheduleMapper.class);
 
-    ReservationSchedule toEntity(ReservationScheduleRequest dto);
+	ReservationSchedule toEntity(ReservationScheduleRequest dto);
 
 
 }

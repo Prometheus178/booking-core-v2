@@ -10,7 +10,7 @@ import lombok.*;
 public class EmployeeRegisterRequest {
 
 
-    private String name;
-    private String email;
+	private String name;
+	private String email;
 
 }

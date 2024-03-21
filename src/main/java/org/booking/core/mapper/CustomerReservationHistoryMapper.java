@@ -13,14 +13,15 @@ import java.util.Set;
 public abstract class CustomerReservationHistoryMapper {
 
 
-    static CustomerReservationHistoryMapper INSTANCE = Mappers.getMapper(CustomerReservationHistoryMapper.class);
-    //@Mapping(source = "customer", target = "customerId")
-    abstract UserReservationHistoryRequest toDto(UserReservationHistory obj);
+	static CustomerReservationHistoryMapper INSTANCE = Mappers.getMapper(CustomerReservationHistoryMapper.class);
 
-//@Mapping(source = "customerId", target = "customer")
-abstract Set<Reservation> mapToEntitySet(Set<ReservationRequest> dtoSet);
+	//@Mapping(source = "customer", target = "customerId")
+	abstract UserReservationHistoryRequest toDto(UserReservationHistory obj);
 
-    abstract Set<ReservationRequest> mapToDtoSet(Set<Reservation> entitySet);
+	//@Mapping(source = "customerId", target = "customer")
+	abstract Set<Reservation> mapToEntitySet(Set<ReservationRequest> dtoSet);
+
+	abstract Set<ReservationRequest> mapToDtoSet(Set<Reservation> entitySet);
 
 
 //    protected Customer fromLongToEntity(Long id) throws EntityNotFoundException {

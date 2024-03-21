@@ -22,62 +22,62 @@ import java.util.Set;
 @AllArgsConstructor
 public class User extends AbstractEntity implements UserDetails {
 
-    public static final String ENTITY_NAME = "User";
-    public static final String TABLE_NAME = "users";
+	public static final String ENTITY_NAME = "User";
+	public static final String TABLE_NAME = "users";
 
-    private String name;
-    private String email;
-    private String password;
-    private String salt;
+	private String name;
+	private String email;
+	private String password;
+	private String salt;
 
-    @Singular
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+	@Singular
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "user_roles",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id")
+	)
+	private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "reservation_history_id")
-    private UserReservationHistory userReservationHistory;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "reservation_history_id")
+	private UserReservationHistory userReservationHistory;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                .toList();
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles.stream()
+				.map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+				.toList();
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
+	@Override
+	public String getUsername() {
+		return email;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return !deleted;
-    }
+	@Override
+	public boolean isEnabled() {
+		return !deleted;
+	}
 
 }

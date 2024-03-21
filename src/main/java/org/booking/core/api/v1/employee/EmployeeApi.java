@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api/v1/managements/employees", produces = MediaType.APPLICATION_JSON_VALUE, consumes =
-        MediaType.APPLICATION_JSON_VALUE)
+		MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeApi {
 
-    private final EmployeeService employeeService;
+	private final EmployeeService employeeService;
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity getById(@PathVariable("id") Long aLong) {
@@ -23,7 +23,6 @@ public class EmployeeApi {
 //    public ResponseEntity delete(@PathVariable("id") Long aLong) {
 //        return ResponseEntity.ok().body(employeeService.delete(aLong));
 //    }
-
 
 
 }

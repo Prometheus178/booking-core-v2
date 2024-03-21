@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1711000817767-3
+      author: sergey (generated)
+      changes:
+        - dropUniqueConstraint:
+            constraintName: uc_user_reservation_history_reservationsreservation_id_col
+            tableName: user_reservation_history_reservations
+  - changeSet:
+      id: 1711000817767-1
+      author: sergey (generated)
+      changes:
+        - modifyDataType:
+            columnName: close_time
+            newDataType: time
+            tableName: business_hours
+  - changeSet:
+      id: 1711000817767-2
+      author: sergey (generated)
+      changes:
+        - modifyDataType:
+            columnName: open_time
+            newDataType: time
+            tableName: business_hours
+

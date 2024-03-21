@@ -15,17 +15,20 @@ import java.util.Set;
 @Entity(name = UserReservationHistory.ENTITY_NAME)
 @Table(name = UserReservationHistory.TABLE_NAME)
 public class UserReservationHistory extends AbstractEntity {
+
     public static final String ENTITY_NAME = "UserReservationHistory";
     public static final String TABLE_NAME = "user_reservation_history";
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_reservation_history_reservations", joinColumns = { @JoinColumn(name =
-            "user_reservation_history_id") }, inverseJoinColumns = { @JoinColumn(name = "reservation_id") })
+    @OneToOne(mappedBy = "userReservationHistory")
+    private User user;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_reservation_history_reservations",
+            joinColumns = {@JoinColumn(name = "user_reservation_history_id")},
+            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
+    )
     private Set<Reservation> reservations = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     public void addReservation(Reservation reservation) {
         this.reservations.add(reservation);

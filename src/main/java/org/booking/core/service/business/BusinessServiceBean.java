@@ -25,25 +25,25 @@ public class BusinessServiceBean implements BusinessService {
 
     @Override
     public BusinessResponse create(BusinessRequest request) {
-        Business business = businessMapper.dtoTo(request);
+        Business business = businessMapper.toEntity(request);
         User currentUser = userService.getCurrentUser();
         business.getEmployees().add(currentUser);
         Business saved = businessRepository.save(business);
         log.info("Created new business by: " + currentUser.getEmail());
-        return businessMapper.toDto(saved);
+        return businessMapper.toResponse(saved);
     }
 
     @Override
     public BusinessResponse update(Long id, BusinessRequest request) {
         Optional<Business> optionalBusiness = businessRepository.findById(id);
         Business existed = optionalBusiness.orElseThrow(EntityNotFoundException::new);
-        Business business = businessMapper.dtoTo(request);
+        Business business = businessMapper.toEntity(request);
             existed.setType(business.getType());
             existed.setDescription(business.getDescription());
             existed.setName(business.getName());
             existed.setAddress(business.getAddress());
             Business saved = businessRepository.save(existed);
-            return businessMapper.toDto(saved);
+        return businessMapper.toResponse(saved);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BusinessServiceBean implements BusinessService {
     public BusinessResponse getById(Long id) {
         Optional<Business> optionalBusiness = businessRepository.findById(id);
         Business existed = optionalBusiness.orElseThrow(EntityNotFoundException::new);
-            return businessMapper.toDto(optionalBusiness.get());
+        return businessMapper.toResponse(optionalBusiness.get());
     }
 
 }

@@ -12,7 +12,7 @@ class BusinessRequestMapperTest extends AbstractMapperTest<Business> {
     @Test
     void test() {
         Business business = createObject(Business.class);
-        BusinessResponse businessResponse = BusinessMapper.INSTANCE.toDto(business);
+        BusinessResponse businessResponse = BusinessMapper.INSTANCE.toResponse(business);
 
         assertThat(businessResponse.getId()).isEqualTo(business.getId());
         assertThat(businessResponse.getDescription()).isEqualTo(business.getDescription());

@@ -20,9 +20,11 @@ import org.booking.core.repository.BusinessServiceRepository;
 import org.booking.core.repository.ReservationRepository;
 import org.booking.core.repository.ReservationScheduleRepository;
 import org.booking.core.repository.UserReservationHistoryRepository;
+import org.booking.core.service.UserService;
 import org.booking.core.service.appointment.cache.CachingAppointmentSchedulerService;
 import org.booking.core.util.KeyUtil;
 import org.redisson.api.RLock;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,9 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
 @RequiredArgsConstructor
 @Log
-@org.springframework.stereotype.Service
+@Service
 public class AppointmentSchedulerServiceBean implements AppointmentSchedulerService{
 
     public static final String RESERVED = "Reserved";
@@ -44,6 +47,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     private final ReservationMapper reservationMapper;
     private final ReservationScheduleRepository reservationScheduleRepository;
     private final RedisDistributedLock redisDistributedLock;
+    private final UserService userService;
 
     @Override
     public List<TimeSlot> findAvailableSlots( Long businessServiceId, LocalDate date) {
@@ -117,6 +121,9 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
     }
 
     private ReservationResponse reserve(Reservation reservation) {
+        User currentUser = userService.getCurrentUser();
+        reservation.setCustomer(currentUser);
+
         String lockName = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
 				reservation.getBusinessServiceEntity().getId(), computeTimeSlot(reservation.getDuration()));
         RLock lock = redisDistributedLock.getLock(lockName);
@@ -124,12 +131,13 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
             boolean locked = lock.tryLock(5, TimeUnit.SECONDS);
             if (locked) {
                 log.info("Locked: " + lockName);
-                cachingAppointmentSchedulerService.removeTimeSlotByKey(KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
-						reservation.getBusinessServiceEntity().getId()), computeTimeSlot(reservation.getDuration()));
+                String key = KeyUtil.generateKey(reservation.getBookingTime().toLocalDate(),
+                        reservation.getBusinessServiceEntity().getId());
+                cachingAppointmentSchedulerService.removeTimeSlotByKey(key, computeTimeSlot(reservation.getDuration()));
                 Reservation savedReservation = reservationRepository.save(reservation);
                 addReservationToBusinessSchedule(savedReservation);
-                addReservationToEmployeeSchedule(savedReservation);
-                addReservationToCustomerSchedule(savedReservation);
+                saveToUserHistory(savedReservation, savedReservation.getCustomer());
+                saveToUserHistory(savedReservation, savedReservation.getEmployee());
                 return reservationMapper.toDto(savedReservation);
             } else {
                 throw new RuntimeException(RESERVED);
@@ -156,16 +164,6 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
         }
     }
 
-    private void addReservationToEmployeeSchedule(Reservation savedReservation) {
-        User employee = savedReservation.getEmployee();
-        saveToUserHistory(savedReservation, employee);
-    }
-
-    private void addReservationToCustomerSchedule(Reservation savedReservation) {
-        User customer = savedReservation.getCustomer();
-        saveToUserHistory(savedReservation, customer);
-    }
-
     private void updateTimeSlotsInCache(Long businessServiceId,
                                         Duration existReservationDuration,
                                         Duration newReservationDuration,
@@ -178,17 +176,13 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
                 businessServiceId), existTimeSlot);
     }
 
-    private void saveToUserHistory(Reservation savedReservation, User customer) {
-        Optional<UserReservationHistory> optionalCustomerReservationHistory = userReservationHistoryRepository.findById(customer.getId());
-        if (optionalCustomerReservationHistory.isPresent()) {
-            UserReservationHistory reservationHistory = optionalCustomerReservationHistory.get();
-            reservationHistory.addReservation(savedReservation);
-        } else {
-            UserReservationHistory reservationHistory = new UserReservationHistory();
-            reservationHistory.setUser(customer);
-            reservationHistory.addReservation(savedReservation);
-            userReservationHistoryRepository.save(reservationHistory);
-        }
+    private void saveToUserHistory(Reservation savedReservation, User user) {
+        UserReservationHistory userReservationHistory =
+                userReservationHistoryRepository.findById(user.getId())
+                        .orElse(new UserReservationHistory());
+        userReservationHistory.addReservation(savedReservation);
+        userReservationHistory.setUser(user);
+        userReservationHistoryRepository.save(userReservationHistory);
     }
 
     private  TimeSlot computeTimeSlot(Duration duration) {

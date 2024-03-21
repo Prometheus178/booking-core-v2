@@ -24,11 +24,11 @@ public abstract class ReservationMapper {
     @Inject
     private BusinessServiceRepository businessServiceRepository;
 
-	// @Mapping(source = "service", target = "serviceId")
+	@Mapping(source = "businessServiceEntity", target = "businessServiceId")
     @Mapping(source = "employee", target = "employeeId")
 public abstract ReservationResponse toDto(Reservation obj);
 
-	// @Mapping(source = "serviceId", target = "service")
+	@Mapping(source = "businessServiceId", target = "businessServiceEntity")
     @Mapping(source = "employeeId", target = "employee")
 public abstract Reservation toEntity(ReservationRequest dto);
 
@@ -36,11 +36,11 @@ public abstract Reservation toEntity(ReservationRequest dto);
         return getUser(id);
     }
 
-	protected BusinessServiceEntity fromLongToBusinessService(Long serviceId) throws EntityNotFoundException {
-        if (serviceId == null){
+	protected BusinessServiceEntity fromLongToBusinessService(Long businessServiceId) throws EntityNotFoundException {
+		if (businessServiceId == null) {
             return null;
         }
-        return businessServiceRepository.findById(serviceId).orElseThrow(
+		return businessServiceRepository.findById(businessServiceId).orElseThrow(
                 EntityNotFoundException::new);
     }
 

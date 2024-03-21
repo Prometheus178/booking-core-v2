@@ -15,15 +15,17 @@ import java.util.Set;
 @Setter
 public class ReservationSchedule extends AbstractEntity {
 
-    public static final String TABLE_NAME = "reservation_schedule";
     public static final String ENTITY_NAME = "ReservationSchedule";
+    public static final String TABLE_NAME = "reservation_schedule";
 
     @OneToOne(mappedBy = "reservationSchedule")
     private Business business;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "reservation_schedule_reservations", joinColumns = { @JoinColumn(name =
-            "reservation_schedule_reservation_id") }, inverseJoinColumns = { @JoinColumn(name = "reservation_id") })
+    @JoinTable(name = "reservation_schedule_reservations",
+            joinColumns = {@JoinColumn(name = "reservation_schedule_reservation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
+    )
     private Set<Reservation> reservations = new HashSet<>();
 
     public void addReservation(Reservation reservation) {

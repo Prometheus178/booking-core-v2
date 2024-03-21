@@ -14,13 +14,40 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeIntegrationTest extends AbstractIntegrationTest {
-    public static final String API_CUSTOMERS = "/api/customers/";
+    public static final String API_REGISTER_CUSTOMER = "/api/v1/auth/register";
     public static Long createdId;
 
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = BASE_URI;
     }
+
+
+//    @Order(3)
+//    //@Test
+//    void postEmployeeDto() {
+//        EmployeeDto employeeDto = generatedObjectEmployeeDto();
+//        Set<Long> ids = new HashSet<>();
+//        ids.add(createdIdBusinessDto);
+//        employeeDto.setBusinessIds(ids);
+//
+//        String requestBody = getRequestBody(employeeDto);
+//        Response response = given()
+//                .contentType(ContentType.JSON)
+//                .and()
+//                .body(requestBody)
+//                .when()
+//                //.post(API_EMPLOYEES)
+//                .then()
+//              //  .extract()
+//                .response();
+//
+//        assertThat(response.statusCode())
+//                .isEqualTo(HttpStatus.OK.value());
+//        createdIdEmployeeDto = response.jsonPath().getLong("id");
+//        assertThat(response.jsonPath().getString("name")).isEqualTo(employeeDto.getName());
+//        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
+//    }
 
     @Order(1)
     //@Test
@@ -32,7 +59,7 @@ public class EmployeeIntegrationTest extends AbstractIntegrationTest {
                 .and()
                 .body(requestBody)
                 .when()
-                .post(API_CUSTOMERS)
+                .post(API_REGISTER_CUSTOMER)
                 .then()
                 .extract()
                 .response();
@@ -50,7 +77,7 @@ public class EmployeeIntegrationTest extends AbstractIntegrationTest {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_CUSTOMERS + createdId)
+                .get(API_REGISTER_CUSTOMER + createdId)
                 .then()
                 .extract()
                 .response();
@@ -71,7 +98,7 @@ public class EmployeeIntegrationTest extends AbstractIntegrationTest {
                 .and()
                 .body(requestBody)
                 .when()
-                .put(API_CUSTOMERS + createdId)
+                .put(API_REGISTER_CUSTOMER + createdId)
                 .then()
                 .extract()
                 .response();
@@ -88,7 +115,7 @@ public class EmployeeIntegrationTest extends AbstractIntegrationTest {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get(API_CUSTOMERS)
+                .get(API_REGISTER_CUSTOMER)
                 .then()
                 .extract()
                 .response();
@@ -103,7 +130,7 @@ public class EmployeeIntegrationTest extends AbstractIntegrationTest {
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete(API_CUSTOMERS + createdId)
+                .delete(API_REGISTER_CUSTOMER + createdId)
                 .then()
                 .extract()
                 .response();

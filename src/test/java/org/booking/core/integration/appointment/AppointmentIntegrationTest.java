@@ -49,10 +49,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	public static void setup() {
 		RestAssured.baseURI = BASE_URI;
 		managerToken = register("/api/v1/auth/business/register");
-		System.out.println(managerToken);
 		customerToken = register("/api/v1/auth/register");
-		System.out.println(customerToken);
-
 	}
 
 	private static String register(String path) {
@@ -125,7 +122,6 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 		businessServiceRequest.setDuration(60);
 		businessServiceRequest.setBusinessId(createdBusinessId);
 		String requestBody = getRequestBody(businessServiceRequest);
-		System.out.println(requestBody);
 		Response response = given()
 				.contentType(ContentType.JSON)
 				.header(AUTHORIZATION, BEARER_ + managerToken)
@@ -172,7 +168,6 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	void reservation() {
 		ReservationRequest reservationRequest = createReservation(0);
 		String requestBody = getRequestBody(reservationRequest);
-		System.out.println(requestBody);
 		Response response = given()
 				.contentType(ContentType.JSON)
 				.header(AUTHORIZATION, BEARER_ + customerToken)

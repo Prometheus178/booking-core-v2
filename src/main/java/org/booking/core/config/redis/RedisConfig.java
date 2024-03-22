@@ -1,4 +1,4 @@
-package org.booking.core.config;
+package org.booking.core.config.redis;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

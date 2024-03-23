@@ -3,6 +3,7 @@ package org.booking.core.service.appointment;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.booking.core.actions.AppointmentAction;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.BusinessHours;
 import org.booking.core.domain.entity.business.ReservationSchedule;
@@ -22,6 +23,7 @@ import org.booking.core.repository.ReservationScheduleRepository;
 import org.booking.core.repository.UserReservationHistoryRepository;
 import org.booking.core.service.UserService;
 import org.booking.core.service.appointment.cache.CachingAppointmentSchedulerService;
+import org.booking.core.service.notification.ReservationNotificationManager;
 import org.booking.core.util.KeyUtil;
 import org.redisson.api.RLock;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import static org.booking.core.config.kafka.KafkaTopicConfig.BOOKING_CORE_TOPIC;
 
 @RequiredArgsConstructor
 @Log
@@ -48,6 +52,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 	private final ReservationScheduleRepository reservationScheduleRepository;
 	private final RedisDistributedLock redisDistributedLock;
 	private final UserService userService;
+	private final ReservationNotificationManager reservationNotificationManager;
 
 	@Override
 	public List<TimeSlot> findAvailableSlots(Long businessServiceId, LocalDate date) {
@@ -67,7 +72,10 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 	@Override
 	public ReservationResponse reserve(ReservationRequest reservationRequest) {
 		Reservation reservation = reservationMapper.toEntity(reservationRequest);
-		return reserve(reservation);
+		Reservation savedReservation = reserve(reservation);
+		reservationNotificationManager.sendNotification(BOOKING_CORE_TOPIC,
+				AppointmentAction.CREATED_RESERVATION.getValue(), savedReservation);
+		return reservationMapper.toDto(savedReservation);
 	}
 
 
@@ -82,11 +90,13 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 			if (locked) {
 				log.info("Locked: " + lockName);
 				existReservation.setCanceled(true);
-				ReservationResponse newReservation = reserve(reservation);
 				updateTimeSlotsInCache(existReservation.getBusinessServiceEntity().getId(), existReservation.getDuration(),
 						reservation.getDuration(),
 						reservation.getBookingTime().toLocalDate());
-				return newReservation;
+				Reservation savedReservation = reserve(reservation);
+				reservationNotificationManager.sendNotification(BOOKING_CORE_TOPIC,
+						AppointmentAction.MODIFIED_RESERVATION.getValue(), savedReservation);
+				return reservationMapper.toDto(savedReservation);
 			} else {
 				throw new RuntimeException(RESERVED);
 			}
@@ -109,7 +119,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 		}
 	}
 
-	private ReservationResponse reserve(Reservation reservation) {
+	private Reservation reserve(Reservation reservation) {
 		User currentUser = userService.getCurrentUser();
 		reservation.setCustomer(currentUser);
 
@@ -126,7 +136,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				addReservationToBusinessSchedule(savedReservation);
 				saveToUserHistory(savedReservation, savedReservation.getCustomer());
 				saveToUserHistory(savedReservation, savedReservation.getEmployee());
-				return reservationMapper.toDto(savedReservation);
+				return savedReservation;
 			} else {
 				throw new RuntimeException(RESERVED);
 			}

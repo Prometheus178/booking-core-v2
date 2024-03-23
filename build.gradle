@@ -96,6 +96,9 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
     implementation 'com.auth0:java-jwt:4.4.0'
 
+    //Validator
+    implementation 'commons-validator:commons-validator:1.8.0'
+
     //Test
     testImplementation ('io.rest-assured:rest-assured:5.4.0'){
         exclude group: 'org.apache.groovy', module: 'groovy'

@@ -57,9 +57,9 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 
 		String email = registerRequest.getEmail();
 		if (path.contains("business")) {
-			registerRequest.setEmail(email + "business");
+			registerRequest.setEmail(email + "business@mail.com");
 		} else {
-			registerRequest.setEmail("surducetru@gufum.com");
+			registerRequest.setEmail(email + "@mail.com");
 		}
 		String requestBody = getRequestBody(registerRequest);
 

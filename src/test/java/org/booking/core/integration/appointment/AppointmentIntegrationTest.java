@@ -55,9 +55,11 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	private static String register(String path) {
 		BaseRegisterRequest registerRequest = Instancio.of(BaseRegisterRequest.class).create();
 
+		String email = registerRequest.getEmail();
 		if (path.contains("business")) {
-			String email = registerRequest.getEmail();
 			registerRequest.setEmail(email + "business");
+		} else {
+			registerRequest.setEmail("surducetru@gufum.com");
 		}
 		String requestBody = getRequestBody(registerRequest);
 
@@ -67,6 +69,29 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 				.body(requestBody)
 				.when()
 				.post(path)
+				.then()
+				.extract()
+				.response();
+		AuthenticationResponse authenticationResponse = response.body().as(AuthenticationResponse.class);
+		return authenticationResponse.getToken();
+	}
+
+	private static String login(String token) {
+		BaseRegisterRequest registerRequest = Instancio.of(BaseRegisterRequest.class).create();
+
+		String email = registerRequest.getEmail();
+
+		registerRequest.setEmail("surducetru@gufum.com");
+
+		String requestBody = getRequestBody(registerRequest);
+
+		Response response = given()
+				.contentType(ContentType.JSON)
+				.header(AUTHORIZATION, BEARER_ + token)
+				.and()
+				.body(requestBody)
+				.when()
+				.post("/api/v1/auth/login")
 				.then()
 				.extract()
 				.response();

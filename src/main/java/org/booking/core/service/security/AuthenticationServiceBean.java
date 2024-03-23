@@ -2,6 +2,7 @@ package org.booking.core.service.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.booking.core.config.security.JWTService;
 import org.booking.core.domain.entity.role.Role;
 import org.booking.core.domain.entity.role.RoleClassification;
@@ -49,6 +50,10 @@ public class AuthenticationServiceBean implements AuthenticationService {
 		String email = baseRegisterRequest.getEmail();
 		if (userRepository.findByEmail(email).isPresent()) {
 			throw new AuthenticationServiceException(String.format("User with email: %s exist", email));
+		}
+		if (!EmailValidator.getInstance().isValid(email)){
+			log.info("Incorrect email: " + email);
+			throw new AuthenticationServiceException(String.format("User email: %s is not valid", email));
 		}
 
 		Role role = roleRepository.findByName(roleClassification.name()).orElseThrow(

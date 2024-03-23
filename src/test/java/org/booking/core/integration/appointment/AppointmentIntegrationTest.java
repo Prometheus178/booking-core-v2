@@ -49,18 +49,17 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	public static void setup() {
 		RestAssured.baseURI = BASE_URI;
 		managerToken = register("/api/v1/auth/business/register");
-		System.out.println(managerToken);
 		customerToken = register("/api/v1/auth/register");
-		System.out.println(customerToken);
-
 	}
 
 	private static String register(String path) {
 		BaseRegisterRequest registerRequest = Instancio.of(BaseRegisterRequest.class).create();
 
+		String email = registerRequest.getEmail();
 		if (path.contains("business")) {
-			String email = registerRequest.getEmail();
-			registerRequest.setEmail(email + "business");
+			registerRequest.setEmail(email + "business@mail.com");
+		} else {
+			registerRequest.setEmail(email + "@mail.com");
 		}
 		String requestBody = getRequestBody(registerRequest);
 
@@ -70,6 +69,29 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 				.body(requestBody)
 				.when()
 				.post(path)
+				.then()
+				.extract()
+				.response();
+		AuthenticationResponse authenticationResponse = response.body().as(AuthenticationResponse.class);
+		return authenticationResponse.getToken();
+	}
+
+	private static String login(String token) {
+		BaseRegisterRequest registerRequest = Instancio.of(BaseRegisterRequest.class).create();
+
+		String email = registerRequest.getEmail();
+
+		registerRequest.setEmail("surducetru@gufum.com");
+
+		String requestBody = getRequestBody(registerRequest);
+
+		Response response = given()
+				.contentType(ContentType.JSON)
+				.header(AUTHORIZATION, BEARER_ + token)
+				.and()
+				.body(requestBody)
+				.when()
+				.post("/api/v1/auth/login")
 				.then()
 				.extract()
 				.response();
@@ -125,7 +147,6 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 		businessServiceRequest.setDuration(60);
 		businessServiceRequest.setBusinessId(createdBusinessId);
 		String requestBody = getRequestBody(businessServiceRequest);
-		System.out.println(requestBody);
 		Response response = given()
 				.contentType(ContentType.JSON)
 				.header(AUTHORIZATION, BEARER_ + managerToken)
@@ -172,7 +193,6 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	void reservation() {
 		ReservationRequest reservationRequest = createReservation(0);
 		String requestBody = getRequestBody(reservationRequest);
-		System.out.println(requestBody);
 		Response response = given()
 				.contentType(ContentType.JSON)
 				.header(AUTHORIZATION, BEARER_ + customerToken)

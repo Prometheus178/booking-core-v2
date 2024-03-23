@@ -7,6 +7,10 @@ import org.booking.core.domain.dto.notification.MetaInfoDto;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static org.booking.core.actions.NotificationType.EMAIL;
+
 @Log
 @RequiredArgsConstructor
 @Service
@@ -26,6 +30,7 @@ public class ReservationNotificationManager implements NotificationManager<Reser
 		MetaInfoDto metaInfoDto = new MetaInfoDto();
 		metaInfoDto.setSender("booking-core");
 		metaInfoDto.setReceiver("booking-core-notification-service");
+		metaInfoDto.setNotifyBy(List.of(EMAIL));
 		return metaInfoDto;
 	}
 }

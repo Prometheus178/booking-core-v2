@@ -3,7 +3,7 @@ package org.booking.core.service.appointment.cache;
 import lombok.RequiredArgsConstructor;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
-import org.booking.core.repository.redis.TimeSlotsRedisRepository;
+import org.booking.core.repository.redis.TimeSlotsRedisCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,12 +13,11 @@ import java.util.List;
 @Service
 public class CachingAppointmentSchedulerServiceBean implements CachingAppointmentSchedulerService {
 
-	private final TimeSlotsRedisRepository timeSlotsRedisRepository;
-
+	private final TimeSlotsRedisCaching timeSlotsRedisCaching;
 
 	@Override
 	public List<TimeSlot> findAvailableTimeSlotsByKey(String key) {
-		TimeSlotList timeSlotList = timeSlotsRedisRepository.get(key);
+		TimeSlotList timeSlotList = timeSlotsRedisCaching.get(key);
 		if (timeSlotList != null) {
 			return timeSlotList.getTimeSlots();
 		}
@@ -27,23 +26,23 @@ public class CachingAppointmentSchedulerServiceBean implements CachingAppointmen
 
 	@Override
 	public void saveAvailableTimeSlotsByKey(String key, List<TimeSlot> availableTimeSlots) {
-		timeSlotsRedisRepository.create(new TimeSlotList(key, availableTimeSlots));
+		timeSlotsRedisCaching.create(new TimeSlotList(key, availableTimeSlots));
 	}
 
 	@Override
 	public void removeTimeSlotByKey(String key, TimeSlot existTimeSlot) {
-		TimeSlotList timeSlotList = timeSlotsRedisRepository.get(key);
+		TimeSlotList timeSlotList = timeSlotsRedisCaching.get(key);
 		List<TimeSlot> timeSlots = timeSlotList.getTimeSlots();
 		timeSlots.remove(existTimeSlot);
-		timeSlotsRedisRepository.update(timeSlotList);
+		timeSlotsRedisCaching.update(timeSlotList);
 	}
 
 	@Override
 	public void addTimeSlotByKey(String key, TimeSlot newTimeSlot) {
-		TimeSlotList timeSlotList = timeSlotsRedisRepository.get(key);
+		TimeSlotList timeSlotList = timeSlotsRedisCaching.get(key);
 		List<TimeSlot> timeSlots = timeSlotList.getTimeSlots();
 		timeSlots.add(newTimeSlot);
-		timeSlotsRedisRepository.update(timeSlotList);
+		timeSlotsRedisCaching.update(timeSlotList);
 	}
 }
 

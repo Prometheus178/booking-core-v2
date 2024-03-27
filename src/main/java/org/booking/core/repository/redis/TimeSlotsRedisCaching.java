@@ -4,17 +4,17 @@ import lombok.extern.java.Log;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Log
-@Repository
-public class TimeSlotsRedisRepository {
+@Component
+public class TimeSlotsRedisCaching {
 
 	private final HashOperations hashOperations;
 
-	public TimeSlotsRedisRepository(RedisTemplate redisTemplate) {
+	public TimeSlotsRedisCaching(RedisTemplate redisTemplate) {
 		this.hashOperations = redisTemplate.opsForHash();
 	}
 

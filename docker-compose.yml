@@ -7,6 +7,8 @@ services:
     restart: always
     ports:
       - 5432:5432
+    networks:
+      - booking-core
     environment:
       POSTGRES_DB: core_db
       POSTGRES_USER: core_user
@@ -19,18 +21,22 @@ services:
     ports:
       - 8080:8080
       - 8787:8787
+    networks:
+      - booking-core
     environment:
       DATABASE_URL: postgresql://booking-core_db:5432/core_db
       DATABASE_USERNAME: core_user
       DATABASE_PASSWORD: core
     depends_on:
       - booking-core_db
-  redis:
+  booking-core_redis:
     container_name: 'booking-core_redis'
     image: redis:7-alpine
     ports:
       - "6379:6379"
-  zookeeper:
+    networks:
+      - booking-core
+  booking-core_zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
     environment:
@@ -39,21 +45,32 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
-  kafka:
+    networks:
+      - booking-core
+  booking-core_kafka:
     image: confluentinc/cp-kafka:latest
     container_name: broker
     ports:
       - "9092:9092"
+    networks:
+      - booking-core
     depends_on:
-      - zookeeper
+      - booking-core_zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: CLIENT://:9092,EXTERNAL://:9093
+      KAFKA_ADVERTISED_LISTENERS: CLIENT://broker:9092,EXTERNAL://localhost:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT
+
 volumes:
   postgres-data:
+networks:
+  booking-core:
+    name: booking-core
+    driver: bridge

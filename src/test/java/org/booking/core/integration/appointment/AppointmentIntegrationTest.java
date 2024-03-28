@@ -50,6 +50,8 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 		RestAssured.baseURI = BASE_URI;
 		managerToken = register("/api/v1/auth/business/register");
 		customerToken = register("/api/v1/auth/register");
+
+//		customerToken = login()
 	}
 
 	private static String register(String path) {
@@ -59,7 +61,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 		if (path.contains("business")) {
 			registerRequest.setEmail(email + "business@mail.com");
 		} else {
-			registerRequest.setEmail("ritracotre@gufum.com");
+			registerRequest.setEmail(email + "client@email.com");
 		}
 		String requestBody = getRequestBody(registerRequest);
 
@@ -76,18 +78,16 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 		return authenticationResponse.getToken();
 	}
 
-	private static String login(String token) {
+	private static String login(String email) {
 		BaseRegisterRequest registerRequest = Instancio.of(BaseRegisterRequest.class).create();
 
-		String email = registerRequest.getEmail();
-
-		registerRequest.setEmail("surducetru@gufum.com");
+		registerRequest.setEmail(email);
+		registerRequest.setPassword("");
 
 		String requestBody = getRequestBody(registerRequest);
 
 		Response response = given()
 				.contentType(ContentType.JSON)
-				.header(AUTHORIZATION, BEARER_ + token)
 				.and()
 				.body(requestBody)
 				.when()

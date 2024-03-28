@@ -1,6 +1,7 @@
 package org.booking.core.service.appointment.cache;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
 import org.booking.core.repository.redis.TimeSlotsRedisCaching;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+@Log
 @RequiredArgsConstructor
 @Service
 public class CachingAppointmentSchedulerServiceBean implements CachingAppointmentSchedulerService {
@@ -17,10 +19,13 @@ public class CachingAppointmentSchedulerServiceBean implements CachingAppointmen
 
 	@Override
 	public List<TimeSlot> findAvailableTimeSlotsByKey(String key) {
+		log.info("Find by key");
 		TimeSlotList timeSlotList = timeSlotsRedisCaching.get(key);
 		if (timeSlotList != null) {
+		log.info("Find available time slots");
 			return timeSlotList.getTimeSlots();
 		}
+		log.info("Couldn't find available time slots");
 		return Collections.emptyList();
 	}
 

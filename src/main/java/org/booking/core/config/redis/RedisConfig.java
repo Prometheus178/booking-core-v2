@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @EnableConfigurationProperties(RedisProperties.class)
@@ -20,6 +22,16 @@ public class RedisConfig {
 
 	@Value("${spring.redis.port}")
 	private int redisPort;
+
+
+	@Bean
+	public LettuceConnectionFactory connectionFactory() {
+		RedisStandaloneConfiguration redisConf = new RedisStandaloneConfiguration();
+		redisConf.setHostName(redisHost);
+		redisConf.setPort(redisPort);
+//		redisConf.setPassword("pass");
+		return new LettuceConnectionFactory(redisConf);
+	}
 
 	@Bean
 	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {

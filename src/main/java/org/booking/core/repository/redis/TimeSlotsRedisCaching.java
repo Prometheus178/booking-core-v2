@@ -2,6 +2,7 @@ package org.booking.core.repository.redis;
 
 import lombok.extern.java.Log;
 import org.booking.core.domain.entity.reservation.TimeSlotList;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,13 @@ public class TimeSlotsRedisCaching {
 
 	private final HashOperations hashOperations;
 
-	public TimeSlotsRedisCaching(RedisTemplate redisTemplate) {
+	public TimeSlotsRedisCaching(RedisTemplate<String, Object> redisTemplate) {
+		RedisConnectionFactory connectionFactory = redisTemplate.getConnectionFactory();
 		this.hashOperations = redisTemplate.opsForHash();
 	}
 
 	public void create(TimeSlotList timeSlotList) {
+		log.info("Save in TIME_SLOTS hash with key: " + timeSlotList.getKey());
 		hashOperations.put("TIME_SLOTS", timeSlotList.getKey(), timeSlotList);
 		log.info(String.format("TIME_SLOTS with ID %s saved", timeSlotList.getKey()));
 	}

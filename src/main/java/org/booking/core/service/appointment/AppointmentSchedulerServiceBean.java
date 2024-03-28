@@ -61,8 +61,10 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				cachingAppointmentSchedulerService.findAvailableTimeSlotsByKey(KeyUtil.generateKey(date, businessServiceId));
 		if (availableTimeSlotsByDay.isEmpty()) {
 			List<TimeSlot> availableTimeSlots = computeTimeSlots(businessService);
+			log.info("Try to save computed time slots");
 			cachingAppointmentSchedulerService.saveAvailableTimeSlotsByKey(KeyUtil.generateKey(date,
 					businessServiceId), availableTimeSlots);
+			log.info("Saved computed time slots");
 			return availableTimeSlots;
 		}
 		return availableTimeSlotsByDay;
@@ -124,8 +126,10 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 		reservation.setCustomer(currentUser);
 
 		String lockName = getComputedLockName(reservation);
+		log.info("Created " + lockName);
 		RLock lock = redisDistributedLock.getLock(lockName);
 		try {
+			log.info("Try to get lock: " + lockName);
 			boolean locked = lock.tryLock(5, TimeUnit.SECONDS);
 			if (locked) {
 				log.info("Locked: " + lockName);

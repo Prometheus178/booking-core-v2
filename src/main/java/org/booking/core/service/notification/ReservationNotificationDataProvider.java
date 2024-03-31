@@ -5,7 +5,6 @@ import lombok.extern.java.Log;
 import org.booking.core.domain.dto.notification.ContactDto;
 import org.booking.core.domain.dto.notification.DefaultNotificationDto;
 import org.booking.core.domain.entity.reservation.Reservation;
-import org.booking.core.domain.entity.role.RoleClassification;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

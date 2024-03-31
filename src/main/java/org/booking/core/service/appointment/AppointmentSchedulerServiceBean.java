@@ -187,7 +187,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				userReservationHistoryRepository.findByUserEmail(userEmail)
 						.orElse(new UserReservationHistory());
 		userReservationHistory.addReservation(savedReservation);
-		userReservationHistory.setUser(userEmail);
+		userReservationHistory.setUserEmail(userEmail);
 		userReservationHistoryRepository.save(userReservationHistory);
 	}
 

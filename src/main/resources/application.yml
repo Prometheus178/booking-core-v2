@@ -1,8 +1,14 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://booking-core-discovery:8761/eureka
+    instance:
+      preferIpAddress: true
 server:
   port: 8080
 spring:
   application:
-    name: booking-core
+    name: booking-core-v2
   main:
     lazy-initialization: true
   datasource:
@@ -10,11 +16,6 @@ spring:
     url: jdbc:postgresql://booking-core_db:5432/core_db
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-
-#    Embbeded tomcat server settings
-#    url: jdbc:postgresql://0.0.0.0:5432/core_db
-#    username: core_user
-#    password: core
   jpa:
     database: POSTGRESQL
     hibernate:
@@ -28,17 +29,15 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
-    enabled: false
+    enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.yml
     url: jdbc:postgresql://booking-core_db:5432/core_db
     user: core_user
     password: core
   redis:
     database: 0
-#    host: localhost
     host: booking-core_redis
     port: 6379
     timeout: 60000
   kafka:
-#    bootstrap-servers: localhost:9092
-    bootstrap-servers: broker:9092
+    bootstrap-servers: booking-core_kafka:9092

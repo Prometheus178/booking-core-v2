@@ -6,7 +6,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class AbstractIntegrationTest {
-    public static final String BASE_URI = "http://localhost:8080";
+    public static final String BASE_URI = "http://localhost:8888";
     public static double delta = 0.1; // Define the delta value
 
     protected static String getRequestBody(Object o) {

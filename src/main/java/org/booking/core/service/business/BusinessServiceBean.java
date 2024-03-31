@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.booking.core.domain.entity.business.Business;
-import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.BusinessRequest;
 import org.booking.core.domain.response.BusinessResponse;
 import org.booking.core.mapper.BusinessMapper;
@@ -26,10 +25,10 @@ public class BusinessServiceBean implements BusinessService {
 	@Override
 	public BusinessResponse create(BusinessRequest request) {
 		Business business = businessMapper.toEntity(request);
-		User currentUser = userService.getCurrentUser();
-		business.getEmployees().add(currentUser);
+		String currentUserEmail = userService.getCurrentUserEmail();
+		business.getEmployees().add(currentUserEmail);
 		Business saved = businessRepository.save(business);
-		log.info("Created new business by: " + currentUser.getEmail());
+		log.info("Created new business by: " + currentUserEmail);
 		return businessMapper.toResponse(saved);
 	}
 

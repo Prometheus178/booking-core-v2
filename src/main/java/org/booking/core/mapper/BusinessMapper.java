@@ -2,7 +2,6 @@ package org.booking.core.mapper;
 
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
-import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.request.BusinessRequest;
 import org.booking.core.domain.response.BusinessResponse;
 import org.mapstruct.Mapper;

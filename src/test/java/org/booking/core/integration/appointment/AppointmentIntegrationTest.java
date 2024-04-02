@@ -3,11 +3,11 @@ package org.booking.core.integration.appointment;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.booking.core.AuthenticationResponse;
+import org.booking.core.BaseRegisterRequest;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.domain.request.*;
-import org.booking.core.domain.request.security.AuthenticationResponse;
-import org.booking.core.domain.request.security.BaseRegisterRequest;
 import org.booking.core.domain.response.BusinessResponse;
 import org.booking.core.domain.response.BusinessServiceResponse;
 import org.booking.core.integration.AbstractIntegrationTest;
@@ -29,8 +29,6 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
-import static org.booking.core.config.security.JwtAuthenticationFilter.AUTHORIZATION;
-import static org.booking.core.config.security.JwtAuthenticationFilter.BEARER_;
 import static org.instancio.Select.field;
 
 public class AppointmentIntegrationTest extends AbstractIntegrationTest {

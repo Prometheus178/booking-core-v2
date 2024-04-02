@@ -14,17 +14,17 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeIntegrationTest extends AbstractIntegrationTest {
-    public static final String API_REGISTER_CUSTOMER = "/api/v1/auth/register";
-    public static Long createdId;
+	public static final String API_REGISTER_CUSTOMER = "/api/v1/auth/register";
+	public static Long createdId;
 
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = BASE_URI;
-    }
+	@BeforeAll
+	public static void setup() {
+		RestAssured.baseURI = BASE_URI;
+	}
 
 
 //    @Order(3)
-//    //@Test
+//    ////@Test
 //    void postEmployeeDto() {
 //        EmployeeDto employeeDto = generatedObjectEmployeeDto();
 //        Set<Long> ids = new HashSet<>();
@@ -49,100 +49,100 @@ public class EmployeeIntegrationTest extends AbstractIntegrationTest {
 //        assertThat(response.jsonPath().getString("email")).isEqualTo(employeeDto.getEmail());
 //    }
 
-    @Order(1)
-    //@Test
-    public void post() {
+	@Order(1)
+	////@Test
+	public void post() {
 		CustomerRequest customerRequest = generatedObject();
 		String requestBody = getRequestBody(customerRequest);
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .and()
-                .body(requestBody)
-                .when()
-                .post(API_REGISTER_CUSTOMER)
-                .then()
-                .extract()
-                .response();
+		Response response = given()
+				.contentType(ContentType.JSON)
+				.and()
+				.body(requestBody)
+				.when()
+				.post(API_REGISTER_CUSTOMER)
+				.then()
+				.extract()
+				.response();
 
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-        createdId = response.jsonPath().getLong("id");
+		assertThat(response.statusCode())
+				.isEqualTo(HttpStatus.OK.value());
+		createdId = response.jsonPath().getLong("id");
 		assertThat(response.jsonPath().getString("name")).isEqualTo(customerRequest.getName());
 		assertThat(response.jsonPath().getString("email")).isEqualTo(customerRequest.getEmail());
-    }
+	}
 
-    @Order(2)
-    //@Test
-    public void get() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get(API_REGISTER_CUSTOMER + createdId)
-                .then()
-                .extract()
-                .response();
+	@Order(2)
+	////@Test
+	public void get() {
+		Response response = given()
+				.contentType(ContentType.JSON)
+				.when()
+				.get(API_REGISTER_CUSTOMER + createdId)
+				.then()
+				.extract()
+				.response();
 
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getLong("id")).isEqualTo(createdId);
+		assertThat(response.statusCode())
+				.isEqualTo(HttpStatus.OK.value());
+		assertThat(response.jsonPath().getLong("id")).isEqualTo(createdId);
 
-    }
+	}
 
-    @Order(3)
-    //@Test
-    public void update() {
+	@Order(3)
+	////@Test
+	public void update() {
 		CustomerRequest business = generatedObject();
-        String requestBody = getRequestBody(business);
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .and()
-                .body(requestBody)
-                .when()
-                .put(API_REGISTER_CUSTOMER + createdId)
-                .then()
-                .extract()
-                .response();
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
-        assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
+		String requestBody = getRequestBody(business);
+		Response response = given()
+				.contentType(ContentType.JSON)
+				.and()
+				.body(requestBody)
+				.when()
+				.put(API_REGISTER_CUSTOMER + createdId)
+				.then()
+				.extract()
+				.response();
+		assertThat(response.statusCode())
+				.isEqualTo(HttpStatus.OK.value());
+		assertThat(response.jsonPath().getString("name")).isEqualTo(business.getName());
+		assertThat(response.jsonPath().getString("email")).isEqualTo(business.getEmail());
 
-    }
+	}
 
-    @Order(4)
-    //@Test
-    public void getAll() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get(API_REGISTER_CUSTOMER)
-                .then()
-                .extract()
-                .response();
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-    }
+	@Order(4)
+	////@Test
+	public void getAll() {
+		Response response = given()
+				.contentType(ContentType.JSON)
+				.when()
+				.get(API_REGISTER_CUSTOMER)
+				.then()
+				.extract()
+				.response();
+		assertThat(response.statusCode())
+				.isEqualTo(HttpStatus.OK.value());
+	}
 
-    @Order(5)
-    //@Test
-    public void delete() {
-        assertThat(createdId).isNotNull();
-        Response response = given()
-                .header("Content-type", "application/json")
-                .when()
-                .delete(API_REGISTER_CUSTOMER + createdId)
-                .then()
-                .extract()
-                .response();
+	@Order(5)
+	////@Test
+	public void delete() {
+		assertThat(createdId).isNotNull();
+		Response response = given()
+				.header("Content-type", "application/json")
+				.when()
+				.delete(API_REGISTER_CUSTOMER + createdId)
+				.then()
+				.extract()
+				.response();
 
-        assertThat(response.statusCode())
-                .isEqualTo(HttpStatus.OK.value());
-    }
+		assertThat(response.statusCode())
+				.isEqualTo(HttpStatus.OK.value());
+	}
 
 	public CustomerRequest generatedObject() {
 		return Instancio.of(CustomerRequest.class)
 
-                .create();
-    }
+				.create();
+	}
 
 }

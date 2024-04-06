@@ -65,6 +65,7 @@ public class BusinessServiceServiceBean implements BusinessServiceService {
 	public BusinessServiceResponse getById(Long id) {
 		Optional<BusinessServiceEntity> optionalBusinessService = businessServiceRepository.findById(id);
 		BusinessServiceEntity existed = optionalBusinessService.orElseThrow(EntityNotFoundException::new);
+		//todo get ReservationScheduleResponse
 		return businessServiceMapper.toDto(optionalBusinessService.get());
 	}
 

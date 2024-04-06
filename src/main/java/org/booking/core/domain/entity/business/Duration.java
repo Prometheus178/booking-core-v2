@@ -1,4 +1,4 @@
-package org.booking.core.domain.entity.reservation;
+package org.booking.core.domain.entity.business;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

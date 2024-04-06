@@ -39,5 +39,3 @@ spring:
     host: booking-core_redis
     port: 6379
     timeout: 60000
-  kafka:
-    bootstrap-servers: booking-core_kafka:9092

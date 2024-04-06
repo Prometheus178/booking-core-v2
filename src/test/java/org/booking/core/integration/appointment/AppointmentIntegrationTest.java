@@ -38,7 +38,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	public static String managerToken;
 	public static Long createdBusinessServiceId;
 	public static Long createdBusinessId;
-	public static Long createEmployeeId;
+	public static String createEmployeeEmail;
 	public static Long createdReservationId;
 	public static List<TimeSlot> timeSlots;
 
@@ -125,7 +125,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 				.isEqualTo(HttpStatus.OK.value());
 		BusinessResponse businessResponse = response.body().as(BusinessResponse.class);
 		createdBusinessId = businessResponse.getId();
-		createEmployeeId = businessResponse.getEmployees().stream().findFirst().get();
+		createEmployeeEmail = businessResponse.getEmployees().stream().findFirst().get();
 
 		LoggerUtil.logInfo(LogActionType.CREATE, Business.ENTITY_NAME, createdBusinessId);
 
@@ -230,7 +230,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 
 	private ReservationRequest createReservation(int i) {
 		ReservationRequest reservationRequest = new ReservationRequest();
-		reservationRequest.setEmployeeId(createEmployeeId);
+		reservationRequest.setEmployeeEmail(createEmployeeEmail);
 		reservationRequest.setBusinessServiceId(createdBusinessServiceId);
 
 		TimeSlot timeSlot = timeSlots.get(i);

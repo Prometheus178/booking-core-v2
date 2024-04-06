@@ -76,7 +76,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 		Reservation savedReservation = reserve(reservation);
 		reservationNotificationManager.sendNotification(BOOKING_CORE_TOPIC,
 				AppointmentAction.CREATED_RESERVATION.getValue(), savedReservation);
-		return reservationMapper.toDto(savedReservation);
+		return reservationMapper.toResponse(savedReservation);
 	}
 
 
@@ -97,7 +97,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				Reservation savedReservation = reserve(reservation);
 				reservationNotificationManager.sendNotification(BOOKING_CORE_TOPIC,
 						AppointmentAction.MODIFIED_RESERVATION.getValue(), savedReservation);
-				return reservationMapper.toDto(savedReservation);
+				return reservationMapper.toResponse(savedReservation);
 			} else {
 				throw new RuntimeException(RESERVED);
 			}
@@ -121,8 +121,8 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 	}
 
 	private Reservation reserve(Reservation reservation) {
-		String currentUser = userService.getCurrentUserEmail();
-		reservation.setCustomerEmail(currentUser);
+		String currentUserEmail = userService.getCurrentUserEmail();
+		reservation.setCustomerEmail(currentUserEmail);
 
 		String lockName = getComputedLockName(reservation);
 		log.info("Created " + lockName);

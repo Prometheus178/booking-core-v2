@@ -20,7 +20,7 @@ public abstract class ReservationMapper {
 	private BusinessServiceRepository businessServiceRepository;
 
 	@Mapping(source = "businessServiceEntity", target = "businessServiceId")
-	public abstract ReservationResponse toDto(Reservation obj);
+	public abstract ReservationResponse toResponse(Reservation obj);
 
 	@Mapping(source = "businessServiceId", target = "businessServiceEntity")
 	public abstract Reservation toEntity(ReservationRequest dto);

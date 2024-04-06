@@ -3,11 +3,11 @@ package org.booking.core.integration.appointment;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.booking.core.AuthenticationResponse;
+import org.booking.core.BaseRegisterRequest;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.reservation.TimeSlot;
 import org.booking.core.domain.request.*;
-import org.booking.core.domain.request.security.AuthenticationResponse;
-import org.booking.core.domain.request.security.BaseRegisterRequest;
 import org.booking.core.domain.response.BusinessResponse;
 import org.booking.core.domain.response.BusinessServiceResponse;
 import org.booking.core.integration.AbstractIntegrationTest;
@@ -29,8 +29,6 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
-import static org.booking.core.config.security.JwtAuthenticationFilter.AUTHORIZATION;
-import static org.booking.core.config.security.JwtAuthenticationFilter.BEARER_;
 import static org.instancio.Select.field;
 
 public class AppointmentIntegrationTest extends AbstractIntegrationTest {
@@ -40,7 +38,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 	public static String managerToken;
 	public static Long createdBusinessServiceId;
 	public static Long createdBusinessId;
-	public static Long createEmployeeId;
+	public static String createEmployeeEmail;
 	public static Long createdReservationId;
 	public static List<TimeSlot> timeSlots;
 
@@ -127,7 +125,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 				.isEqualTo(HttpStatus.OK.value());
 		BusinessResponse businessResponse = response.body().as(BusinessResponse.class);
 		createdBusinessId = businessResponse.getId();
-		createEmployeeId = businessResponse.getEmployees().stream().findFirst().get();
+		createEmployeeEmail = businessResponse.getEmployees().stream().findFirst().get();
 
 		LoggerUtil.logInfo(LogActionType.CREATE, Business.ENTITY_NAME, createdBusinessId);
 
@@ -232,7 +230,7 @@ public class AppointmentIntegrationTest extends AbstractIntegrationTest {
 
 	private ReservationRequest createReservation(int i) {
 		ReservationRequest reservationRequest = new ReservationRequest();
-		reservationRequest.setEmployeeId(createEmployeeId);
+		reservationRequest.setEmployeeEmail(createEmployeeEmail);
 		reservationRequest.setBusinessServiceId(createdBusinessServiceId);
 
 		TimeSlot timeSlot = timeSlots.get(i);

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.Business;
-import org.booking.core.domain.entity.user.User;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
@@ -24,10 +23,7 @@ public class BusinessServiceEntity extends AbstractEntity {
 	private String description;
 	private BigDecimal price;
 	private int duration;
-
-	@ManyToOne
-	@JoinColumn(name = "modified_by_user_id")
-	private User modifiedByUser;
+	private String modifiedByUser;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "business_id", referencedColumnName = "id")

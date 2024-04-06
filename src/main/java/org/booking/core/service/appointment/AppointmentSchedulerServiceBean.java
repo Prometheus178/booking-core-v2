@@ -11,7 +11,6 @@ import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
 import org.booking.core.domain.entity.reservation.Duration;
 import org.booking.core.domain.entity.reservation.Reservation;
 import org.booking.core.domain.entity.reservation.TimeSlot;
-import org.booking.core.domain.entity.user.User;
 import org.booking.core.domain.entity.user.history.UserReservationHistory;
 import org.booking.core.domain.request.ReservationRequest;
 import org.booking.core.domain.response.ReservationResponse;
@@ -77,7 +76,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 		Reservation savedReservation = reserve(reservation);
 		reservationNotificationManager.sendNotification(BOOKING_CORE_TOPIC,
 				AppointmentAction.CREATED_RESERVATION.getValue(), savedReservation);
-		return reservationMapper.toDto(savedReservation);
+		return reservationMapper.toResponse(savedReservation);
 	}
 
 
@@ -98,7 +97,7 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				Reservation savedReservation = reserve(reservation);
 				reservationNotificationManager.sendNotification(BOOKING_CORE_TOPIC,
 						AppointmentAction.MODIFIED_RESERVATION.getValue(), savedReservation);
-				return reservationMapper.toDto(savedReservation);
+				return reservationMapper.toResponse(savedReservation);
 			} else {
 				throw new RuntimeException(RESERVED);
 			}
@@ -122,8 +121,8 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 	}
 
 	private Reservation reserve(Reservation reservation) {
-		User currentUser = userService.getCurrentUser();
-		reservation.setCustomer(currentUser);
+		String currentUserEmail = userService.getCurrentUserEmail();
+		reservation.setCustomerEmail(currentUserEmail);
 
 		String lockName = getComputedLockName(reservation);
 		log.info("Created " + lockName);
@@ -138,8 +137,8 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				cachingAppointmentSchedulerService.removeTimeSlotByKey(key, computeTimeSlot(reservation.getDuration()));
 				Reservation savedReservation = reservationRepository.save(reservation);
 				addReservationToBusinessSchedule(savedReservation);
-				saveToUserHistory(savedReservation, savedReservation.getCustomer());
-				saveToUserHistory(savedReservation, savedReservation.getEmployee());
+				saveToUserHistory(savedReservation, savedReservation.getCustomerEmail());
+				saveToUserHistory(savedReservation, savedReservation.getEmployeeEmail());
 				return savedReservation;
 			} else {
 				throw new RuntimeException(RESERVED);
@@ -183,12 +182,12 @@ public class AppointmentSchedulerServiceBean implements AppointmentSchedulerServ
 				businessServiceId), existTimeSlot);
 	}
 
-	private void saveToUserHistory(Reservation savedReservation, User user) {
+	private void saveToUserHistory(Reservation savedReservation, String userEmail) {
 		UserReservationHistory userReservationHistory =
-				userReservationHistoryRepository.findById(user.getId())
+				userReservationHistoryRepository.findByUserEmail(userEmail)
 						.orElse(new UserReservationHistory());
 		userReservationHistory.addReservation(savedReservation);
-		userReservationHistory.setUser(user);
+		userReservationHistory.setUserEmail(userEmail);
 		userReservationHistoryRepository.save(userReservationHistory);
 	}
 

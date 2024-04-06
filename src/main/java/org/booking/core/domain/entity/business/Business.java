@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.booking.core.domain.entity.base.AbstractEntity;
 import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
-import org.booking.core.domain.entity.user.User;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.HashSet;
@@ -38,10 +37,8 @@ public class Business extends AbstractEntity {
 	@JoinColumn(name = "reservation_schedule_id")
 	private ReservationSchedule reservationSchedule;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "business_employees", joinColumns = {@JoinColumn(name =
-			"business_id")}, inverseJoinColumns = {@JoinColumn(name = "employee_id")})
-	private Set<User> employees = new HashSet<>();
+	@ElementCollection
+	private Set<String> employees = new HashSet<>();
 
 	public void addBusinessService(BusinessServiceEntity businessServiceEntity) {
 		businessServiceEntities.add(businessServiceEntity);
@@ -51,9 +48,9 @@ public class Business extends AbstractEntity {
 		businessServiceEntities.remove(businessServiceEntity);
 	}
 
-	public boolean isEmployeeOfBusiness(User user) {
+	public boolean isEmployeeOfBusiness(String userEmail) {
 		return employees.stream().anyMatch(
-				user::equals
+				userEmail::equals
 		);
 	}
 

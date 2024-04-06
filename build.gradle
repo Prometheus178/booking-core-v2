@@ -28,7 +28,6 @@ file("gradle.properties")
         .withInputStream { databaseProps.load(it) }
 
 
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -48,7 +47,6 @@ dependencies {
     //Spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
@@ -77,7 +75,7 @@ dependencies {
     liquibaseRuntime 'ch.qos.logback:logback-classic:1.4.7'
     liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate6:4.26.0'
     liquibaseRuntime 'org.springframework.data:spring-data-jpa:3.2.3'
-   // liquibaseRuntime 'org.springframework.boot:spring-boot:3.2.3'
+    // liquibaseRuntime 'org.springframework.boot:spring-boot:3.2.3'
     liquibaseRuntime 'org.springframework.boot:spring-boot-starter-security:3.2.3'
 
     liquibaseRuntime 'org.yaml:snakeyaml:2.0'
@@ -105,7 +103,7 @@ dependencies {
     implementation 'commons-validator:commons-validator:1.8.0'
 
     //Test
-    testImplementation ('io.rest-assured:rest-assured:5.4.0'){
+    testImplementation('io.rest-assured:rest-assured:5.4.0') {
         exclude group: 'org.apache.groovy', module: 'groovy'
         exclude group: 'org.apache.groovy', module: 'groovy-xml'
     }
@@ -139,14 +137,14 @@ liquibase {
             referenceUrl databaseProps.getProperty("referenceUrl")
             logLevel "info"
         }
-       diffChangeLog {
-           changelogFile project.ext.diffChangelogFile
-           url databaseProps.getProperty("url")
-           username databaseProps.getProperty("username")
-           password databaseProps.getProperty("password")
-           referenceUrl databaseProps.getProperty("referenceUrl")
-           logLevel "info"
-       }
+        diffChangeLog {
+            changelogFile project.ext.diffChangelogFile
+            url databaseProps.getProperty("url")
+            username databaseProps.getProperty("username")
+            password databaseProps.getProperty("password")
+            referenceUrl databaseProps.getProperty("referenceUrl")
+            logLevel "info"
+        }
     }
     runList = project.ext.runList
 }
@@ -156,6 +154,7 @@ sourceSets.main.resources.srcDir "$buildDir/booking-core/src/main/resources"
 
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 tasks.named('test') {
     useJUnitPlatform()
     testLogging {

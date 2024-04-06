@@ -8,7 +8,7 @@ public class ReservationResponse {
 
 	private Long id;
 	private Long businessServiceId;
-	private Long employeeId;
+	private String employeeEmail;
 	private String bookingTime;
 	private DurationResponse duration;
 	private boolean canceled;

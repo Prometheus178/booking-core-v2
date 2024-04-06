@@ -14,6 +14,6 @@ public class BusinessResponse {
 	private BusinessHoursResponse businessHours;
 	private Set<BusinessServiceResponse> businessServices;
 	private ReservationScheduleResponse reservationSchedule;
-	private Set<Long> employees;
+	private Set<String> employees;
 
 }

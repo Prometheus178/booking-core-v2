@@ -1,4 +1,4 @@
-package org.booking.core.domain.response;
+package org.booking.core.response;
 
 import lombok.Data;
 

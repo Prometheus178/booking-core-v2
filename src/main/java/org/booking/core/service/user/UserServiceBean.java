@@ -1,4 +1,4 @@
-package org.booking.core.service;
+package org.booking.core.service.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

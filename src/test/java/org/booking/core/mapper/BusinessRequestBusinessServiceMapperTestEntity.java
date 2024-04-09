@@ -2,7 +2,7 @@ package org.booking.core.mapper;
 
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
-import org.booking.core.domain.response.BusinessServiceResponse;
+import org.booking.core.response.BusinessServiceResponse;
 import org.instancio.Instancio;
 
 import static org.assertj.core.api.Assertions.assertThat;

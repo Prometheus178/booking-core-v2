@@ -3,7 +3,7 @@ package org.booking.core.integration.customer;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.booking.core.domain.request.CustomerRequest;
+import org.booking.core.request.CustomerRequest;
 import org.booking.core.integration.AbstractIntegrationTest;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;

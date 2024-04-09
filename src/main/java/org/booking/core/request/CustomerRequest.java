@@ -1,4 +1,4 @@
-package org.booking.core.domain.request;
+package org.booking.core.request;
 
 import lombok.Data;
 

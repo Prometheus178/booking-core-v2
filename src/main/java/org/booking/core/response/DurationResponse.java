@@ -1,11 +1,11 @@
-package org.booking.core.domain.request;
+package org.booking.core.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class DurationRequest {
+public class DurationResponse {
 
 	private String startTime;
 	private String endTime;

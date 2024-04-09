@@ -3,8 +3,8 @@ package org.booking.core.api.v1.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.booking.core.api.BaseApi;
-import org.booking.core.domain.request.BusinessRequest;
-import org.booking.core.domain.response.BusinessResponse;
+import org.booking.core.request.BusinessRequest;
+import org.booking.core.response.BusinessResponse;
 import org.booking.core.service.business.BusinessService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

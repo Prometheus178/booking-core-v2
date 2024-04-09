@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
-import org.booking.core.domain.request.BusinessServiceRequest;
-import org.booking.core.domain.response.BusinessServiceResponse;
+import org.booking.core.request.BusinessServiceRequest;
+import org.booking.core.response.BusinessServiceResponse;
 import org.booking.core.mapper.BusinessServiceMapper;
 import org.booking.core.repository.BusinessServiceRepository;
-import org.booking.core.service.UserService;
+import org.booking.core.service.user.UserService;
 import org.booking.core.service.business.BusinessService;
 
 import java.util.Optional;

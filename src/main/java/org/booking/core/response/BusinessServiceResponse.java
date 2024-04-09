@@ -1,10 +1,11 @@
-package org.booking.core.domain.request;
+package org.booking.core.response;
 
 import lombok.Data;
 
 @Data
-public class BusinessServiceRequest {
+public class BusinessServiceResponse {
 
+	private Long id;
 	private Long businessId;
 	private String name;
 	private String description;

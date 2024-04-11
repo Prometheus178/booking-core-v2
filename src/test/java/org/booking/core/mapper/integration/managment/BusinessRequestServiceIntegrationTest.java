@@ -1,14 +1,14 @@
-package org.booking.core.integration.managment;
+package org.booking.core.mapper.integration.managment;
 
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
+import org.booking.core.mapper.integration.AbstractIntegrationTest;
 import org.booking.core.request.BusinessHoursRequest;
 import org.booking.core.request.BusinessRequest;
 import org.booking.core.request.BusinessServiceRequest;
-import org.booking.core.integration.AbstractIntegrationTest;
 import org.booking.core.util.LogActionType;
 import org.booking.core.util.LoggerUtil;
 import org.instancio.Instancio;
@@ -21,7 +21,7 @@ import java.time.LocalTime;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
-import static org.booking.core.integration.managment.BusinessRequestIntegrationTest.API_BUSINESSES;
+import static org.booking.core.mapper.integration.managment.BusinessRequestIntegrationTest.API_BUSINESSES;
 import static org.instancio.Select.field;
 
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)

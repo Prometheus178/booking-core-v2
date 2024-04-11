@@ -1,10 +1,10 @@
-package org.booking.core.integration.customer;
+package org.booking.core.mapper.integration.customer;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.booking.core.mapper.integration.AbstractIntegrationTest;
 import org.booking.core.request.CustomerRequest;
-import org.booking.core.integration.AbstractIntegrationTest;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;

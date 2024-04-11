@@ -15,8 +15,8 @@ services:
       POSTGRES_PASSWORD: core
     volumes:
       - postgres-data:/var/lib/postgresql/data
-  booking-core_app:
-    container_name: 'booking-core_app'
+  booking-core-app:
+    container_name: 'booking-core-app'
     build: .
     ports:
       - 8080:8080

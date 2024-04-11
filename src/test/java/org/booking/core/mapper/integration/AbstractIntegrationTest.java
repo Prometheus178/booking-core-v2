@@ -1,4 +1,4 @@
-package org.booking.core.integration;
+package org.booking.core.mapper.integration;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.MethodOrderer;

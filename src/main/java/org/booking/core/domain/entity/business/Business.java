@@ -33,9 +33,7 @@ public class Business extends AbstractEntity {
 	@OneToMany(mappedBy = "business", fetch = FetchType.LAZY)
 	private Set<BusinessServiceEntity> businessServiceEntities = new HashSet<>();
 
-//	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "reservation_schedule_id")
-//	private ReservationSchedule reservationSchedule;
+	private Long reservationScheduleId;
 
 	@ElementCollection
 	private Set<String> employees = new HashSet<>();

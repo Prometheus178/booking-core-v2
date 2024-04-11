@@ -11,5 +11,6 @@ public class BusinessServiceResponse {
 	private String description;
 	private double price;
 	private int duration;
+	private BusinessResponse business;
 
 }

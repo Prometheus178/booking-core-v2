@@ -1,12 +1,12 @@
-package org.booking.core.integration.managment;
+package org.booking.core.mapper.integration.managment;
 
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.booking.core.mapper.integration.AbstractIntegrationTest;
 import org.booking.core.request.BusinessHoursRequest;
 import org.booking.core.request.BusinessRequest;
-import org.booking.core.integration.AbstractIntegrationTest;
 import org.booking.core.util.LogActionType;
 import org.booking.core.util.LoggerUtil;
 import org.instancio.Instancio;

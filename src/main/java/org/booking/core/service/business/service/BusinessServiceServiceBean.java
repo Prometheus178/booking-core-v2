@@ -5,12 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.booking.core.domain.entity.business.Business;
 import org.booking.core.domain.entity.business.service.BusinessServiceEntity;
-import org.booking.core.domain.entity.user.User;
-import org.booking.core.domain.request.BusinessServiceRequest;
-import org.booking.core.domain.response.BusinessServiceResponse;
+import org.booking.core.request.BusinessServiceRequest;
+import org.booking.core.response.BusinessServiceResponse;
 import org.booking.core.mapper.BusinessServiceMapper;
 import org.booking.core.repository.BusinessServiceRepository;
-import org.booking.core.service.UserService;
+import org.booking.core.service.user.UserService;
 import org.booking.core.service.business.BusinessService;
 
 import java.util.Optional;
@@ -28,14 +27,14 @@ public class BusinessServiceServiceBean implements BusinessServiceService {
 	@Override
 	public BusinessServiceResponse create(BusinessServiceRequest obj) {
 		BusinessServiceEntity businessServiceEntity = businessServiceMapper.toEntity(obj);
-		User currentUser = userService.getCurrentUser();
+		String currentUserEmail = userService.getCurrentUserEmail();
 		Business business = businessServiceEntity.getBusiness();
-		if (!business.isEmployeeOfBusiness(currentUser)) {
+		if (!business.isEmployeeOfBusiness(currentUserEmail)) {
 			throw new RuntimeException("User is not employee of business!");
 		}
-		businessServiceEntity.setModifiedByUser(currentUser);
+		businessServiceEntity.setModifiedByUser(currentUserEmail);
 		BusinessServiceEntity save = businessServiceRepository.save(businessServiceEntity);
-		log.info("Created new business service by: " + currentUser.getEmail());
+		log.info("Created new business service by: " + currentUserEmail);
 		return businessServiceMapper.toDto(save);
 	}
 
@@ -66,6 +65,7 @@ public class BusinessServiceServiceBean implements BusinessServiceService {
 	public BusinessServiceResponse getById(Long id) {
 		Optional<BusinessServiceEntity> optionalBusinessService = businessServiceRepository.findById(id);
 		BusinessServiceEntity existed = optionalBusinessService.orElseThrow(EntityNotFoundException::new);
+		//todo get ReservationScheduleResponse
 		return businessServiceMapper.toDto(optionalBusinessService.get());
 	}
 

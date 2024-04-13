@@ -1,7 +1,7 @@
 package org.booking.core.service.customer;
 
 import lombok.RequiredArgsConstructor;
-import org.booking.core.domain.request.CustomerRequest;
+import org.booking.core.request.CustomerRequest;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

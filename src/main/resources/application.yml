@@ -34,10 +34,3 @@ spring:
     url: jdbc:postgresql://booking-core_db:5432/core_db
     user: core_user
     password: core
-  redis:
-    database: 0
-    host: booking-core_redis
-    port: 6379
-    timeout: 60000
-  kafka:
-    bootstrap-servers: booking-core_kafka:9092

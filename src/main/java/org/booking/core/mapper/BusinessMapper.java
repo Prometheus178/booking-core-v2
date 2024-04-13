@@ -1,8 +1,8 @@
 package org.booking.core.mapper;
 
 import org.booking.core.domain.entity.business.Business;
-import org.booking.core.domain.request.BusinessRequest;
-import org.booking.core.domain.response.BusinessResponse;
+import org.booking.core.request.BusinessRequest;
+import org.booking.core.response.BusinessResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
